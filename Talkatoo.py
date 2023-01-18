@@ -1,6 +1,6 @@
 """
 This Python script takes the broad approach:
-    Retrieve video footage from USB capture card (1280x720)
+    Retrieve video footage from USB capture card
     Preprocess game feed for better Optical Character Recognition
     Use OCR to look for Talkatoo text in any supported language
     Print the translated version and other close matches
@@ -19,7 +19,8 @@ TRANSLATE_TO = "english"  # Language you want to translate to
 LANGUAGES = [TRANSLATE_TO]  # Include all languages supported, lowercase
 DELAY_CONSTANT = 0.05  # Delays every iteration, used to reduce partial word readings as text scrolls. 0.05 is good here
 MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
-SCORE_THRESHOLD = -1  # Score from score_func where a moon can be considered for correctness
+SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness
+VERBOSE = False
 
 VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 ENLARGE_COEF = 1  # Sometimes enlarging increased accuracy, keep to integer
@@ -87,10 +88,11 @@ for moon in moonlist:
     else:
         kingdoms[this_kingdom] = {moon["chinese"]: {lang: moon[lang] for lang in LANGUAGES}}  # Structured for future languages
         kingdoms[this_kingdom][moon["chinese"]]["collected"] = False
+kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers", "Moon", "Mushroom"]
+current_kingdom = kingdom_list[1]  # Starting Kingdom
 
 # Final setup variables
 time_of_last_match = time.time() - 2
-current_kingdom = "Cap"  # Starting Kingdom
 x1, y1, x2, y2 = int(200/1280*IM_WIDTH), int(565/720*IM_HEIGHT), int(1000/1280*IM_WIDTH), int(605/720*IM_HEIGHT)
 stream = cv2.VideoCapture(VIDEO_INDEX)
 print("Setup complete! You may now approach the bird.\n")
@@ -129,6 +131,8 @@ while True:
     # Recognize and clean the output string
     data = pytesseract.image_to_string(talkatoo_text, lang=TRANSLATE_FROM, config='--psm 6')
     data = correct(data.strip())
+    if VERBOSE:
+        print("Recognized Characters:", data)
 
     max_corr = -100  # so low it will never matter
     ans = []
@@ -141,16 +145,19 @@ while True:
         elif corr == max_corr:  # Equally good as best match
             ans.append(kingdoms[current_kingdom][m][TRANSLATE_TO])  # English name, in this case
         if corr >= SCORE_THRESHOLD - 1:  # Loose match , we don't need this but could situationally be useful
-            print("Possible Match:", kingdoms[current_kingdom][m][TRANSLATE_TO], "(score={})".format(corr))
+            if VERBOSE:
+                print("Possible Match:", kingdoms[current_kingdom][m][TRANSLATE_TO], "(score={})".format(corr))
             count += 1
 
     if max_corr >= SCORE_THRESHOLD:  # If any reasonable matches
         time_of_last_match = time.time()  # Set up so no duplicates
-        print("Recognized Characters:", data)
+        if VERBOSE:
+            if count == 1:
+                print("Possible Match:", count)
+            else:
+                print("Possible Matches:", count)
         best_matches = len(ans)
         if best_matches == 1:
-            print("Possible Match:", count)
             print("Best Match:\n\t{}\n".format("\n\t".join(ans)))
         else:
-            print("Possible Matches:", count)
-            print("Best Matches({} total):\n\t{}\n".format(best_matches, "\n\t".join(ans)))
+            print("Best Matches({} total): {}".format(best_matches, " OR ".join(ans)))
