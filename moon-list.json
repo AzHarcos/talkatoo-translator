@@ -1,0 +1,4652 @@
+[
+  {
+    "id": 1,
+    "kingdom": "Cap",
+    "english": "Frog-Jumping Above the Fog",
+    "chinese": "在船上超級大跳躍！"
+  },
+  {
+    "id": 2,
+    "kingdom": "Cap",
+    "english": "Frog-Jumping from the Top Deck",
+    "chinese": "在船上大跳躍！"
+  },
+  {
+    "id": 3,
+    "kingdom": "Cap",
+    "english": "Cap Kingdom Timer Challenge 1",
+    "chinese": "帽子國的滴答‧運動１"
+  },
+  {
+    "id": 4,
+    "kingdom": "Cap",
+    "english": "Good Evening, Captain Toad!",
+    "chinese": "晚安！奇諾比奧隊長"
+  },
+  {
+    "id": 5,
+    "kingdom": "Cap",
+    "english": "Shopping in Bonneton",
+    "chinese": "在戴布倫購物"
+  },
+  {
+    "id": 6,
+    "kingdom": "Cap",
+    "english": "Skimming the Poison Tide",
+    "chinese": "飛越毒之波浪"
+  },
+  {
+    "id": 7,
+    "kingdom": "Cap",
+    "english": "Slipping Through the Poison Tide",
+    "chinese": "穿越毒之波浪"
+  },
+  {
+    "id": 8,
+    "kingdom": "Cap",
+    "english": "Push-Block Peril",
+    "chinese": "越過凸磚牆"
+  },
+  {
+    "id": 9,
+    "kingdom": "Cap",
+    "english": "Hidden Among the Push-Blocks",
+    "chinese": "凸磚牆的秘密洞穴"
+  },
+  {
+    "id": 10,
+    "kingdom": "Cap",
+    "english": "Searching the Frog Pond",
+    "chinese": "青蛙池塘裡尋物"
+  },
+  {
+    "id": 11,
+    "kingdom": "Cap",
+    "english": "Secrets of the Frog Pond",
+    "chinese": "青蛙池塘的隱匿處"
+  },
+  {
+    "id": 12,
+    "kingdom": "Cap",
+    "english": "The Forgotten Treasure",
+    "chinese": "遺忘掉的寶物"
+  },
+  {
+    "id": 13,
+    "kingdom": "Cap",
+    "english": "Taxi Flying Through Bonneton",
+    "chinese": "飛天計程車行經戴布倫"
+  },
+  {
+    "id": 14,
+    "kingdom": "Cap",
+    "english": "Bonneter Blockade",
+    "chinese": "戴布倫人愛擋路"
+  },
+  {
+    "id": 15,
+    "kingdom": "Cap",
+    "english": "Cap Kingdom Regular Cup",
+    "chinese": "帽子國 標準杯"
+  },
+  {
+    "id": 16,
+    "kingdom": "Cap",
+    "english": "Peach in the Cap Kingdom",
+    "chinese": "碧姬公主在帽子國"
+  },
+  {
+    "id": 17,
+    "kingdom": "Cap",
+    "english": "Found with Cap Kingdom Art",
+    "chinese": "找到在帽子國看到的相片寶物"
+  },
+  {
+    "id": 18,
+    "kingdom": "Cap",
+    "english": "Next to Glasses Bridge",
+    "chinese": "在眼鏡橋橋頭"
+  },
+  {
+    "id": 19,
+    "kingdom": "Cap",
+    "english": "Danger Sign",
+    "chinese": "坐上骷髏告示板"
+  },
+  {
+    "id": 20,
+    "kingdom": "Cap",
+    "english": "Under the Big One's Brim",
+    "chinese": "巨大的帽舌下"
+  },
+  {
+    "id": 21,
+    "kingdom": "Cap",
+    "english": "Fly to the Edge of the Fog",
+    "chinese": "飛啊飛　飛到雲海的盡頭"
+  },
+  {
+    "id": 22,
+    "kingdom": "Cap",
+    "english": "Spin the Hat, Get a Prize",
+    "chinese": "轉動帽子的浮雕"
+  },
+  {
+    "id": 23,
+    "kingdom": "Cap",
+    "english": "Hidden in a Sunken Hat",
+    "chinese": "沉入雲裡的船上"
+  },
+  {
+    "id": 24,
+    "kingdom": "Cap",
+    "english": "Fog-Shrouded Platform",
+    "chinese": "在陷入雲裡的腳邊"
+  },
+  {
+    "id": 25,
+    "kingdom": "Cap",
+    "english": "Bird Traveling in the Fog",
+    "chinese": "雲海的侯鳥"
+  },
+  {
+    "id": 26,
+    "kingdom": "Cap",
+    "english": "Caught Hopping Near the Ship!",
+    "chinese": "在廣場抓到蹦蹦！"
+  },
+  {
+    "id": 27,
+    "kingdom": "Cap",
+    "english": "Taking Notes: In the Fog",
+    "chinese": "在雲上蒐集音符"
+  },
+  {
+    "id": 28,
+    "kingdom": "Cap",
+    "english": "Cap Kingdom Timer Challenge 2",
+    "chinese": "帽子國的滴答‧運動２"
+  },
+  {
+    "id": 29,
+    "kingdom": "Cap",
+    "english": "Cap Kingdom Master Cup",
+    "chinese": "帽子國 大師杯"
+  },
+  {
+    "id": 30,
+    "kingdom": "Cap",
+    "english": "Roll On and On",
+    "chinese": "翻滾又翻滾"
+  },
+  {
+    "id": 31,
+    "kingdom": "Cap",
+    "english": "Precision Rolling",
+    "chinese": "一路翻滾到何處"
+  },
+  {
+    "id": 1,
+    "kingdom": "Cascade",
+    "english": "Our First Power Moon",
+    "chinese": "第一個 力量之月"
+  },
+  {
+    "id": 2,
+    "kingdom": "Cascade",
+    "english": "Multi Moon Atop the Falls",
+    "chinese": "瀑布上面的光榮之月"
+  },
+  {
+    "id": 3,
+    "kingdom": "Cascade",
+    "english": "Chomp Through the Rocks",
+    "chinese": "破壞了岩壁就有獎"
+  },
+  {
+    "id": 4,
+    "kingdom": "Cascade",
+    "english": "Behind the Waterfall",
+    "chinese": "瀑布後的散步步道"
+  },
+  {
+    "id": 5,
+    "kingdom": "Cascade",
+    "english": "On Top of the Rubble",
+    "chinese": "在破銅爛鐵上"
+  },
+  {
+    "id": 6,
+    "kingdom": "Cascade",
+    "english": "Treasure of the Waterfall Basin",
+    "chinese": "瀑布深潭的藏寶箱"
+  },
+  {
+    "id": 7,
+    "kingdom": "Cascade",
+    "english": "Above a High Cliff",
+    "chinese": "陡峭的懸崖上"
+  },
+  {
+    "id": 8,
+    "kingdom": "Cascade",
+    "english": "Across the Floating Isles",
+    "chinese": "渡過浮島"
+  },
+  {
+    "id": 9,
+    "kingdom": "Cascade",
+    "english": "Cascade Kingdom Timer Challenge 1",
+    "chinese": "瀑布國的滴答‧運動１"
+  },
+  {
+    "id": 10,
+    "kingdom": "Cascade",
+    "english": "Cascade Kingdom Timer Challenge 2",
+    "chinese": "瀑布國的滴答‧運動２"
+  },
+  {
+    "id": 11,
+    "kingdom": "Cascade",
+    "english": "Good Morning, Cascadetain Toad!",
+    "chinese": "早安！奇諾比奧隊長"
+  },
+  {
+    "id": 12,
+    "kingdom": "Cascade",
+    "english": "Dinosaur Nest: Big Cleanup!",
+    "chinese": "大掃除！恐龍巢穴"
+  },
+  {
+    "id": 13,
+    "kingdom": "Cascade",
+    "english": "Dinosaur Nest: Running Wild!",
+    "chinese": "鬧翻天！恐龍巢穴"
+  },
+  {
+    "id": 14,
+    "kingdom": "Cascade",
+    "english": "Nice Shot with the Chain Chomp!",
+    "chinese": "汪汪 好球！"
+  },
+  {
+    "id": 15,
+    "kingdom": "Cascade",
+    "english": "Very Nice Shot with the Chain Chomp!",
+    "chinese": "汪汪 超級好球！"
+  },
+  {
+    "id": 16,
+    "kingdom": "Cascade",
+    "english": "Past the Chasm Lifts",
+    "chinese": "穿過山谷裡的升降梯"
+  },
+  {
+    "id": 17,
+    "kingdom": "Cascade",
+    "english": "Hidden Chasm Passage",
+    "chinese": "山谷裡的密道"
+  },
+  {
+    "id": 18,
+    "kingdom": "Cascade",
+    "english": "Secret Path to Fossil Falls!",
+    "chinese": "歡迎來到恐龍瀑！"
+  },
+  {
+    "id": 19,
+    "kingdom": "Cascade",
+    "english": "A Tourist in the Cascade Kingdom",
+    "chinese": "來到瀑布國了砂砂！"
+  },
+  {
+    "id": 20,
+    "kingdom": "Cascade",
+    "english": "Rolling Rock by the Falls",
+    "chinese": "我踢！瀑布的小石頭"
+  },
+  {
+    "id": 21,
+    "kingdom": "Cascade",
+    "english": "Peach in the Cascade Kingdom",
+    "chinese": "碧姬公主在瀑布國"
+  },
+  {
+    "id": 22,
+    "kingdom": "Cascade",
+    "english": "Cascade Kingdom Regular Cup",
+    "chinese": "瀑布國 標準杯"
+  },
+  {
+    "id": 23,
+    "kingdom": "Cascade",
+    "english": "Caveman Cave-Fan",
+    "chinese": "發現！？原始人"
+  },
+  {
+    "id": 24,
+    "kingdom": "Cascade",
+    "english": "Shopping in Fossil Falls",
+    "chinese": "在恐龍瀑購物"
+  },
+  {
+    "id": 25,
+    "kingdom": "Cascade",
+    "english": "Sphynx Traveling to the Waterfall",
+    "chinese": "環遊瀑布的斯芬‧奇思"
+  },
+  {
+    "id": 26,
+    "kingdom": "Cascade",
+    "english": "Bottom of the Waterfall Basin",
+    "chinese": "沉眠在瀑布深潭的寶物"
+  },
+  {
+    "id": 27,
+    "kingdom": "Cascade",
+    "english": "Just a Hat, Skip, and a Jump",
+    "chinese": "扔出帽子 跳到上面"
+  },
+  {
+    "id": 28,
+    "kingdom": "Cascade",
+    "english": "Treasure Under the Cliff",
+    "chinese": "在懸崖下發光的寶物"
+  },
+  {
+    "id": 29,
+    "kingdom": "Cascade",
+    "english": "Next to the Stone Arch",
+    "chinese": "跳下岩石拱橋"
+  },
+  {
+    "id": 30,
+    "kingdom": "Cascade",
+    "english": "Guarded by a Colossal Fossil",
+    "chinese": "受巨大化石保護"
+  },
+  {
+    "id": 31,
+    "kingdom": "Cascade",
+    "english": "Under the Old Electrical Pole",
+    "chinese": "來自老舊的電線桿裡"
+  },
+  {
+    "id": 32,
+    "kingdom": "Cascade",
+    "english": "Under the Ground",
+    "chinese": "在崩塌的岩石下"
+  },
+  {
+    "id": 33,
+    "kingdom": "Cascade",
+    "english": "Inside the Busted Fossil",
+    "chinese": "來自崩塌的化石中"
+  },
+  {
+    "id": 34,
+    "kingdom": "Cascade",
+    "english": "Caught Hopping at the Waterfall!",
+    "chinese": "在瀑布前抓到蹦蹦！"
+  },
+  {
+    "id": 35,
+    "kingdom": "Cascade",
+    "english": "Taking Notes: Hurry Upward",
+    "chinese": "趕緊往上蒐集音符"
+  },
+  {
+    "id": 36,
+    "kingdom": "Cascade",
+    "english": "Cascade Kingdom Master Cup",
+    "chinese": "瀑布國 大師杯"
+  },
+  {
+    "id": 37,
+    "kingdom": "Cascade",
+    "english": "Across the Mysterious Clouds",
+    "chinese": "換乘不可思議的雲"
+  },
+  {
+    "id": 38,
+    "kingdom": "Cascade",
+    "english": "Atop a Wall Among the Clouds",
+    "chinese": "用不可思議的雲到牆壁上"
+  },
+  {
+    "id": 39,
+    "kingdom": "Cascade",
+    "english": "Across the Gusty Bridges",
+    "chinese": "越過陣風橋"
+  },
+  {
+    "id": 40,
+    "kingdom": "Cascade",
+    "english": "Flying Far Away from Gusty Bridges",
+    "chinese": "飛吧 陣風橋"
+  },
+  {
+    "id": 1,
+    "kingdom": "Sand",
+    "english": "Atop the Highest Tower",
+    "chinese": "阿熾尼亞遺跡之塔上"
+  },
+  {
+    "id": 2,
+    "kingdom": "Sand",
+    "english": "Moon Shards in the Sand",
+    "chinese": "蒐集吧！沙之月亮碎片"
+  },
+  {
+    "id": 3,
+    "kingdom": "Sand",
+    "english": "Showdown on the Inverted Pyramid",
+    "chinese": "倒金字塔的對決"
+  },
+  {
+    "id": 4,
+    "kingdom": "Sand",
+    "english": "The Hole in the Desert",
+    "chinese": "出現在沙漠裡的大洞"
+  },
+  {
+    "id": 5,
+    "kingdom": "Sand",
+    "english": "Overlooking the Desert Town",
+    "chinese": "遠眺沙之城鎮"
+  },
+  {
+    "id": 6,
+    "kingdom": "Sand",
+    "english": "Alcove in the Ruins",
+    "chinese": "遺跡裡的空洞"
+  },
+  {
+    "id": 7,
+    "kingdom": "Sand",
+    "english": "On the Leaning Pillar",
+    "chinese": "傾斜的石柱上"
+  },
+  {
+    "id": 8,
+    "kingdom": "Sand",
+    "english": "Hidden Room in the Flowing Sands",
+    "chinese": "流沙裡的密室"
+  },
+  {
+    "id": 9,
+    "kingdom": "Sand",
+    "english": "Secret of the Mural",
+    "chinese": "藏在壁畫裡的秘密"
+  },
+  {
+    "id": 10,
+    "kingdom": "Sand",
+    "english": "Secret of the Inverted Mural",
+    "chinese": "顛倒壁畫的秘密"
+  },
+  {
+    "id": 11,
+    "kingdom": "Sand",
+    "english": "On Top of the Stone Archway",
+    "chinese": "門上閃耀的寶物"
+  },
+  {
+    "id": 12,
+    "kingdom": "Sand",
+    "english": "From a Crate in the Ruins",
+    "chinese": "飛出來了！來自沙之木箱"
+  },
+  {
+    "id": 13,
+    "kingdom": "Sand",
+    "english": "On the Lone Pillar",
+    "chinese": "跳到柱子上"
+  },
+  {
+    "id": 14,
+    "kingdom": "Sand",
+    "english": "On the Statue's Tail",
+    "chinese": "萊德石像的尾巴"
+  },
+  {
+    "id": 15,
+    "kingdom": "Sand",
+    "english": "Hang Your Hat on the Fountain",
+    "chinese": "掛在噴水池上"
+  },
+  {
+    "id": 16,
+    "kingdom": "Sand",
+    "english": "Where the Birds Gather",
+    "chinese": "一群小鳥的會議"
+  },
+  {
+    "id": 17,
+    "kingdom": "Sand",
+    "english": "Top of a Dune",
+    "chinese": "圓沙丘的頂端"
+  },
+  {
+    "id": 18,
+    "kingdom": "Sand",
+    "english": "Lost in the Luggage",
+    "chinese": "來自計程車的行李"
+  },
+  {
+    "id": 19,
+    "kingdom": "Sand",
+    "english": "Bullet Bill Breakthrough",
+    "chinese": "用炮彈刺客撞擊！"
+  },
+  {
+    "id": 20,
+    "kingdom": "Sand",
+    "english": "Inside a Block Is a Hard Place",
+    "chinese": "堅硬的磚塊裡"
+  },
+  {
+    "id": 21,
+    "kingdom": "Sand",
+    "english": "Bird Traveling the Desert",
+    "chinese": "沙漠的候鳥"
+  },
+  {
+    "id": 22,
+    "kingdom": "Sand",
+    "english": "Bird Traveling the Wastes",
+    "chinese": "荒野的候鳥"
+  },
+  {
+    "id": 23,
+    "kingdom": "Sand",
+    "english": "The Lurker Under the Stone",
+    "chinese": "在石板下蠢動之物"
+  },
+  {
+    "id": 24,
+    "kingdom": "Sand",
+    "english": "The Treasure of Jaxi Ruins",
+    "chinese": "萊德遺跡的藏寶箱"
+  },
+  {
+    "id": 25,
+    "kingdom": "Sand",
+    "english": "Desert Gardening: Plaza Seed",
+    "chinese": "開花了！廣場的種子"
+  },
+  {
+    "id": 26,
+    "kingdom": "Sand",
+    "english": "Desert Gardening: Ruins Seed",
+    "chinese": "開花了！阿熾尼亞遺跡的種子"
+  },
+  {
+    "id": 27,
+    "kingdom": "Sand",
+    "english": "Desert Gardening: Seed on the Cliff",
+    "chinese": "開花了！懸崖下的種子"
+  },
+  {
+    "id": 28,
+    "kingdom": "Sand",
+    "english": "Sand Kingdom Timer Challenge 1",
+    "chinese": "沙之國的滴答‧運動１"
+  },
+  {
+    "id": 29,
+    "kingdom": "Sand",
+    "english": "Sand Kingdom Timer Challenge 2",
+    "chinese": "沙之國的滴答‧運動２"
+  },
+  {
+    "id": 30,
+    "kingdom": "Sand",
+    "english": "Sand Kingdom Timer Challenge 3",
+    "chinese": "沙之國的滴答‧運動３"
+  },
+  {
+    "id": 31,
+    "kingdom": "Sand",
+    "english": "Found in the Sand! Good Dog!",
+    "chinese": "在沙漠找到汪！"
+  },
+  {
+    "id": 32,
+    "kingdom": "Sand",
+    "english": "Taking Notes: Jump on the Palm",
+    "chinese": "椰子樹上跳躍蒐集音符"
+  },
+  {
+    "id": 33,
+    "kingdom": "Sand",
+    "english": "Herding Sheep in the Dunes",
+    "chinese": "在沙丘趕綿羊"
+  },
+  {
+    "id": 34,
+    "kingdom": "Sand",
+    "english": "Fishing in the Oasis",
+    "chinese": "在綠洲釣魚！"
+  },
+  {
+    "id": 35,
+    "kingdom": "Sand",
+    "english": "Love in the Heart of the Desert",
+    "chinese": "沙漠的女朋友"
+  },
+  {
+    "id": 36,
+    "kingdom": "Sand",
+    "english": "Among the Five Cactuses",
+    "chinese": "在５棵仙人掌的正中央"
+  },
+  {
+    "id": 37,
+    "kingdom": "Sand",
+    "english": "You're Quite a Catch, Sandtain Toad!",
+    "chinese": "釣到了！奇諾比奧隊長"
+  },
+  {
+    "id": 38,
+    "kingdom": "Sand",
+    "english": "Jaxi Reunion!",
+    "chinese": "重逢！萊德‧巴士"
+  },
+  {
+    "id": 39,
+    "kingdom": "Sand",
+    "english": "Welcome Back, Jaxi!",
+    "chinese": "歡迎回來！萊德‧巴士"
+  },
+  {
+    "id": 40,
+    "kingdom": "Sand",
+    "english": "Wandering Cactus",
+    "chinese": "就算是仙人掌也想走路！"
+  },
+  {
+    "id": 41,
+    "kingdom": "Sand",
+    "english": "Sand Quiz: Wonderful!",
+    "chinese": "做得漂亮！答對沙之謎題"
+  },
+  {
+    "id": 42,
+    "kingdom": "Sand",
+    "english": "Shopping in Tostarena",
+    "chinese": "在阿熾尼亞購物"
+  },
+  {
+    "id": 43,
+    "kingdom": "Sand",
+    "english": "Employees Only",
+    "chinese": "到店裡面去叨擾"
+  },
+  {
+    "id": 44,
+    "kingdom": "Sand",
+    "english": "Sand Kingdom Slots",
+    "chinese": "在沙之國玩了轉轉機"
+  },
+  {
+    "id": 45,
+    "kingdom": "Sand",
+    "english": "Walking the Desert!",
+    "chinese": "在沙漠裡健走！"
+  },
+  {
+    "id": 46,
+    "kingdom": "Sand",
+    "english": "Hidden Room in the Inverted Pyramid",
+    "chinese": "倒金字塔的密室"
+  },
+  {
+    "id": 47,
+    "kingdom": "Sand",
+    "english": "Underground Treasure Chest",
+    "chinese": "地下神殿的藏寶箱"
+  },
+  {
+    "id": 48,
+    "kingdom": "Sand",
+    "english": "Goomba Tower Assembly",
+    "chinese": "登場！疊塔栗寶寶"
+  },
+  {
+    "id": 49,
+    "kingdom": "Sand",
+    "english": "Under the Mummy's Curse",
+    "chinese": "木乃伊的護身符"
+  },
+  {
+    "id": 50,
+    "kingdom": "Sand",
+    "english": "Ice Cave Treasure",
+    "chinese": "冰洞窟的寶物"
+  },
+  {
+    "id": 51,
+    "kingdom": "Sand",
+    "english": "Sphynx's Treasure Vault",
+    "chinese": "斯芬‧奇思的寶庫"
+  },
+  {
+    "id": 52,
+    "kingdom": "Sand",
+    "english": "A Rumble from the Sandy Floor",
+    "chinese": "抖抖抖！沙漠的震動地板"
+  },
+  {
+    "id": 53,
+    "kingdom": "Sand",
+    "english": "Dancing with New Friends",
+    "chinese": "興致高昂 一起跳舞吧！"
+  },
+  {
+    "id": 54,
+    "kingdom": "Sand",
+    "english": "The Invisible Maze",
+    "chinese": "探索透明迷宮"
+  },
+  {
+    "id": 55,
+    "kingdom": "Sand",
+    "english": "Skull Sign in the Transparent Maze",
+    "chinese": "透明迷宮的骷髏告示板"
+  },
+  {
+    "id": 56,
+    "kingdom": "Sand",
+    "english": "The Bullet Bill Maze: Break Through!",
+    "chinese": "突破炮彈刺客迷宮！"
+  },
+  {
+    "id": 57,
+    "kingdom": "Sand",
+    "english": "The Bullet Bill Maze: Side Path",
+    "chinese": "炮彈刺客迷宮的岔路"
+  },
+  {
+    "id": 58,
+    "kingdom": "Sand",
+    "english": "Jaxi Driver",
+    "chinese": "萊德‧兜風！"
+  },
+  {
+    "id": 59,
+    "kingdom": "Sand",
+    "english": "Jaxi Stunt Driving",
+    "chinese": "萊德‧回程！"
+  },
+  {
+    "id": 60,
+    "kingdom": "Sand",
+    "english": "Strange Neighborhood",
+    "chinese": "越過轉轉屋"
+  },
+  {
+    "id": 61,
+    "kingdom": "Sand",
+    "english": "Above a Strange Neighborhood",
+    "chinese": "俯視轉轉屋"
+  },
+  {
+    "id": 62,
+    "kingdom": "Sand",
+    "english": "Secret Path to Tostarena!",
+    "chinese": "歡迎來到阿熾尼亞！"
+  },
+  {
+    "id": 63,
+    "kingdom": "Sand",
+    "english": "Found with Sand Kingdom Art",
+    "chinese": "找到在沙之國看到的相片寶物"
+  },
+  {
+    "id": 64,
+    "kingdom": "Sand",
+    "english": "Jammin' in the Sand Kingdom",
+    "chinese": "沙之國的美妙音樂"
+  },
+  {
+    "id": 65,
+    "kingdom": "Sand",
+    "english": "Hat-and-Seek: In the Sand",
+    "chinese": "沙的帽子捉迷藏"
+  },
+  {
+    "id": 66,
+    "kingdom": "Sand",
+    "english": "Sand Kingdom Regular Cup",
+    "chinese": "沙之國 標準杯"
+  },
+  {
+    "id": 67,
+    "kingdom": "Sand",
+    "english": "Binding Band Returned",
+    "chinese": "失而復得 結婚戒指"
+  },
+  {
+    "id": 68,
+    "kingdom": "Sand",
+    "english": "'Round-the-World Tourist",
+    "chinese": "歡迎回來！環遊世界一圈"
+  },
+  {
+    "id": 69,
+    "kingdom": "Sand",
+    "english": "Peach in the Sand Kingdom",
+    "chinese": "碧姬公主在沙之國"
+  },
+  {
+    "id": 70,
+    "kingdom": "Sand",
+    "english": "Mighty Leap from the Palm Tree!",
+    "chinese": "利用椰子樹大跳躍！"
+  },
+  {
+    "id": 71,
+    "kingdom": "Sand",
+    "english": "On the North Pillar",
+    "chinese": "跳到北邊的柱子上"
+  },
+  {
+    "id": 72,
+    "kingdom": "Sand",
+    "english": "Into the Flowing Sands",
+    "chinese": "跳進流沙裡"
+  },
+  {
+    "id": 73,
+    "kingdom": "Sand",
+    "english": "In the Skies Above the Canyon",
+    "chinese": "通向峽谷的上空"
+  },
+  {
+    "id": 74,
+    "kingdom": "Sand",
+    "english": "Island in the Poison Swamp",
+    "chinese": "毒沼裡的小島"
+  },
+  {
+    "id": 75,
+    "kingdom": "Sand",
+    "english": "An Invisible Gleam",
+    "chinese": "看不見的光輝"
+  },
+  {
+    "id": 76,
+    "kingdom": "Sand",
+    "english": "On the Eastern Pillar",
+    "chinese": "在東邊的石柱"
+  },
+  {
+    "id": 77,
+    "kingdom": "Sand",
+    "english": "Caught Hopping in the Desert!",
+    "chinese": "在沙漠抓到蹦蹦！"
+  },
+  {
+    "id": 78,
+    "kingdom": "Sand",
+    "english": "Poster Cleanup",
+    "chinese": "撕掉吧 惡作劇海報"
+  },
+  {
+    "id": 79,
+    "kingdom": "Sand",
+    "english": "Taking Notes: Running Down",
+    "chinese": "向下奔跑蒐集音符"
+  },
+  {
+    "id": 80,
+    "kingdom": "Sand",
+    "english": "Taking Notes: In the Wall Painting",
+    "chinese": "在壁畫裡蒐集音符"
+  },
+  {
+    "id": 81,
+    "kingdom": "Sand",
+    "english": "Love at the Edge of the Desert",
+    "chinese": "沙漠盡頭的女朋友"
+  },
+  {
+    "id": 82,
+    "kingdom": "Sand",
+    "english": "More Walking in the Desert!",
+    "chinese": "再來！在沙漠裡健走"
+  },
+  {
+    "id": 83,
+    "kingdom": "Sand",
+    "english": "Sand Kingdom Master Cup",
+    "chinese": "沙之國 大師杯"
+  },
+  {
+    "id": 84,
+    "kingdom": "Sand",
+    "english": "Where the Transparent Platforms End",
+    "chinese": "透明升降梯的終點"
+  },
+  {
+    "id": 85,
+    "kingdom": "Sand",
+    "english": "Jump Onto the Transparent Lift",
+    "chinese": "縱身一跳搭上透明升降梯"
+  },
+  {
+    "id": 86,
+    "kingdom": "Sand",
+    "english": "Colossal Ruins: Dash! Jump!",
+    "chinese": "衝刺！跳躍！巨大遺跡"
+  },
+  {
+    "id": 87,
+    "kingdom": "Sand",
+    "english": "Sinking Colossal Ruins: Hurry!",
+    "chinese": "快跑！沉沒的巨大遺跡"
+  },
+  {
+    "id": 88,
+    "kingdom": "Sand",
+    "english": "Through the Freezing Waterway",
+    "chinese": "穿過結凍的水道"
+  },
+  {
+    "id": 89,
+    "kingdom": "Sand",
+    "english": "Freezing Waterway: Hidden Room",
+    "chinese": "結凍水道裡的密室"
+  },
+  {
+    "id": 1,
+    "kingdom": "Wooded",
+    "english": "Road to Sky Garden",
+    "chinese": "通往空中庭園的路"
+  },
+  {
+    "id": 2,
+    "kingdom": "Wooded",
+    "english": "Flower Thieves of Sky Garden",
+    "chinese": "空中庭園的偷花賊"
+  },
+  {
+    "id": 3,
+    "kingdom": "Wooded",
+    "english": "Path to the Secret Flower Field",
+    "chinese": "目標！秘密花園"
+  },
+  {
+    "id": 4,
+    "kingdom": "Wooded",
+    "english": "Defend the Secret Flower Field!",
+    "chinese": "守護！秘密花園"
+  },
+  {
+    "id": 5,
+    "kingdom": "Wooded",
+    "english": "Behind the Rock Wall",
+    "chinese": "發現！岩壁之中"
+  },
+  {
+    "id": 6,
+    "kingdom": "Wooded",
+    "english": "Back Way Up the Mountain",
+    "chinese": "山上的密道"
+  },
+  {
+    "id": 7,
+    "kingdom": "Wooded",
+    "english": "Rolling Rock in the Woods",
+    "chinese": "我踢！森林的小石頭"
+  },
+  {
+    "id": 8,
+    "kingdom": "Wooded",
+    "english": "Caught Hopping in the Forest!",
+    "chinese": "在森林抓到蹦蹦！"
+  },
+  {
+    "id": 9,
+    "kingdom": "Wooded",
+    "english": "Thanks for the Charge!",
+    "chinese": "多謝 補給"
+  },
+  {
+    "id": 10,
+    "kingdom": "Wooded",
+    "english": "Atop the Tall Tree",
+    "chinese": "在高大的樹木上"
+  },
+  {
+    "id": 11,
+    "kingdom": "Wooded",
+    "english": "Tucked Away Inside the Tunnel",
+    "chinese": "在隧道裡躡手躡腳"
+  },
+  {
+    "id": 12,
+    "kingdom": "Wooded",
+    "english": "Over the Cliff's Edge",
+    "chinese": "飛越懸崖"
+  },
+  {
+    "id": 13,
+    "kingdom": "Wooded",
+    "english": "The Nut 'Round the Corner",
+    "chinese": "轉角處的樹果"
+  },
+  {
+    "id": 14,
+    "kingdom": "Wooded",
+    "english": "Climb the Cliff to Get the Nut",
+    "chinese": "攀上岩壁就有樹果"
+  },
+  {
+    "id": 15,
+    "kingdom": "Wooded",
+    "english": "The Nut in the Red Maze",
+    "chinese": "紅色迷宮的樹果"
+  },
+  {
+    "id": 16,
+    "kingdom": "Wooded",
+    "english": "The Nut at the Dead End",
+    "chinese": "盡頭處的樹果"
+  },
+  {
+    "id": 17,
+    "kingdom": "Wooded",
+    "english": "Cracked Nut on a Crumbling Tower",
+    "chinese": "老舊鐵塔的樹果"
+  },
+  {
+    "id": 18,
+    "kingdom": "Wooded",
+    "english": "The Nut that Grew on the Tall Fence",
+    "chinese": "在高牆上的樹果"
+  },
+  {
+    "id": 19,
+    "kingdom": "Wooded",
+    "english": "Fire in the Cave",
+    "chinese": "洞窟之主"
+  },
+  {
+    "id": 20,
+    "kingdom": "Wooded",
+    "english": "Hey Out There, Woodedtain Toad!",
+    "chinese": "呀呵！奇諾比奧隊長"
+  },
+  {
+    "id": 21,
+    "kingdom": "Wooded",
+    "english": "Love in the Forest Ruins",
+    "chinese": "森林的女朋友"
+  },
+  {
+    "id": 22,
+    "kingdom": "Wooded",
+    "english": "Inside a Rock in the Forest",
+    "chinese": "來自森林的岩石裡"
+  },
+  {
+    "id": 23,
+    "kingdom": "Wooded",
+    "english": "Shopping in Steam Gardens",
+    "chinese": "在斯機姆花園購物"
+  },
+  {
+    "id": 24,
+    "kingdom": "Wooded",
+    "english": "Nut Planted in the Tower",
+    "chinese": "在凹陷處的樹果"
+  },
+  {
+    "id": 25,
+    "kingdom": "Wooded",
+    "english": "Stretching Your Legs",
+    "chinese": "拉長身子到更頂端"
+  },
+  {
+    "id": 26,
+    "kingdom": "Wooded",
+    "english": "Spinning-Platforms Treasure",
+    "chinese": "旋轉平台的寶庫"
+  },
+  {
+    "id": 27,
+    "kingdom": "Wooded",
+    "english": "Make the Secret Flower Field Bloom",
+    "chinese": "開花吧 秘密花園"
+  },
+  {
+    "id": 28,
+    "kingdom": "Wooded",
+    "english": "Rolling Rock in the Deep Woods",
+    "chinese": "我踢！樹海的小石頭"
+  },
+  {
+    "id": 29,
+    "kingdom": "Wooded",
+    "english": "Glowing in the Deep Woods",
+    "chinese": "瞬間綻放光芒的樹海深處"
+  },
+  {
+    "id": 30,
+    "kingdom": "Wooded",
+    "english": "Past the Peculiar Pipes",
+    "chinese": "穿越奇妙水管的出口"
+  },
+  {
+    "id": 31,
+    "kingdom": "Wooded",
+    "english": "By the Babbling Brook in Deep Woods",
+    "chinese": "樹海的流水聲"
+  },
+  {
+    "id": 32,
+    "kingdom": "Wooded",
+    "english": "The Hard Rock in Deep Woods",
+    "chinese": "樹海的堅硬岩石"
+  },
+  {
+    "id": 33,
+    "kingdom": "Wooded",
+    "english": "A Treasure Made from Coins",
+    "chinese": "用金幣栽培出的寶藏果實"
+  },
+  {
+    "id": 34,
+    "kingdom": "Wooded",
+    "english": "Beneath the Roots of the Moving Tree",
+    "chinese": "會動的樹底下"
+  },
+  {
+    "id": 35,
+    "kingdom": "Wooded",
+    "english": "Deep Woods Treasure Trap",
+    "chinese": "藏在樹海裡的藏寶箱陷阱"
+  },
+  {
+    "id": 36,
+    "kingdom": "Wooded",
+    "english": "Exploring for Treasure",
+    "chinese": "探險家找到的藏寶箱"
+  },
+  {
+    "id": 37,
+    "kingdom": "Wooded",
+    "english": "Wooded Kingdom Timer Challenge 1",
+    "chinese": "森之國的滴答‧運動１"
+  },
+  {
+    "id": 38,
+    "kingdom": "Wooded",
+    "english": "Wooded Kingdom Timer Challenge 2",
+    "chinese": "森之國的滴答‧運動２"
+  },
+  {
+    "id": 39,
+    "kingdom": "Wooded",
+    "english": "Flooding Pipeway",
+    "chinese": "游吧！上下水道"
+  },
+  {
+    "id": 40,
+    "kingdom": "Wooded",
+    "english": "Flooding Pipeway Ceiling Secret",
+    "chinese": "上下水道的頂部夾層"
+  },
+  {
+    "id": 41,
+    "kingdom": "Wooded",
+    "english": "Wandering in the Fog",
+    "chinese": "霧裡徘徊"
+  },
+  {
+    "id": 42,
+    "kingdom": "Wooded",
+    "english": "Nut Hidden in the Fog",
+    "chinese": "藏在霧裡的樹果"
+  },
+  {
+    "id": 43,
+    "kingdom": "Wooded",
+    "english": "Flower Road Run",
+    "chinese": "奔跑吧！百花路"
+  },
+  {
+    "id": 44,
+    "kingdom": "Wooded",
+    "english": "Flower Road Reach",
+    "chinese": "百花路的高台上"
+  },
+  {
+    "id": 45,
+    "kingdom": "Wooded",
+    "english": "Elevator Escalation",
+    "chinese": "炮擊的結果"
+  },
+  {
+    "id": 46,
+    "kingdom": "Wooded",
+    "english": "Elevator Blind Spot",
+    "chinese": "炮擊的死角"
+  },
+  {
+    "id": 47,
+    "kingdom": "Wooded",
+    "english": "Walking on Clouds",
+    "chinese": "在雲上散步"
+  },
+  {
+    "id": 48,
+    "kingdom": "Wooded",
+    "english": "Above the Clouds",
+    "chinese": "拉長身子到雲端"
+  },
+  {
+    "id": 49,
+    "kingdom": "Wooded",
+    "english": "Secret Path to the Steam Gardens!",
+    "chinese": "歡迎來到斯機姆花園！"
+  },
+  {
+    "id": 50,
+    "kingdom": "Wooded",
+    "english": "Found with Wooded Kingdom Art",
+    "chinese": "找到在森之國看到的相片寶物"
+  },
+  {
+    "id": 51,
+    "kingdom": "Wooded",
+    "english": "Swing Around Secret Flower Field",
+    "chinese": "秘密花園 繞一圈"
+  },
+  {
+    "id": 52,
+    "kingdom": "Wooded",
+    "english": "Jammin' in the Wooded Kingdom",
+    "chinese": "森之國的美妙音樂"
+  },
+  {
+    "id": 53,
+    "kingdom": "Wooded",
+    "english": "Wooded Kingdom Regular Cup",
+    "chinese": "森之國 標準杯"
+  },
+  {
+    "id": 54,
+    "kingdom": "Wooded",
+    "english": "Peach in the Wooded Kingdom",
+    "chinese": "碧姬公主在森之國"
+  },
+  {
+    "id": 55,
+    "kingdom": "Wooded",
+    "english": "High Up in the Cave",
+    "chinese": "仰望洞窟"
+  },
+  {
+    "id": 56,
+    "kingdom": "Wooded",
+    "english": "Lost in the Tall Trees",
+    "chinese": "隱身在高大的樹群裡"
+  },
+  {
+    "id": 57,
+    "kingdom": "Wooded",
+    "english": "Looking Down on the Goombas",
+    "chinese": "俯視栗寶寶們"
+  },
+  {
+    "id": 58,
+    "kingdom": "Wooded",
+    "english": "High Up on a Rock Wall",
+    "chinese": "在石牆的正中央"
+  },
+  {
+    "id": 59,
+    "kingdom": "Wooded",
+    "english": "The Nut in the Robot Storeroom",
+    "chinese": "機器人倉庫的樹果"
+  },
+  {
+    "id": 60,
+    "kingdom": "Wooded",
+    "english": "Above the Iron Mountain Path",
+    "chinese": "在鐵之山路的上空"
+  },
+  {
+    "id": 61,
+    "kingdom": "Wooded",
+    "english": "The Nut Under the Observation Deck",
+    "chinese": "觀景台下的樹果"
+  },
+  {
+    "id": 62,
+    "kingdom": "Wooded",
+    "english": "Bird Traveling the Forest",
+    "chinese": "森林的候鳥"
+  },
+  {
+    "id": 63,
+    "kingdom": "Wooded",
+    "english": "Invader in the Sky Garden",
+    "chinese": "空中庭園的麻煩精"
+  },
+  {
+    "id": 64,
+    "kingdom": "Wooded",
+    "english": "Hot, Hot, Hot from the Campfire",
+    "chinese": "來自火堆裡 好燙好燙"
+  },
+  {
+    "id": 65,
+    "kingdom": "Wooded",
+    "english": "Wooded Kingdom Timer Challenge 3",
+    "chinese": "森之國的滴答‧運動３"
+  },
+  {
+    "id": 66,
+    "kingdom": "Wooded",
+    "english": "Moon Shards in the Forest",
+    "chinese": "蒐集吧！森林的月亮碎片"
+  },
+  {
+    "id": 67,
+    "kingdom": "Wooded",
+    "english": "Taking Notes: On Top of the Wall",
+    "chinese": "在牆上蒐集音符"
+  },
+  {
+    "id": 68,
+    "kingdom": "Wooded",
+    "english": "Taking Notes: Stretching",
+    "chinese": "伸縮自如蒐集音符"
+  },
+  {
+    "id": 69,
+    "kingdom": "Wooded",
+    "english": "Wooded Kingdom Master Cup",
+    "chinese": "森之國 大師杯"
+  },
+  {
+    "id": 70,
+    "kingdom": "Wooded",
+    "english": "I Met an Uproot!",
+    "chinese": "遇見塞諾比了！"
+  },
+  {
+    "id": 71,
+    "kingdom": "Wooded",
+    "english": "Invisible Road: Danger!",
+    "chinese": "危險！透明道路"
+  },
+  {
+    "id": 72,
+    "kingdom": "Wooded",
+    "english": "Invisible Road: Hidden Room",
+    "chinese": "透明道路的密室"
+  },
+  {
+    "id": 73,
+    "kingdom": "Wooded",
+    "english": "Herding Sheep Above the Forest Fog",
+    "chinese": "在森林趕綿羊"
+  },
+  {
+    "id": 74,
+    "kingdom": "Wooded",
+    "english": "Herding Sheep on the Iron Bridge",
+    "chinese": "在鐵橋趕綿羊"
+  },
+  {
+    "id": 75,
+    "kingdom": "Wooded",
+    "english": "Down and Back Breakdown Road",
+    "chinese": "來回崩塌的道路"
+  },
+  {
+    "id": 76,
+    "kingdom": "Wooded",
+    "english": "Below Breakdown Road",
+    "chinese": "從下方穿過 崩塌的道路"
+  },
+  {
+    "id": 1,
+    "kingdom": "Lake",
+    "english": "Broodals Over the Lake",
+    "chinese": "湖上的布妮達茲"
+  },
+  {
+    "id": 2,
+    "kingdom": "Lake",
+    "english": "Dorrie-Back Rider",
+    "chinese": "哈囉 海龍王"
+  },
+  {
+    "id": 3,
+    "kingdom": "Lake",
+    "english": "Cheep Cheep Crossing",
+    "chinese": "看準泡泡魚的破綻"
+  },
+  {
+    "id": 4,
+    "kingdom": "Lake",
+    "english": "End of the Hidden Passage",
+    "chinese": "密道的盡頭"
+  },
+  {
+    "id": 5,
+    "kingdom": "Lake",
+    "english": "What's in the Box?",
+    "chinese": "發現！來自湖之木箱"
+  },
+  {
+    "id": 6,
+    "kingdom": "Lake",
+    "english": "On the Lakeshore",
+    "chinese": "在湖畔"
+  },
+  {
+    "id": 7,
+    "kingdom": "Lake",
+    "english": "From the Broken Pillar",
+    "chinese": "來自水中斷掉的柱子"
+  },
+  {
+    "id": 8,
+    "kingdom": "Lake",
+    "english": "Treasure in the Spiky Waterway",
+    "chinese": "刺刺水道的藏寶箱"
+  },
+  {
+    "id": 9,
+    "kingdom": "Lake",
+    "english": "Lake Gardening: Spiky Passage Seed",
+    "chinese": "開花了！刺刺水道的種子"
+  },
+  {
+    "id": 10,
+    "kingdom": "Lake",
+    "english": "Lake Kingdom Timer Challenge 1",
+    "chinese": "湖之國的滴答‧運動１"
+  },
+  {
+    "id": 11,
+    "kingdom": "Lake",
+    "english": "Lake Kingdom Timer Challenge 2",
+    "chinese": "湖之國的滴答‧運動２"
+  },
+  {
+    "id": 12,
+    "kingdom": "Lake",
+    "english": "Moon Shards in the Lake",
+    "chinese": "蒐集吧！湖的月亮碎片"
+  },
+  {
+    "id": 13,
+    "kingdom": "Lake",
+    "english": "Taking Notes: Dive and Swim",
+    "chinese": "潛水游泳蒐集音符"
+  },
+  {
+    "id": 14,
+    "kingdom": "Lake",
+    "english": "Taking Notes: In the Cliffside",
+    "chinese": "在懸崖裡蒐集音符"
+  },
+  {
+    "id": 15,
+    "kingdom": "Lake",
+    "english": "Lake Fishing",
+    "chinese": "在泳池釣魚！"
+  },
+  {
+    "id": 16,
+    "kingdom": "Lake",
+    "english": "I Met a Lake Cheep Cheep!",
+    "chinese": "遇見泡泡魚了！"
+  },
+  {
+    "id": 17,
+    "kingdom": "Lake",
+    "english": "Our Secret Little Room",
+    "chinese": "秘密房間"
+  },
+  {
+    "id": 18,
+    "kingdom": "Lake",
+    "english": "Let's Go Swimming, Laketain Toad!",
+    "chinese": "打擾了！奇諾比奧隊長"
+  },
+  {
+    "id": 19,
+    "kingdom": "Lake",
+    "english": "Shopping in Lake Lamode",
+    "chinese": "在德萊西山谷購物"
+  },
+  {
+    "id": 20,
+    "kingdom": "Lake",
+    "english": "A Successful Repair Job",
+    "chinese": "成功復原"
+  },
+  {
+    "id": 21,
+    "kingdom": "Lake",
+    "english": "I Feel Underdressed",
+    "chinese": "穿著泳裝還請見諒"
+  },
+  {
+    "id": 22,
+    "kingdom": "Lake",
+    "english": "Unzip the Chasm",
+    "chinese": "拉鍊的山谷"
+  },
+  {
+    "id": 23,
+    "kingdom": "Lake",
+    "english": "Super-Secret Zipper",
+    "chinese": "拉開秘密的拉鍊"
+  },
+  {
+    "id": 24,
+    "kingdom": "Lake",
+    "english": "Jump, Grab, Cling, and Climb",
+    "chinese": "跳起來 抓住 縱身而下"
+  },
+  {
+    "id": 25,
+    "kingdom": "Lake",
+    "english": "Jump, Grab, and Climb Some More",
+    "chinese": "跳起來 抓住 往上再往上"
+  },
+  {
+    "id": 26,
+    "kingdom": "Lake",
+    "english": "Secret Path to Lake Lamode!",
+    "chinese": "歡迎來到德萊西山谷！"
+  },
+  {
+    "id": 27,
+    "kingdom": "Lake",
+    "english": "Found with Lake Kingdom Art",
+    "chinese": "找到在湖之國看到的相片寶物"
+  },
+  {
+    "id": 28,
+    "kingdom": "Lake",
+    "english": "Taxi Flying Through Lake Lamode",
+    "chinese": "飛天計程車行經德萊西山谷"
+  },
+  {
+    "id": 29,
+    "kingdom": "Lake",
+    "english": "That Trendy \"Pirate Look\"",
+    "chinese": "成為趨勢的海盜裝扮"
+  },
+  {
+    "id": 30,
+    "kingdom": "Lake",
+    "english": "Space Is \"In\" Right Now",
+    "chinese": "蔚為風潮的宇宙飛行員"
+  },
+  {
+    "id": 31,
+    "kingdom": "Lake",
+    "english": "That \"Old West\" Style",
+    "chinese": "引領潮流的牛仔槍手風格"
+  },
+  {
+    "id": 32,
+    "kingdom": "Lake",
+    "english": "Lake Kingdom Regular Cup",
+    "chinese": "湖之國 標準杯"
+  },
+  {
+    "id": 33,
+    "kingdom": "Lake",
+    "english": "Peach in the Lake Kingdom",
+    "chinese": "碧姬公主在湖之國"
+  },
+  {
+    "id": 34,
+    "kingdom": "Lake",
+    "english": "Behind the Floodgate",
+    "chinese": "在水閘後面"
+  },
+  {
+    "id": 35,
+    "kingdom": "Lake",
+    "english": "High-Flying Leap",
+    "chinese": "在牆邊高飛"
+  },
+  {
+    "id": 36,
+    "kingdom": "Lake",
+    "english": "Deep, Deep Down",
+    "chinese": "好深好深的湖底"
+  },
+  {
+    "id": 37,
+    "kingdom": "Lake",
+    "english": "Rooftop of the Water Plaza",
+    "chinese": "在水之廣場的屋頂"
+  },
+  {
+    "id": 38,
+    "kingdom": "Lake",
+    "english": "Bird Traveling Over the Lake",
+    "chinese": "湖上的候鳥"
+  },
+  {
+    "id": 39,
+    "kingdom": "Lake",
+    "english": "Love by the Lake",
+    "chinese": "湖畔的女朋友"
+  },
+  {
+    "id": 40,
+    "kingdom": "Lake",
+    "english": "Lake Kingdom Master Cup",
+    "chinese": "湖之國 大師杯"
+  },
+  {
+    "id": 41,
+    "kingdom": "Lake",
+    "english": "Waves of Poison: Hoppin' Over",
+    "chinese": "越過毒之波浪！"
+  },
+  {
+    "id": 42,
+    "kingdom": "Lake",
+    "english": "Waves of Poison: Hop to It!",
+    "chinese": "挑戰毒之波浪！"
+  },
+  {
+    "id": 1,
+    "kingdom": "Cloud",
+    "english": "Picture Match: Basically a Goomba",
+    "chinese": "長得像嗎？五官拼圖栗寶寶"
+  },
+  {
+    "id": 2,
+    "kingdom": "Cloud",
+    "english": "Peach in the Cloud Kingdom",
+    "chinese": "碧姬公主在雲之國"
+  },
+  {
+    "id": 3,
+    "kingdom": "Cloud",
+    "english": "Digging in the...Cloud?",
+    "chinese": "在雲海之中發現了！"
+  },
+  {
+    "id": 4,
+    "kingdom": "Cloud",
+    "english": "High, High Above the Clouds",
+    "chinese": "好高好高的雲端上"
+  },
+  {
+    "id": 5,
+    "kingdom": "Cloud",
+    "english": "Crossing the Cloud Sea",
+    "chinese": "撥開雲海"
+  },
+  {
+    "id": 6,
+    "kingdom": "Cloud",
+    "english": "Taking Notes: Up and Down",
+    "chinese": "上上下下蒐集音符"
+  },
+  {
+    "id": 7,
+    "kingdom": "Cloud",
+    "english": "Picture Match: A Stellar Goomba!",
+    "chinese": "一模一樣！五官拼圖栗寶寶"
+  },
+  {
+    "id": 8,
+    "kingdom": "Cloud",
+    "english": "King of the Cube!",
+    "chinese": "方塊之王"
+  },
+  {
+    "id": 9,
+    "kingdom": "Cloud",
+    "english": "The Sixth Face",
+    "chinese": "先爬再跳！透明磚塊"
+  },
+  {
+    "id": 1,
+    "kingdom": "Lost",
+    "english": "Atop a Propeller Pillar",
+    "chinese": "在螺槳柱的中心"
+  },
+  {
+    "id": 2,
+    "kingdom": "Lost",
+    "english": "Below the Cliff's Edge",
+    "chinese": "在懸崖下"
+  },
+  {
+    "id": 3,
+    "kingdom": "Lost",
+    "english": "Inside the Stone Cage",
+    "chinese": "受困在岩石裡"
+  },
+  {
+    "id": 4,
+    "kingdom": "Lost",
+    "english": "On a Tree in the Swamp",
+    "chinese": "在槲寄生上面"
+  },
+  {
+    "id": 5,
+    "kingdom": "Lost",
+    "english": "Over the Fuzzies, Above the Swamp",
+    "chinese": "在沼澤上跨過絨毛怪"
+  },
+  {
+    "id": 6,
+    "kingdom": "Lost",
+    "english": "Avoiding Fuzzies Inside the Wall",
+    "chinese": "在牆內跨過絨毛怪"
+  },
+  {
+    "id": 7,
+    "kingdom": "Lost",
+    "english": "Inside the Rising Stone Pillar",
+    "chinese": "翹起的石柱中"
+  },
+  {
+    "id": 8,
+    "kingdom": "Lost",
+    "english": "Enjoying the View of Forgotten Isle",
+    "chinese": "一覽遺忘島嶼"
+  },
+  {
+    "id": 9,
+    "kingdom": "Lost",
+    "english": "On the Mountain Road",
+    "chinese": "行走在岩山的路途中"
+  },
+  {
+    "id": 10,
+    "kingdom": "Lost",
+    "english": "A Propeller Pillar's Secret",
+    "chinese": "螺槳柱的秘密"
+  },
+  {
+    "id": 11,
+    "kingdom": "Lost",
+    "english": "Wrecked Rock Block",
+    "chinese": "遺忘島嶼的堅硬岩石"
+  },
+  {
+    "id": 12,
+    "kingdom": "Lost",
+    "english": "A Butterfly's Treasure",
+    "chinese": "蝴蝶的寶物"
+  },
+  {
+    "id": 13,
+    "kingdom": "Lost",
+    "english": "Caught Hopping in the Jungle!",
+    "chinese": "在密林抓到蹦蹦！"
+  },
+  {
+    "id": 14,
+    "kingdom": "Lost",
+    "english": "Cave Gardening",
+    "chinese": "開花吧 洞窟裡的花"
+  },
+  {
+    "id": 15,
+    "kingdom": "Lost",
+    "english": "Moon Shards in the Jungle",
+    "chinese": "蒐集吧！密林的月亮碎片"
+  },
+  {
+    "id": 16,
+    "kingdom": "Lost",
+    "english": "Peeking Out from Under the Bridge",
+    "chinese": "窺探橋下"
+  },
+  {
+    "id": 17,
+    "kingdom": "Lost",
+    "english": "Twist 'n' Turn-Up Treasure",
+    "chinese": "九彎十八拐 發現寶物"
+  },
+  {
+    "id": 18,
+    "kingdom": "Lost",
+    "english": "Soaring Over Forgotten Isle!",
+    "chinese": "飛舞在遺忘島嶼的空中！"
+  },
+  {
+    "id": 19,
+    "kingdom": "Lost",
+    "english": "The Caged Gold",
+    "chinese": "被囚禁的寶物"
+  },
+  {
+    "id": 20,
+    "kingdom": "Lost",
+    "english": "Get Some Rest, Losttain Toad",
+    "chinese": "喘口氣！奇諾比奧隊長"
+  },
+  {
+    "id": 21,
+    "kingdom": "Lost",
+    "english": "Shopping on Forgotten Isle",
+    "chinese": "在遺忘島嶼購物"
+  },
+  {
+    "id": 22,
+    "kingdom": "Lost",
+    "english": "Taxi Flying Through Forgotten Isle",
+    "chinese": "飛天計程車行經遺忘島嶼"
+  },
+  {
+    "id": 23,
+    "kingdom": "Lost",
+    "english": "I Met a Tropical Wiggler!",
+    "chinese": "遇見島花毛毛了！"
+  },
+  {
+    "id": 24,
+    "kingdom": "Lost",
+    "english": "Lost Kingdom Regular Cup",
+    "chinese": "遺失王國 標準杯"
+  },
+  {
+    "id": 25,
+    "kingdom": "Lost",
+    "english": "Peach in the Lost Kingdom",
+    "chinese": "碧姬公主 在遺失王國"
+  },
+  {
+    "id": 26,
+    "kingdom": "Lost",
+    "english": "The Shining Fruit",
+    "chinese": "閃耀的果實"
+  },
+  {
+    "id": 27,
+    "kingdom": "Lost",
+    "english": "Jump Down to the Top of a Tree",
+    "chinese": "跳落到樹上"
+  },
+  {
+    "id": 28,
+    "kingdom": "Lost",
+    "english": "Line It Up, Blow It Up",
+    "chinese": "誘導 加以狙擊"
+  },
+  {
+    "id": 29,
+    "kingdom": "Lost",
+    "english": "Taking Notes: Stretch and Shrink",
+    "chinese": "能屈能伸蒐集音符"
+  },
+  {
+    "id": 30,
+    "kingdom": "Lost",
+    "english": "Lost Kingdom Master Cup",
+    "chinese": "遺失王國 大師杯"
+  },
+  {
+    "id": 31,
+    "kingdom": "Lost",
+    "english": "Lost Kingdom Timer Challenge",
+    "chinese": "遺失王國的滴答‧運動"
+  },
+  {
+    "id": 32,
+    "kingdom": "Lost",
+    "english": "Stretch and Traverse the Jungle",
+    "chinese": "伸長渡過叢林"
+  },
+  {
+    "id": 33,
+    "kingdom": "Lost",
+    "english": "Aglow in the Jungle",
+    "chinese": "叢林的火光"
+  },
+  {
+    "id": 34,
+    "kingdom": "Lost",
+    "english": "Chasing Klepto",
+    "chinese": "順利救援成功！"
+  },
+  {
+    "id": 35,
+    "kingdom": "Lost",
+    "english": "Extremely Hot Bath",
+    "chinese": "在岩漿裡四處游"
+  },
+  {
+    "id": 1,
+    "kingdom": "Metro",
+    "english": "New Donk City's Pest Problem",
+    "chinese": "紐頓市 封鎖中"
+  },
+  {
+    "id": 2,
+    "kingdom": "Metro",
+    "english": "Drummer on Board!",
+    "chinese": "鼓手加入！"
+  },
+  {
+    "id": 3,
+    "kingdom": "Metro",
+    "english": "Guitarist on Board!",
+    "chinese": "吉他手加入！"
+  },
+  {
+    "id": 4,
+    "kingdom": "Metro",
+    "english": "Bassist on Board!",
+    "chinese": "貝斯手加入！"
+  },
+  {
+    "id": 5,
+    "kingdom": "Metro",
+    "english": "Trumpeter on Board!",
+    "chinese": "小號手加入！"
+  },
+  {
+    "id": 6,
+    "kingdom": "Metro",
+    "english": "Powering Up the Station",
+    "chinese": "問題解決了！發電廠"
+  },
+  {
+    "id": 7,
+    "kingdom": "Metro",
+    "english": "A Traditional Festival!",
+    "chinese": "傳統的慶典！"
+  },
+  {
+    "id": 8,
+    "kingdom": "Metro",
+    "english": "Inside an Iron Girder",
+    "chinese": "此路不通！鋼骨之中"
+  },
+  {
+    "id": 9,
+    "kingdom": "Metro",
+    "english": "Swaying in the Breeze",
+    "chinese": "搖晃的鋼骨前端"
+  },
+  {
+    "id": 10,
+    "kingdom": "Metro",
+    "english": "Girder Sandwich",
+    "chinese": "在２根鋼骨間"
+  },
+  {
+    "id": 11,
+    "kingdom": "Metro",
+    "english": "Glittering Above the Pool",
+    "chinese": "泳池上方閃閃發光"
+  },
+  {
+    "id": 12,
+    "kingdom": "Metro",
+    "english": "Dizzying Heights",
+    "chinese": "紐頓市的最頂端"
+  },
+  {
+    "id": 13,
+    "kingdom": "Metro",
+    "english": "Secret Girder Tunnel!",
+    "chinese": "鋼骨隧道深處"
+  },
+  {
+    "id": 14,
+    "kingdom": "Metro",
+    "english": "Who Piled Garbage on This?",
+    "chinese": "垃圾袋底下"
+  },
+  {
+    "id": 15,
+    "kingdom": "Metro",
+    "english": "Hidden in the Scrap",
+    "chinese": "沉睡在廢鐵裡的寶物"
+  },
+  {
+    "id": 16,
+    "kingdom": "Metro",
+    "english": "Left at the Café?",
+    "chinese": "露天咖啡的失物"
+  },
+  {
+    "id": 17,
+    "kingdom": "Metro",
+    "english": "Caught Hopping on a Building!",
+    "chinese": "在大廈抓到蹦蹦！"
+  },
+  {
+    "id": 18,
+    "kingdom": "Metro",
+    "english": "How Do They Take Out the Trash?",
+    "chinese": "好高好高的垃圾桶"
+  },
+  {
+    "id": 19,
+    "kingdom": "Metro",
+    "english": "Metro Kingdom Timer Challenge 1",
+    "chinese": "都市國的滴答‧運動１"
+  },
+  {
+    "id": 20,
+    "kingdom": "Metro",
+    "english": "Metro Kingdom Timer Challenge 2",
+    "chinese": "都市國的滴答‧運動２"
+  },
+  {
+    "id": 21,
+    "kingdom": "Metro",
+    "english": "City Gardening: Building Planter",
+    "chinese": "開花了！大廈的盆栽"
+  },
+  {
+    "id": 22,
+    "kingdom": "Metro",
+    "english": "City Gardening: Plaza Planter",
+    "chinese": "開花了！廣場的盆栽"
+  },
+  {
+    "id": 23,
+    "kingdom": "Metro",
+    "english": "City Gardening: Rooftop Planter",
+    "chinese": "開花了！小屋頂的盆栽"
+  },
+  {
+    "id": 24,
+    "kingdom": "Metro",
+    "english": "How You Doin', Metrotain Toad?",
+    "chinese": "嗨～！奇諾比奧隊長"
+  },
+  {
+    "id": 25,
+    "kingdom": "Metro",
+    "english": "Free Parking: Rooftop Hop",
+    "chinese": "施工現場的摩托車停車場"
+  },
+  {
+    "id": 26,
+    "kingdom": "Metro",
+    "english": "Bench Friends",
+    "chinese": "長椅上的感動"
+  },
+  {
+    "id": 27,
+    "kingdom": "Metro",
+    "english": "Shopping in New Donk City",
+    "chinese": "在紐頓市購物"
+  },
+  {
+    "id": 28,
+    "kingdom": "Metro",
+    "english": "Metro Kingdom Slots",
+    "chinese": "在都市國玩了轉轉機"
+  },
+  {
+    "id": 29,
+    "kingdom": "Metro",
+    "english": "Jump-Rope Hero",
+    "chinese": "跳繩高手"
+  },
+  {
+    "id": 30,
+    "kingdom": "Metro",
+    "english": "Jump-Rope Genius",
+    "chinese": "跳繩大師"
+  },
+  {
+    "id": 31,
+    "kingdom": "Metro",
+    "english": "Remotely Metrotured Car",
+    "chinese": "迷你車狂！"
+  },
+  {
+    "id": 32,
+    "kingdom": "Metro",
+    "english": "RC Car Pro!",
+    "chinese": "迷你車專家！"
+  },
+  {
+    "id": 33,
+    "kingdom": "Metro",
+    "english": "Taking Notes: In the Private Room",
+    "chinese": "在小房間裡蒐集音符"
+  },
+  {
+    "id": 34,
+    "kingdom": "Metro",
+    "english": "City Hall Lost & Found",
+    "chinese": "遺忘在市政廳的東西"
+  },
+  {
+    "id": 35,
+    "kingdom": "Metro",
+    "english": "Sewer Treasure",
+    "chinese": "下水道的寶物"
+  },
+  {
+    "id": 36,
+    "kingdom": "Metro",
+    "english": "Celebrating in the Streets!",
+    "chinese": "街頭慶典！"
+  },
+  {
+    "id": 37,
+    "kingdom": "Metro",
+    "english": "Pushing Through the Crowd",
+    "chinese": "衝出人群"
+  },
+  {
+    "id": 38,
+    "kingdom": "Metro",
+    "english": "High Over the Crowd",
+    "chinese": "跳越人群"
+  },
+  {
+    "id": 39,
+    "kingdom": "Metro",
+    "english": "Rewiring the Neighborhood",
+    "chinese": "劈哩啪啦！電線工程"
+  },
+  {
+    "id": 40,
+    "kingdom": "Metro",
+    "english": "Off the Beaten Wire",
+    "chinese": "劈哩啪啦！來自屋頂上的木箱"
+  },
+  {
+    "id": 41,
+    "kingdom": "Metro",
+    "english": "Moon Shards Under Siege",
+    "chinese": "在炮擊中徘徊"
+  },
+  {
+    "id": 42,
+    "kingdom": "Metro",
+    "english": "Sharpshooting Under Siege",
+    "chinese": "閃躲炮擊快速瞄準"
+  },
+  {
+    "id": 43,
+    "kingdom": "Metro",
+    "english": "Inside the Rotating Maze",
+    "chinese": "在旋轉迷宮裡"
+  },
+  {
+    "id": 44,
+    "kingdom": "Metro",
+    "english": "Outside the Rotating Maze",
+    "chinese": "在旋轉迷宮外"
+  },
+  {
+    "id": 45,
+    "kingdom": "Metro",
+    "english": "Hanging from a High-Rise",
+    "chinese": "懸垂攀登高樓大廈"
+  },
+  {
+    "id": 46,
+    "kingdom": "Metro",
+    "english": "Vaulting Up a High-Rise",
+    "chinese": "跳到高樓大廈"
+  },
+  {
+    "id": 47,
+    "kingdom": "Metro",
+    "english": "Bullet Billding",
+    "chinese": "攀爬鐵柱"
+  },
+  {
+    "id": 48,
+    "kingdom": "Metro",
+    "english": "One Man's Trash...",
+    "chinese": "回首就見垃圾桶"
+  },
+  {
+    "id": 49,
+    "kingdom": "Metro",
+    "english": "Motor Scooter: EsMetroe!",
+    "chinese": "騎摩托車瘋狂逃脫！"
+  },
+  {
+    "id": 50,
+    "kingdom": "Metro",
+    "english": "Big Jump: EsMetroe!",
+    "chinese": "逃脫時的大跳躍！"
+  },
+  {
+    "id": 51,
+    "kingdom": "Metro",
+    "english": "Secret Path to New Donk City!",
+    "chinese": "歡迎來到紐頓市！"
+  },
+  {
+    "id": 52,
+    "kingdom": "Metro",
+    "english": "A Tourist in the Metro Kingdom!",
+    "chinese": "來到都市國了砂砂！"
+  },
+  {
+    "id": 53,
+    "kingdom": "Metro",
+    "english": "Found with Metro Kingdom Art",
+    "chinese": "找到在都市國看到的相片寶物"
+  },
+  {
+    "id": 54,
+    "kingdom": "Metro",
+    "english": "Bird Traveling in the City",
+    "chinese": "都市的候鳥"
+  },
+  {
+    "id": 55,
+    "kingdom": "Metro",
+    "english": "Mario Signs His Name",
+    "chinese": "完成了！MARIO招牌"
+  },
+  {
+    "id": 56,
+    "kingdom": "Metro",
+    "english": "Surprise Clown!",
+    "chinese": "不得了的小丑"
+  },
+  {
+    "id": 57,
+    "kingdom": "Metro",
+    "english": "A Request from the Mayor",
+    "chinese": "波琳市長的願望"
+  },
+  {
+    "id": 58,
+    "kingdom": "Metro",
+    "english": "Jammin' in the Metro Kingdom",
+    "chinese": "都市國的美妙音樂"
+  },
+  {
+    "id": 59,
+    "kingdom": "Metro",
+    "english": "Sphynx in the City",
+    "chinese": "環遊都市的斯芬‧奇思"
+  },
+  {
+    "id": 60,
+    "kingdom": "Metro",
+    "english": "Free Parking: Leap of Faith",
+    "chinese": "大跳躍！屋頂的摩托車停車場！"
+  },
+  {
+    "id": 61,
+    "kingdom": "Metro",
+    "english": "Metro Kingdom Regular Cup",
+    "chinese": "都市國 標準杯"
+  },
+  {
+    "id": 62,
+    "kingdom": "Metro",
+    "english": "Hat-and-Seek: In the City",
+    "chinese": "都市裡的帽子捉迷藏"
+  },
+  {
+    "id": 63,
+    "kingdom": "Metro",
+    "english": "Powering Up the Power Plant",
+    "chinese": "在發電廠幫忙"
+  },
+  {
+    "id": 64,
+    "kingdom": "Metro",
+    "english": "Up on the Big Screen",
+    "chinese": "跑啊跳啊上映中！"
+  },
+  {
+    "id": 65,
+    "kingdom": "Metro",
+    "english": "Down Inside the Big Screen",
+    "chinese": "跑跳鑽地上映中！"
+  },
+  {
+    "id": 66,
+    "kingdom": "Metro",
+    "english": "Peach in the Metro Kingdom",
+    "chinese": "碧姬公主在都市國"
+  },
+  {
+    "id": 67,
+    "kingdom": "Metro",
+    "english": "Hanging Between Buildings",
+    "chinese": "被三棟大廈所圍繞"
+  },
+  {
+    "id": 68,
+    "kingdom": "Metro",
+    "english": "Crossing Lines",
+    "chinese": "連接大廈的電線上"
+  },
+  {
+    "id": 69,
+    "kingdom": "Metro",
+    "english": "Out of a Crate in the City",
+    "chinese": "飛出來了！來自都市的木箱"
+  },
+  {
+    "id": 70,
+    "kingdom": "Metro",
+    "english": "Bird Traveling in the Park",
+    "chinese": "公園的候鳥"
+  },
+  {
+    "id": 71,
+    "kingdom": "Metro",
+    "english": "Metro Kingdom Timer Challenge 3",
+    "chinese": "都市國的滴答‧運動３"
+  },
+  {
+    "id": 72,
+    "kingdom": "Metro",
+    "english": "Found in the Park! Good Dog!",
+    "chinese": "在公園找到汪！"
+  },
+  {
+    "id": 73,
+    "kingdom": "Metro",
+    "english": "RC Car Champ!",
+    "chinese": "迷你車冠軍！"
+  },
+  {
+    "id": 74,
+    "kingdom": "Metro",
+    "english": "Metro Kingdom Master Cup",
+    "chinese": "都市國 大師杯"
+  },
+  {
+    "id": 75,
+    "kingdom": "Metro",
+    "english": "Hat-and-Seek: In the Crowd",
+    "chinese": "人群中的帽子捉迷藏"
+  },
+  {
+    "id": 76,
+    "kingdom": "Metro",
+    "english": "Scaling Pitchblack Mountain",
+    "chinese": "烏黑山的山上"
+  },
+  {
+    "id": 77,
+    "kingdom": "Metro",
+    "english": "Reaching Pitchblack Island",
+    "chinese": "烏黑山的離島"
+  },
+  {
+    "id": 78,
+    "kingdom": "Metro",
+    "english": "Swinging Scaffolding: Jump!",
+    "chinese": "跳躍！搖擺鋼骨"
+  },
+  {
+    "id": 79,
+    "kingdom": "Metro",
+    "english": "Swinging Scaffolding: Break!",
+    "chinese": "粉碎吧！搖擺鋼骨"
+  },
+  {
+    "id": 80,
+    "kingdom": "Metro",
+    "english": "Motor Scooter Daredevil!",
+    "chinese": "馬力全開衝到底！"
+  },
+  {
+    "id": 81,
+    "kingdom": "Metro",
+    "english": "Full-Throttle Scooting!",
+    "chinese": "馬力全開飛跳前進！"
+  },
+  {
+    "id": 1,
+    "kingdom": "Seaside",
+    "english": "The Stone Pillar Seal",
+    "chinese": "岩柱的封印"
+  },
+  {
+    "id": 2,
+    "kingdom": "Seaside",
+    "english": "The Lighthouse Seal",
+    "chinese": "燈塔的封印"
+  },
+  {
+    "id": 3,
+    "kingdom": "Seaside",
+    "english": "The Hot Spring Seal",
+    "chinese": "溫泉的封印"
+  },
+  {
+    "id": 4,
+    "kingdom": "Seaside",
+    "english": "The Seal Above the Canyon",
+    "chinese": "峽谷的封印"
+  },
+  {
+    "id": 5,
+    "kingdom": "Seaside",
+    "english": "The Glass Is Half Full!",
+    "chinese": "取回誓言之水！"
+  },
+  {
+    "id": 6,
+    "kingdom": "Seaside",
+    "english": "On the Cliff Overlooking the Beach",
+    "chinese": "面朝海灘的懸崖上"
+  },
+  {
+    "id": 7,
+    "kingdom": "Seaside",
+    "english": "Ride the Jetstream",
+    "chinese": "爬上風穴"
+  },
+  {
+    "id": 8,
+    "kingdom": "Seaside",
+    "english": "Ocean-Bottom Maze: Treasure",
+    "chinese": "海底迷宮的寶物"
+  },
+  {
+    "id": 9,
+    "kingdom": "Seaside",
+    "english": "Ocean-Bottom Maze: Hidden Room",
+    "chinese": "海底迷宮的密室"
+  },
+  {
+    "id": 10,
+    "kingdom": "Seaside",
+    "english": "Underwater Highway Tunnel",
+    "chinese": "水中道路的隧道"
+  },
+  {
+    "id": 11,
+    "kingdom": "Seaside",
+    "english": "Shh! It's a Shortcut!",
+    "chinese": "游過小徑就有獎"
+  },
+  {
+    "id": 12,
+    "kingdom": "Seaside",
+    "english": "Gap in the Ocean Trench",
+    "chinese": "大海溝的縫隙"
+  },
+  {
+    "id": 13,
+    "kingdom": "Seaside",
+    "english": "Slip Through the Nesting Spot",
+    "chinese": "穿過巢穴"
+  },
+  {
+    "id": 14,
+    "kingdom": "Seaside",
+    "english": "Merci, Dorrie!",
+    "chinese": "Merci 海龍王"
+  },
+  {
+    "id": 15,
+    "kingdom": "Seaside",
+    "english": "Bonjour, Dorrie!",
+    "chinese": "Bonjour 海龍王"
+  },
+  {
+    "id": 16,
+    "kingdom": "Seaside",
+    "english": "Under a Dangerous Ceiling",
+    "chinese": "危險的天花板下"
+  },
+  {
+    "id": 17,
+    "kingdom": "Seaside",
+    "english": "What the Waves Left Behind",
+    "chinese": "海浪遺忘的東西"
+  },
+  {
+    "id": 18,
+    "kingdom": "Seaside",
+    "english": "The Back Canyon: Excavate!",
+    "chinese": "挖掘！峽谷背面"
+  },
+  {
+    "id": 19,
+    "kingdom": "Seaside",
+    "english": "Bubblaine Northern Reaches",
+    "chinese": "舒瓦舒瓦娜 最北邊"
+  },
+  {
+    "id": 20,
+    "kingdom": "Seaside",
+    "english": "Wriggling on the Sandy Bottom",
+    "chinese": "在沙底下蠢動之物"
+  },
+  {
+    "id": 21,
+    "kingdom": "Seaside",
+    "english": "Glass Palace Treasure Chest",
+    "chinese": "玻璃宮殿的藏寶箱"
+  },
+  {
+    "id": 22,
+    "kingdom": "Seaside",
+    "english": "Treasure Trap Hidden in the Inlet",
+    "chinese": "藏在海灣裡的藏寶箱陷阱"
+  },
+  {
+    "id": 23,
+    "kingdom": "Seaside",
+    "english": "Sea Gardening: Inlet Seed",
+    "chinese": "開花了！海灣的種子"
+  },
+  {
+    "id": 24,
+    "kingdom": "Seaside",
+    "english": "Sea Gardening: Canyon Seed",
+    "chinese": "開花了！峽谷背面的種子"
+  },
+  {
+    "id": 25,
+    "kingdom": "Seaside",
+    "english": "Sea Gardening: Hot-Spring Seed",
+    "chinese": "開花了！溫泉島的種子"
+  },
+  {
+    "id": 26,
+    "kingdom": "Seaside",
+    "english": "Sea Gardening: Ocean Trench Seed",
+    "chinese": "開花了！大海溝的種子"
+  },
+  {
+    "id": 27,
+    "kingdom": "Seaside",
+    "english": "Seaside Kingdom Timer Challenge 1",
+    "chinese": "海之國的滴答‧運動１"
+  },
+  {
+    "id": 28,
+    "kingdom": "Seaside",
+    "english": "Seaside Kingdom Timer Challenge 2",
+    "chinese": "海之國的滴答‧運動２"
+  },
+  {
+    "id": 29,
+    "kingdom": "Seaside",
+    "english": "Found on the Beach! Good Dog!",
+    "chinese": "在海灘找到汪！"
+  },
+  {
+    "id": 30,
+    "kingdom": "Seaside",
+    "english": "Moon Shards in the Sea",
+    "chinese": "蒐集吧！海之月亮碎片"
+  },
+  {
+    "id": 31,
+    "kingdom": "Seaside",
+    "english": "Taking Notes: Ocean Surface Dash",
+    "chinese": "在海面上衝刺蒐集音符"
+  },
+  {
+    "id": 32,
+    "kingdom": "Seaside",
+    "english": "Love by the Seaside",
+    "chinese": "海邊的女朋友"
+  },
+  {
+    "id": 33,
+    "kingdom": "Seaside",
+    "english": "Lighthouse Leaper",
+    "chinese": "飛舞在舒瓦舒瓦娜的空中！"
+  },
+  {
+    "id": 34,
+    "kingdom": "Seaside",
+    "english": "Good Job, Seasidetain Toad!",
+    "chinese": "辛苦了！奇諾比奧隊長"
+  },
+  {
+    "id": 35,
+    "kingdom": "Seaside",
+    "english": "Ocean Quiz: Good!",
+    "chinese": "做得好！答對海之謎題"
+  },
+  {
+    "id": 36,
+    "kingdom": "Seaside",
+    "english": "Shopping in Bubblaine",
+    "chinese": "在舒瓦舒瓦娜購物"
+  },
+  {
+    "id": 37,
+    "kingdom": "Seaside",
+    "english": "Beach Volleyball: Champ",
+    "chinese": "猛烈！沙灘排球"
+  },
+  {
+    "id": 38,
+    "kingdom": "Seaside",
+    "english": "Beach Volleyball: Hero of the Beach!",
+    "chinese": "激烈！沙灘排球"
+  },
+  {
+    "id": 39,
+    "kingdom": "Seaside",
+    "english": "Looking Back in the Dark Waterway",
+    "chinese": "轉頭面朝漆黑水道"
+  },
+  {
+    "id": 40,
+    "kingdom": "Seaside",
+    "english": "The Sphynx's Underwater Vault",
+    "chinese": "斯芬‧奇思的水底倉庫"
+  },
+  {
+    "id": 41,
+    "kingdom": "Seaside",
+    "english": "A Rumble on the Seaside Floor",
+    "chinese": "抖抖抖！海邊的震動地板"
+  },
+  {
+    "id": 42,
+    "kingdom": "Seaside",
+    "english": "A Relaxing Dance",
+    "chinese": "盡情搖擺 一起跳舞吧！"
+  },
+  {
+    "id": 43,
+    "kingdom": "Seaside",
+    "english": "Wading in the Cloud Sea",
+    "chinese": "撥開雲海"
+  },
+  {
+    "id": 44,
+    "kingdom": "Seaside",
+    "english": "Sunken Treasure in the Cloud Sea",
+    "chinese": "沉入雲海的藏寶箱"
+  },
+  {
+    "id": 45,
+    "kingdom": "Seaside",
+    "english": "Fly Through the Narrow Valley",
+    "chinese": "飛越毒之山谷"
+  },
+  {
+    "id": 46,
+    "kingdom": "Seaside",
+    "english": "Treasure Chest in the Narrow Valley",
+    "chinese": "毒之山谷的藏寶箱"
+  },
+  {
+    "id": 47,
+    "kingdom": "Seaside",
+    "english": "Hurry and Stretch",
+    "chinese": "趕緊拉長身子"
+  },
+  {
+    "id": 48,
+    "kingdom": "Seaside",
+    "english": "Stretch on the Side Path",
+    "chinese": "拉長身子走小徑"
+  },
+  {
+    "id": 49,
+    "kingdom": "Seaside",
+    "english": "Secret Path to Bubblaine!",
+    "chinese": "歡迎來到舒瓦舒瓦娜！"
+  },
+  {
+    "id": 50,
+    "kingdom": "Seaside",
+    "english": "Found with Seaside Kingdom Art",
+    "chinese": "找到在海之國看到的相片寶物"
+  },
+  {
+    "id": 51,
+    "kingdom": "Seaside",
+    "english": "Seaside Kingdom Regular Cup",
+    "chinese": "海之國 標準杯"
+  },
+  {
+    "id": 52,
+    "kingdom": "Seaside",
+    "english": "Peach in the Seaside Kingdom",
+    "chinese": "碧姬公主在海之國"
+  },
+  {
+    "id": 53,
+    "kingdom": "Seaside",
+    "english": "Above the Parasol: Catch!",
+    "chinese": "接住！遮陽傘上"
+  },
+  {
+    "id": 54,
+    "kingdom": "Seaside",
+    "english": "What Shines Inside the Glass",
+    "chinese": "玻璃杯裡的發光物"
+  },
+  {
+    "id": 55,
+    "kingdom": "Seaside",
+    "english": "A Fine Detail on the Glass",
+    "chinese": "玻璃杯的亮點"
+  },
+  {
+    "id": 56,
+    "kingdom": "Seaside",
+    "english": "Underwater Highway West: Explore!",
+    "chinese": "探險！水中道路 西側"
+  },
+  {
+    "id": 57,
+    "kingdom": "Seaside",
+    "english": "Underwater Highway East: Explore!",
+    "chinese": "探索！水中道路 東側"
+  },
+  {
+    "id": 58,
+    "kingdom": "Seaside",
+    "english": "Rapid Ascent on Hot Spring Island",
+    "chinese": "在溫泉島急速上升"
+  },
+  {
+    "id": 59,
+    "kingdom": "Seaside",
+    "english": "A Light Next to the Lighthouse",
+    "chinese": "匹敵燈塔之光"
+  },
+  {
+    "id": 60,
+    "kingdom": "Seaside",
+    "english": "The Tall Rock Shelf in the Deep Ocean",
+    "chinese": "深海的岩礁"
+  },
+  {
+    "id": 61,
+    "kingdom": "Seaside",
+    "english": "At the Base of the Lighthouse",
+    "chinese": "燈塔下最是漆黑"
+  },
+  {
+    "id": 62,
+    "kingdom": "Seaside",
+    "english": "Bird Traveling Over the Ocean",
+    "chinese": "海上的候鳥"
+  },
+  {
+    "id": 63,
+    "kingdom": "Seaside",
+    "english": "Caught Hopping at Glass Palace!",
+    "chinese": "在玻璃宮殿抓到蹦蹦！"
+  },
+  {
+    "id": 64,
+    "kingdom": "Seaside",
+    "english": "Seaside Kingdom Timer Challenge 3",
+    "chinese": "海之國的滴答‧運動３"
+  },
+  {
+    "id": 65,
+    "kingdom": "Seaside",
+    "english": "Taking Notes: Ocean-Bottom Maze",
+    "chinese": "在海底迷宮蒐集音符"
+  },
+  {
+    "id": 66,
+    "kingdom": "Seaside",
+    "english": "Taking Notes in the Sea",
+    "chinese": "在海中蒐集音符"
+  },
+  {
+    "id": 67,
+    "kingdom": "Seaside",
+    "english": "Seaside Kingdom Master Cup",
+    "chinese": "海之國 大師杯"
+  },
+  {
+    "id": 68,
+    "kingdom": "Seaside",
+    "english": "Aim! Poke!",
+    "chinese": "突刺！狙擊！"
+  },
+  {
+    "id": 69,
+    "kingdom": "Seaside",
+    "english": "Poke! Roll!",
+    "chinese": "突刺！轉啊！"
+  },
+  {
+    "id": 70,
+    "kingdom": "Seaside",
+    "english": "The Spinning Maze: Search!",
+    "chinese": "尋找吧！旋轉迷宮"
+  },
+  {
+    "id": 71,
+    "kingdom": "Seaside",
+    "english": "The Spinning Maze: Open!",
+    "chinese": "開啟吧！旋轉迷宮"
+  },
+  {
+    "id": 1,
+    "kingdom": "Snow",
+    "english": "The Icicle Barrier",
+    "chinese": "冰柱關卡"
+  },
+  {
+    "id": 2,
+    "kingdom": "Snow",
+    "english": "The Ice Wall Barrier",
+    "chinese": "冰牆關卡"
+  },
+  {
+    "id": 3,
+    "kingdom": "Snow",
+    "english": "The Gusty Barrier",
+    "chinese": "陣風關卡"
+  },
+  {
+    "id": 4,
+    "kingdom": "Snow",
+    "english": "The Snowy Mountain Barrier",
+    "chinese": "雪山關卡"
+  },
+  {
+    "id": 5,
+    "kingdom": "Snow",
+    "english": "The Bound Bowl Grand Prix",
+    "chinese": "重新出發！彈跳博爾GP"
+  },
+  {
+    "id": 6,
+    "kingdom": "Snow",
+    "english": "Entrance to Shiveria",
+    "chinese": "帕達博爾的玄關口"
+  },
+  {
+    "id": 7,
+    "kingdom": "Snow",
+    "english": "Behind Snowy Mountain",
+    "chinese": "冰之塔的後方"
+  },
+  {
+    "id": 8,
+    "kingdom": "Snow",
+    "english": "Shining in the Snow in Town",
+    "chinese": "城鎮的雪中發光物"
+  },
+  {
+    "id": 9,
+    "kingdom": "Snow",
+    "english": "Atop a Blustery Arch",
+    "chinese": "狂風大作的拱橋上"
+  },
+  {
+    "id": 10,
+    "kingdom": "Snow",
+    "english": "Caught Hopping in the Snow!",
+    "chinese": "在雪之國抓到蹦蹦！"
+  },
+  {
+    "id": 11,
+    "kingdom": "Snow",
+    "english": "The Shiverian Treasure Chest",
+    "chinese": "帕達博爾的藏寶箱"
+  },
+  {
+    "id": 12,
+    "kingdom": "Snow",
+    "english": "Treasure in the Ice Wall",
+    "chinese": "冰牆的藏寶箱"
+  },
+  {
+    "id": 13,
+    "kingdom": "Snow",
+    "english": "Snow Kingdom Timer Challenge 1",
+    "chinese": "雪之國的滴答‧運動１"
+  },
+  {
+    "id": 14,
+    "kingdom": "Snow",
+    "english": "Snow Kingdom Timer Challenge 2",
+    "chinese": "雪之國的滴答‧運動２"
+  },
+  {
+    "id": 15,
+    "kingdom": "Snow",
+    "english": "Moon Shards in the Snow",
+    "chinese": "蒐集吧！雪之月亮碎片"
+  },
+  {
+    "id": 16,
+    "kingdom": "Snow",
+    "english": "Taking Notes: Snow Path Dash",
+    "chinese": "在雪道衝刺蒐集音符"
+  },
+  {
+    "id": 17,
+    "kingdom": "Snow",
+    "english": "Fishing in the Glacier!",
+    "chinese": "在冰河釣魚！"
+  },
+  {
+    "id": 18,
+    "kingdom": "Snow",
+    "english": "Ice-Dodging Goomba Stack",
+    "chinese": "避開冰柱往上堆！"
+  },
+  {
+    "id": 19,
+    "kingdom": "Snow",
+    "english": "Snowtain Toad is Chilly!",
+    "chinese": "好冷！奇諾比奧隊長"
+  },
+  {
+    "id": 20,
+    "kingdom": "Snow",
+    "english": "I'm Not Cold!",
+    "chinese": "才不冷呢！"
+  },
+  {
+    "id": 21,
+    "kingdom": "Snow",
+    "english": "Shopping in Shiveria",
+    "chinese": "在帕達博爾購物"
+  },
+  {
+    "id": 22,
+    "kingdom": "Snow",
+    "english": "Walking on Ice!",
+    "chinese": "在冰上健走！"
+  },
+  {
+    "id": 23,
+    "kingdom": "Snow",
+    "english": "Snowline Circuit Class S",
+    "chinese": "雪地賽道 級別Ｓ"
+  },
+  {
+    "id": 24,
+    "kingdom": "Snow",
+    "english": "Dashing Over Cold Water!",
+    "chinese": "衝刺！衝刺！冰冷的水"
+  },
+  {
+    "id": 25,
+    "kingdom": "Snow",
+    "english": "Dashing Above and Beyond!",
+    "chinese": "衝刺！衝刺！陡斜坡"
+  },
+  {
+    "id": 26,
+    "kingdom": "Snow",
+    "english": "Jump 'n' Swim in the Freezing Water",
+    "chinese": "又跳又游 凍人的水"
+  },
+  {
+    "id": 27,
+    "kingdom": "Snow",
+    "english": "Freezing Water Near the Ceiling",
+    "chinese": "天花板內 凍人的水"
+  },
+  {
+    "id": 28,
+    "kingdom": "Snow",
+    "english": "Blowing and Sliding",
+    "chinese": "吹啊滑啊"
+  },
+  {
+    "id": 29,
+    "kingdom": "Snow",
+    "english": "Moon Shards in the Cold Room",
+    "chinese": "冰冷房間的月亮碎片"
+  },
+  {
+    "id": 30,
+    "kingdom": "Snow",
+    "english": "Slip Behind the Ice",
+    "chinese": "穿越到冰的背面"
+  },
+  {
+    "id": 31,
+    "kingdom": "Snow",
+    "english": "Spinning Above the Clouds",
+    "chinese": "轉啊轉啊雲端上"
+  },
+  {
+    "id": 32,
+    "kingdom": "Snow",
+    "english": "High-Altitude Spinning",
+    "chinese": "轉啊轉啊上升氣流"
+  },
+  {
+    "id": 33,
+    "kingdom": "Snow",
+    "english": "Secret Path to Shiveria!",
+    "chinese": "歡迎來到帕達博爾！"
+  },
+  {
+    "id": 34,
+    "kingdom": "Snow",
+    "english": "Found with Snow Kingdom Art",
+    "chinese": "找到在雪之國看到的相片寶物"
+  },
+  {
+    "id": 35,
+    "kingdom": "Snow",
+    "english": "Snow Kingdom Regular Cup",
+    "chinese": "雪之國 標準杯"
+  },
+  {
+    "id": 36,
+    "kingdom": "Snow",
+    "english": "Hat-and-Seek in the Snow",
+    "chinese": "雪中的帽子捉迷藏"
+  },
+  {
+    "id": 37,
+    "kingdom": "Snow",
+    "english": "Peach in the Snow Kingdom",
+    "chinese": "碧姬公主在雪之國"
+  },
+  {
+    "id": 38,
+    "kingdom": "Snow",
+    "english": "Shining on High",
+    "chinese": "在高台上閃閃發光"
+  },
+  {
+    "id": 39,
+    "kingdom": "Snow",
+    "english": "Above the Freezing Fishing Pond",
+    "chinese": "在冰凍的釣魚場上"
+  },
+  {
+    "id": 40,
+    "kingdom": "Snow",
+    "english": "Ice Floe Swimming",
+    "chinese": "流冰游泳"
+  },
+  {
+    "id": 41,
+    "kingdom": "Snow",
+    "english": "Icy Jump Challenge",
+    "chinese": "冰上的跳躍挑戰"
+  },
+  {
+    "id": 42,
+    "kingdom": "Snow",
+    "english": "Forgotten in the Holding Room",
+    "chinese": "遺忘在休息室的東西"
+  },
+  {
+    "id": 43,
+    "kingdom": "Snow",
+    "english": "It Popped Out of the Ice",
+    "chinese": "從冰裡飛了出來"
+  },
+  {
+    "id": 44,
+    "kingdom": "Snow",
+    "english": "Deep in the Cold, Cold Water",
+    "chinese": "來自好冷好冷的水底"
+  },
+  {
+    "id": 45,
+    "kingdom": "Snow",
+    "english": "Water Pooling in the Crevasse",
+    "chinese": "冰隙的水窪裡"
+  },
+  {
+    "id": 46,
+    "kingdom": "Snow",
+    "english": "Squirming Under Ice",
+    "chinese": "在冰底下蠢動之物"
+  },
+  {
+    "id": 47,
+    "kingdom": "Snow",
+    "english": "Snow Kingdom Timer Challenge 3",
+    "chinese": "雪之國的滴答‧運動３"
+  },
+  {
+    "id": 48,
+    "kingdom": "Snow",
+    "english": "Stacked-Up Ice Climb",
+    "chinese": "遠眺冰柱的高台"
+  },
+  {
+    "id": 49,
+    "kingdom": "Snow",
+    "english": "I Met a Snow Cheep Cheep!",
+    "chinese": "遇見雪國的泡泡魚了！"
+  },
+  {
+    "id": 50,
+    "kingdom": "Snow",
+    "english": "Even More Walking on Ice!",
+    "chinese": "再來！在冰上健走"
+  },
+  {
+    "id": 51,
+    "kingdom": "Snow",
+    "english": "Snow Kingdom Master Cup",
+    "chinese": "雪之國 大師杯"
+  },
+  {
+    "id": 52,
+    "kingdom": "Snow",
+    "english": "Iceburn Circuit Class A",
+    "chinese": "冰面賽道 級別Ａ"
+  },
+  {
+    "id": 53,
+    "kingdom": "Snow",
+    "english": "Iceburn Circuit Class S",
+    "chinese": "冰面賽道 級別Ｓ"
+  },
+  {
+    "id": 54,
+    "kingdom": "Snow",
+    "english": "Running the Flower Road",
+    "chinese": "奔跑逃離 百花路"
+  },
+  {
+    "id": 55,
+    "kingdom": "Snow",
+    "english": "Looking Back on the Flower Road",
+    "chinese": "百花路上 驀然回首"
+  },
+  {
+    "id": 1,
+    "kingdom": "Luncheon",
+    "english": "The Broodals Are After Some Cookin'",
+    "chinese": "盯上料理的布妮達茲"
+  },
+  {
+    "id": 2,
+    "kingdom": "Luncheon",
+    "english": "Under the Cheese Rocks",
+    "chinese": "芝士岩之中"
+  },
+  {
+    "id": 3,
+    "kingdom": "Luncheon",
+    "english": "Big Pot on the Volcano: Dive In!",
+    "chinese": "跳進去！火山的大鍋子"
+  },
+  {
+    "id": 4,
+    "kingdom": "Luncheon",
+    "english": "Climb Up the Cascading Magma",
+    "chinese": "在岩漿瀑布逆流而上"
+  },
+  {
+    "id": 5,
+    "kingdom": "Luncheon",
+    "english": "Cookatiel Showdown!",
+    "chinese": "決戰！廚師鳥"
+  },
+  {
+    "id": 6,
+    "kingdom": "Luncheon",
+    "english": "Piled on the Salt",
+    "chinese": "鹽丘一角"
+  },
+  {
+    "id": 7,
+    "kingdom": "Luncheon",
+    "english": "Lurking in the Pillar's Shadow",
+    "chinese": "躲在柱子的陰影裡"
+  },
+  {
+    "id": 8,
+    "kingdom": "Luncheon",
+    "english": "Atop the Jutting Crag",
+    "chinese": "在高牆之上"
+  },
+  {
+    "id": 9,
+    "kingdom": "Luncheon",
+    "english": "Is This an Ingredient Too?!",
+    "chinese": "這也是食材！？"
+  },
+  {
+    "id": 10,
+    "kingdom": "Luncheon",
+    "english": "Atop a Column in a Row",
+    "chinese": "並排柱子的頂端"
+  },
+  {
+    "id": 11,
+    "kingdom": "Luncheon",
+    "english": "Surrounded by Tall Mountains",
+    "chinese": "被高山所包圍"
+  },
+  {
+    "id": 12,
+    "kingdom": "Luncheon",
+    "english": "Island of Salt Floating in the Lava",
+    "chinese": "浮在熔岩上的鹽島"
+  },
+  {
+    "id": 13,
+    "kingdom": "Luncheon",
+    "english": "Overlooking a Bunch of Ingredients",
+    "chinese": "瞭望大批食材"
+  },
+  {
+    "id": 14,
+    "kingdom": "Luncheon",
+    "english": "Light the Lantern on the Small Island",
+    "chinese": "點燃小島的燭台"
+  },
+  {
+    "id": 15,
+    "kingdom": "Luncheon",
+    "english": "Golden Turnip Recipe 1",
+    "chinese": "金大頭菜的食譜１"
+  },
+  {
+    "id": 16,
+    "kingdom": "Luncheon",
+    "english": "Golden Turnip Recipe 2",
+    "chinese": "金大頭菜的食譜２"
+  },
+  {
+    "id": 17,
+    "kingdom": "Luncheon",
+    "english": "Golden Turnip Recipe 3",
+    "chinese": "金大頭菜的食譜３"
+  },
+  {
+    "id": 18,
+    "kingdom": "Luncheon",
+    "english": "Luncheon Kingdom Timer Challenge 1",
+    "chinese": "料理國的滴答‧運動１"
+  },
+  {
+    "id": 19,
+    "kingdom": "Luncheon",
+    "english": "Luncheon Kingdom Timer Challenge 2",
+    "chinese": "料理國的滴答‧運動２"
+  },
+  {
+    "id": 20,
+    "kingdom": "Luncheon",
+    "english": "Luncheon Kingdom Timer Challenge 3",
+    "chinese": "料理國的滴答‧運動３"
+  },
+  {
+    "id": 21,
+    "kingdom": "Luncheon",
+    "english": "Beneath the Rolling Vegetables",
+    "chinese": "滾滾蔬菜的另一面"
+  },
+  {
+    "id": 22,
+    "kingdom": "Luncheon",
+    "english": "All the Cracks Are Fixed",
+    "chinese": "修復裂開的地面"
+  },
+  {
+    "id": 23,
+    "kingdom": "Luncheon",
+    "english": "Taking Notes: Swimming in Magma",
+    "chinese": "在岩漿中游泳蒐集音符"
+  },
+  {
+    "id": 24,
+    "kingdom": "Luncheon",
+    "english": "Love Above the Lava",
+    "chinese": "熔岩的女朋友"
+  },
+  {
+    "id": 25,
+    "kingdom": "Luncheon",
+    "english": "Shopping in Mount Volbono",
+    "chinese": "在波爾波諾購物"
+  },
+  {
+    "id": 26,
+    "kingdom": "Luncheon",
+    "english": "Luncheon Kingdom Slots",
+    "chinese": "在料理國玩了轉轉機"
+  },
+  {
+    "id": 27,
+    "kingdom": "Luncheon",
+    "english": "A Strong Simmer",
+    "chinese": "用大火煮得劈里啪啦"
+  },
+  {
+    "id": 28,
+    "kingdom": "Luncheon",
+    "english": "An Extreme Simmer",
+    "chinese": "用超大火煮得劈里啪啦"
+  },
+  {
+    "id": 29,
+    "kingdom": "Luncheon",
+    "english": "Alcove Behind the Pillars of Magma",
+    "chinese": "岩漿柱背後的凹洞"
+  },
+  {
+    "id": 30,
+    "kingdom": "Luncheon",
+    "english": "Treasure Beneath the Cheese Rocks",
+    "chinese": "芝士岩之下的寶物"
+  },
+  {
+    "id": 31,
+    "kingdom": "Luncheon",
+    "english": "Light the Two Flames",
+    "chinese": "在２盞燭火照耀下"
+  },
+  {
+    "id": 32,
+    "kingdom": "Luncheon",
+    "english": "Light the Far-Off Lanterns",
+    "chinese": "點燃遙遠的燈火"
+  },
+  {
+    "id": 33,
+    "kingdom": "Luncheon",
+    "english": "Bon Appétit, Luncheontain Toad!",
+    "chinese": "開動了！奇諾比奧隊長"
+  },
+  {
+    "id": 34,
+    "kingdom": "Luncheon",
+    "english": "The Treasure Chest in the Veggies",
+    "chinese": "被蔬菜包圍的藏寶箱"
+  },
+  {
+    "id": 35,
+    "kingdom": "Luncheon",
+    "english": "Caught Hopping at the Volcano!",
+    "chinese": "在火山抓到蹦蹦！"
+  },
+  {
+    "id": 36,
+    "kingdom": "Luncheon",
+    "english": "Taking Notes: Big Pot Swim",
+    "chinese": "在大鍋子裡游泳蒐集音符"
+  },
+  {
+    "id": 37,
+    "kingdom": "Luncheon",
+    "english": "Magma Swamp: Floating and Sinking",
+    "chinese": "載浮載沉 岩漿沼澤"
+  },
+  {
+    "id": 38,
+    "kingdom": "Luncheon",
+    "english": "Corner of the Magma Swamp",
+    "chinese": "岩漿沼澤的角落"
+  },
+  {
+    "id": 39,
+    "kingdom": "Luncheon",
+    "english": "Magma Narrow Path",
+    "chinese": "岩漿小路"
+  },
+  {
+    "id": 40,
+    "kingdom": "Luncheon",
+    "english": "Crossing to the Magma",
+    "chinese": "跳越岩漿池"
+  },
+  {
+    "id": 41,
+    "kingdom": "Luncheon",
+    "english": "Fork Flickin' to the Summit",
+    "chinese": "彈彈叉子 通往山頂"
+  },
+  {
+    "id": 42,
+    "kingdom": "Luncheon",
+    "english": "Fork Flickin' Detour",
+    "chinese": "彈彈叉子 繞路"
+  },
+  {
+    "id": 43,
+    "kingdom": "Luncheon",
+    "english": "Excavate 'n' Search the Cheese Rocks",
+    "chinese": "挖開芝士岩找找看"
+  },
+  {
+    "id": 44,
+    "kingdom": "Luncheon",
+    "english": "Climb the Cheese Rocks",
+    "chinese": "登上芝士岩"
+  },
+  {
+    "id": 45,
+    "kingdom": "Luncheon",
+    "english": "Spinning Athletics End Goal",
+    "chinese": "轉轉運動的終點"
+  },
+  {
+    "id": 46,
+    "kingdom": "Luncheon",
+    "english": "Taking Notes: Spinning Athletics",
+    "chinese": "在轉轉運動中蒐集音符"
+  },
+  {
+    "id": 47,
+    "kingdom": "Luncheon",
+    "english": "Secret Path to Mount Volbono!",
+    "chinese": "歡迎來到波爾波諾！"
+  },
+  {
+    "id": 48,
+    "kingdom": "Luncheon",
+    "english": "A Tourist in the Luncheon Kingdom!",
+    "chinese": "來到料理國了砂砂！"
+  },
+  {
+    "id": 49,
+    "kingdom": "Luncheon",
+    "english": "Found with Luncheon Kingdom Art",
+    "chinese": "找到在料理國看到的相片寶物"
+  },
+  {
+    "id": 50,
+    "kingdom": "Luncheon",
+    "english": "The Rooftop Lantern",
+    "chinese": "屋頂的火光"
+  },
+  {
+    "id": 51,
+    "kingdom": "Luncheon",
+    "english": "Jammin' in the Luncheon Kingdom",
+    "chinese": "料理國的美妙音樂"
+  },
+  {
+    "id": 52,
+    "kingdom": "Luncheon",
+    "english": "Mechanic: Repairs Complete!",
+    "chinese": "修理完成！工程師"
+  },
+  {
+    "id": 53,
+    "kingdom": "Luncheon",
+    "english": "Diving from the Big Pot!",
+    "chinese": "從大鍋子跳過來！"
+  },
+  {
+    "id": 54,
+    "kingdom": "Luncheon",
+    "english": "Hat-and-Seek: Among the Food",
+    "chinese": "料理的帽子捉迷藏"
+  },
+  {
+    "id": 55,
+    "kingdom": "Luncheon",
+    "english": "Luncheon Kingdom: Regular Cup",
+    "chinese": "料理國 標準杯"
+  },
+  {
+    "id": 56,
+    "kingdom": "Luncheon",
+    "english": "Peach in the Luncheon Kingdom",
+    "chinese": "碧姬公主在料理國"
+  },
+  {
+    "id": 57,
+    "kingdom": "Luncheon",
+    "english": "From Inside a Bright Stone",
+    "chinese": "來自光鮮的岩石裡"
+  },
+  {
+    "id": 58,
+    "kingdom": "Luncheon",
+    "english": "Under the Meat Plateau",
+    "chinese": "在光鮮的懸崖下"
+  },
+  {
+    "id": 59,
+    "kingdom": "Luncheon",
+    "english": "On Top of a Tall, Tall Roof",
+    "chinese": "很高很高的屋頂上"
+  },
+  {
+    "id": 60,
+    "kingdom": "Luncheon",
+    "english": "From a Crack in the Hard Ground",
+    "chinese": "來自堅硬地面的裂縫裡"
+  },
+  {
+    "id": 61,
+    "kingdom": "Luncheon",
+    "english": "By the Cannon Pointed at the Big Pot",
+    "chinese": "朝向大鍋子的發射台"
+  },
+  {
+    "id": 62,
+    "kingdom": "Luncheon",
+    "english": "Luncheon Kingdom: Master Cup",
+    "chinese": "料理國 大師杯"
+  },
+  {
+    "id": 63,
+    "kingdom": "Luncheon",
+    "english": "Stepping Over the Gears",
+    "chinese": "跳越齒輪踏板"
+  },
+  {
+    "id": 64,
+    "kingdom": "Luncheon",
+    "english": "Lanterns on the Gear Steps",
+    "chinese": "齒輪踏板的燭台"
+  },
+  {
+    "id": 65,
+    "kingdom": "Luncheon",
+    "english": "Volcano Cave Cruisin'",
+    "chinese": "火山洞窟巡航"
+  },
+  {
+    "id": 66,
+    "kingdom": "Luncheon",
+    "english": "Volcano Cave and Mysterious Clouds",
+    "chinese": "火山洞窟與不可思議的雲"
+  },
+  {
+    "id": 67,
+    "kingdom": "Luncheon",
+    "english": "Treasure of the Lava Islands",
+    "chinese": "熔岩山谷的寶物"
+  },
+  {
+    "id": 68,
+    "kingdom": "Luncheon",
+    "english": "Flying Over the Lava Islands",
+    "chinese": "飛越熔岩山谷"
+  },
+  {
+    "id": 1,
+    "kingdom": "Ruined",
+    "english": "Battle with the Lord of Lightning!",
+    "chinese": "決鬥！雷王！"
+  },
+  {
+    "id": 2,
+    "kingdom": "Ruined",
+    "english": "In the Ancient Treasure Chest",
+    "chinese": "古城的藏寶箱"
+  },
+  {
+    "id": 3,
+    "kingdom": "Ruined",
+    "english": "Roulette Tower: Climbed",
+    "chinese": "登上輪盤塔！"
+  },
+  {
+    "id": 4,
+    "kingdom": "Ruined",
+    "english": "Roulette Tower: Stopped",
+    "chinese": "停下輪盤塔！"
+  },
+  {
+    "id": 5,
+    "kingdom": "Ruined",
+    "english": "Peach in the Ruined Kingdom",
+    "chinese": "碧姬公主在被奪之國"
+  },
+  {
+    "id": 6,
+    "kingdom": "Ruined",
+    "english": "Caught on a Big Horn",
+    "chinese": "掛在巨大尖角上"
+  },
+  {
+    "id": 7,
+    "kingdom": "Ruined",
+    "english": "Upon the Broken Arch",
+    "chinese": "在斷掉的柱子上"
+  },
+  {
+    "id": 8,
+    "kingdom": "Ruined",
+    "english": "Rolling Rock on the Battlefield",
+    "chinese": "我踢！戰場的小石頭"
+  },
+  {
+    "id": 9,
+    "kingdom": "Ruined",
+    "english": "Charging Through an Army",
+    "chinese": "衝出木乃伊軍團！"
+  },
+  {
+    "id": 10,
+    "kingdom": "Ruined",
+    "english": "The Mummy Army's Curse",
+    "chinese": "木乃伊軍團的護身符"
+  },
+  {
+    "id": 1,
+    "kingdom": "Bowsers",
+    "english": "Infiltrate Bowser's Castle!",
+    "chinese": "潛入庫巴城堡！"
+  },
+  {
+    "id": 2,
+    "kingdom": "Bowsers",
+    "english": "Smart Bombing",
+    "chinese": "攻陷！煙火炸彈"
+  },
+  {
+    "id": 3,
+    "kingdom": "Bowsers",
+    "english": "Big Broodal Battle",
+    "chinese": "激戰！布妮達茲"
+  },
+  {
+    "id": 4,
+    "kingdom": "Bowsers",
+    "english": "Showdown at Bowser's Castle",
+    "chinese": "決戰！庫巴城堡"
+  },
+  {
+    "id": 5,
+    "kingdom": "Bowsers",
+    "english": "Behind the Big Wall",
+    "chinese": "繞至牆後"
+  },
+  {
+    "id": 6,
+    "kingdom": "Bowsers",
+    "english": "Treasure Inside the Turret",
+    "chinese": "暸望台的寶物"
+  },
+  {
+    "id": 7,
+    "kingdom": "Bowsers",
+    "english": "From the Side Above the Castle Gate",
+    "chinese": "從側面爬到城門上"
+  },
+  {
+    "id": 8,
+    "kingdom": "Bowsers",
+    "english": "Sunken Treasure in the Moat",
+    "chinese": "沉入護城河的珍寶"
+  },
+  {
+    "id": 9,
+    "kingdom": "Bowsers",
+    "english": "Past the Moving Wall",
+    "chinese": "流動之牆的盡頭"
+  },
+  {
+    "id": 10,
+    "kingdom": "Bowsers",
+    "english": "Above the Poison Swamp",
+    "chinese": "俯瞰毒沼"
+  },
+  {
+    "id": 11,
+    "kingdom": "Bowsers",
+    "english": "Knocking Down the Nice Frame",
+    "chinese": "氣派的匾額掉了下來"
+  },
+  {
+    "id": 12,
+    "kingdom": "Bowsers",
+    "english": "Caught on the Iron Fence",
+    "chinese": "掛在鐵柵欄上"
+  },
+  {
+    "id": 13,
+    "kingdom": "Bowsers",
+    "english": "On the Giant Bowser Statue's Nose",
+    "chinese": "在巨大庫巴像的鼻尖"
+  },
+  {
+    "id": 14,
+    "kingdom": "Bowsers",
+    "english": "Inside a Block in the Castle",
+    "chinese": "城堡的堅硬磚塊裡"
+  },
+  {
+    "id": 15,
+    "kingdom": "Bowsers",
+    "english": "Caught Hopping at Bowser's Castle!",
+    "chinese": "在庫巴城堡抓到蹦蹦！"
+  },
+  {
+    "id": 16,
+    "kingdom": "Bowsers",
+    "english": "Exterminate the Ogres!",
+    "chinese": "驅鬼！"
+  },
+  {
+    "id": 17,
+    "kingdom": "Bowsers",
+    "english": "Bowser's Kingdom Timer Challenge 1",
+    "chinese": "庫巴國的滴答‧運動１"
+  },
+  {
+    "id": 18,
+    "kingdom": "Bowsers",
+    "english": "Taking Notes: Between Spinies",
+    "chinese": "閃避尖刺蒐集音符"
+  },
+  {
+    "id": 19,
+    "kingdom": "Bowsers",
+    "english": "Stack Up Above the Wall",
+    "chinese": "堆疊成塔到牆上"
+  },
+  {
+    "id": 20,
+    "kingdom": "Bowsers",
+    "english": "Hidden Corridor Under the Floor",
+    "chinese": "地板下之密道"
+  },
+  {
+    "id": 21,
+    "kingdom": "Bowsers",
+    "english": "Poking Your Nose in the Plaster Wall",
+    "chinese": "戳戳戳！塗白之牆"
+  },
+  {
+    "id": 22,
+    "kingdom": "Bowsers",
+    "english": "Poking the Turret Wall",
+    "chinese": "戳了戳！暸望台之牆"
+  },
+  {
+    "id": 23,
+    "kingdom": "Bowsers",
+    "english": "Poking Your Nose by the Great Gate",
+    "chinese": "戳戳戳！大門前"
+  },
+  {
+    "id": 24,
+    "kingdom": "Bowsers",
+    "english": "Jizo All in a Row",
+    "chinese": "地藏排排站"
+  },
+  {
+    "id": 25,
+    "kingdom": "Bowsers",
+    "english": "Underground Jizo",
+    "chinese": "地底的地藏"
+  },
+  {
+    "id": 26,
+    "kingdom": "Bowsers",
+    "english": "Found Behind Bars!",
+    "chinese": "在格子裡找到了～！"
+  },
+  {
+    "id": 27,
+    "kingdom": "Bowsers",
+    "english": "Fishing(?) in Bowser's Castle",
+    "chinese": "在庫巴城堡釣魚？"
+  },
+  {
+    "id": 28,
+    "kingdom": "Bowsers",
+    "english": "Good to See You, Bowserstain Toad!",
+    "chinese": "幸會！奇諾比奧隊長"
+  },
+  {
+    "id": 29,
+    "kingdom": "Bowsers",
+    "english": "Shopping at Bowser's Castle",
+    "chinese": "在庫巴城堡購物"
+  },
+  {
+    "id": 30,
+    "kingdom": "Bowsers",
+    "english": "Bowser's Castle Treasure Vault",
+    "chinese": "庫巴城堡的寶庫"
+  },
+  {
+    "id": 31,
+    "kingdom": "Bowsers",
+    "english": "Scene of Crossing the Poison Swamp",
+    "chinese": "渡過毒沼之圖"
+  },
+  {
+    "id": 32,
+    "kingdom": "Bowsers",
+    "english": "Taking Notes: In the Folding Screen",
+    "chinese": "在屏風裡蒐集音符"
+  },
+  {
+    "id": 33,
+    "kingdom": "Bowsers",
+    "english": "On Top of the Spinning Tower",
+    "chinese": "轉轉暸望台的屋頂上"
+  },
+  {
+    "id": 34,
+    "kingdom": "Bowsers",
+    "english": "Down and Up the Spinning Tower",
+    "chinese": "在轉轉暸望台爬上爬下"
+  },
+  {
+    "id": 35,
+    "kingdom": "Bowsers",
+    "english": "Jizo's Big Adventure",
+    "chinese": "地藏之大冒險"
+  },
+  {
+    "id": 36,
+    "kingdom": "Bowsers",
+    "english": "Jizo and the Hidden Room",
+    "chinese": "地藏的秘密洞穴"
+  },
+  {
+    "id": 37,
+    "kingdom": "Bowsers",
+    "english": "Dashing Above the Clouds",
+    "chinese": "衝啊！衝啊！雲端上"
+  },
+  {
+    "id": 38,
+    "kingdom": "Bowsers",
+    "english": "Dashing Through the Clouds",
+    "chinese": "衝啊！雲之小徑"
+  },
+  {
+    "id": 39,
+    "kingdom": "Bowsers",
+    "english": "Sphynx Over Bowser's Castle",
+    "chinese": "環遊庫巴城堡的斯芬‧奇思"
+  },
+  {
+    "id": 40,
+    "kingdom": "Bowsers",
+    "english": "I Met a Pokio!",
+    "chinese": "遇見拮拮了！"
+  },
+  {
+    "id": 41,
+    "kingdom": "Bowsers",
+    "english": "Bowser's Kingdom Regular Cup",
+    "chinese": "庫巴國 標準杯"
+  },
+  {
+    "id": 42,
+    "kingdom": "Bowsers",
+    "english": "A Rumble Under the Arena Floor",
+    "chinese": "抖抖抖！庫巴城堡的震動地板"
+  },
+  {
+    "id": 43,
+    "kingdom": "Bowsers",
+    "english": "Secret Path to Bowser's Castle!",
+    "chinese": "歡迎造訪？庫巴城堡！"
+  },
+  {
+    "id": 44,
+    "kingdom": "Bowsers",
+    "english": "Peach in Bowser's Kingdom",
+    "chinese": "碧姬公主在庫巴國"
+  },
+  {
+    "id": 45,
+    "kingdom": "Bowsers",
+    "english": "Found with Bowser's Kingdom Art",
+    "chinese": "找到在庫巴國看到的相片寶物"
+  },
+  {
+    "id": 46,
+    "kingdom": "Bowsers",
+    "english": "Behind the Tall Wall: Poke, Poke!",
+    "chinese": "戳戳戳！高牆後"
+  },
+  {
+    "id": 47,
+    "kingdom": "Bowsers",
+    "english": "From Crates in the Moat",
+    "chinese": "來自護城河的木箱"
+  },
+  {
+    "id": 48,
+    "kingdom": "Bowsers",
+    "english": "Caught on the Giant Horn",
+    "chinese": "掛在巨大尖角上"
+  },
+  {
+    "id": 49,
+    "kingdom": "Bowsers",
+    "english": "Inside a Block at the Gate",
+    "chinese": "城門的堅硬磚塊裡"
+  },
+  {
+    "id": 50,
+    "kingdom": "Bowsers",
+    "english": "Small Bird in Bowser's Castle",
+    "chinese": "庫巴城堡的小鳥"
+  },
+  {
+    "id": 51,
+    "kingdom": "Bowsers",
+    "english": "Invader in Bowser's Castle",
+    "chinese": "庫巴城堡的麻煩精"
+  },
+  {
+    "id": 52,
+    "kingdom": "Bowsers",
+    "english": "Jumping from Flag to Flag",
+    "chinese": "從這面旗跳到那面旗"
+  },
+  {
+    "id": 53,
+    "kingdom": "Bowsers",
+    "english": "Bowser's Kingdom Timer Challenge 2",
+    "chinese": "庫巴國的滴答‧運動２"
+  },
+  {
+    "id": 54,
+    "kingdom": "Bowsers",
+    "english": "Taking Notes: On the Wall",
+    "chinese": "戳戳牆壁蒐集音符"
+  },
+  {
+    "id": 55,
+    "kingdom": "Bowsers",
+    "english": "Taking Notes with a Spinning Throw",
+    "chinese": "投擲繞圈蒐集音符"
+  },
+  {
+    "id": 56,
+    "kingdom": "Bowsers",
+    "english": "Third Courtyard Outskirts",
+    "chinese": "三殿的縫隙"
+  },
+  {
+    "id": 57,
+    "kingdom": "Bowsers",
+    "english": "Stone Wall Circuit",
+    "chinese": "沿著石牆"
+  },
+  {
+    "id": 58,
+    "kingdom": "Bowsers",
+    "english": "Bowser's Kingdom Master Cup",
+    "chinese": "庫巴國 大師杯"
+  },
+  {
+    "id": 59,
+    "kingdom": "Bowsers",
+    "english": "Searching Hexagon Tower",
+    "chinese": "飛躍探尋於六角樓"
+  },
+  {
+    "id": 60,
+    "kingdom": "Bowsers",
+    "english": "Center of Hexagon Tower",
+    "chinese": "六角樓正中間"
+  },
+  {
+    "id": 61,
+    "kingdom": "Bowsers",
+    "english": "Climb the Wooden Tower",
+    "chinese": "登上木造塔！"
+  },
+  {
+    "id": 62,
+    "kingdom": "Bowsers",
+    "english": "Poke the Wooden Tower",
+    "chinese": "突擊木造塔！"
+  },
+  {
+    "id": 1,
+    "kingdom": "Moon",
+    "english": "Shining Above the Moon",
+    "chinese": "在月亮上閃閃發光"
+  },
+  {
+    "id": 2,
+    "kingdom": "Moon",
+    "english": "Along the Cliff Face",
+    "chinese": "沿著崖邊前進"
+  },
+  {
+    "id": 3,
+    "kingdom": "Moon",
+    "english": "The Tip of a White Spire",
+    "chinese": "白色高塔的尖端"
+  },
+  {
+    "id": 4,
+    "kingdom": "Moon",
+    "english": "Rolling Rock on the Moon",
+    "chinese": "我踢！月亮的小石頭"
+  },
+  {
+    "id": 5,
+    "kingdom": "Moon",
+    "english": "Caught Hopping on the Moon!",
+    "chinese": "在月亮抓到蹦蹦！"
+  },
+  {
+    "id": 6,
+    "kingdom": "Moon",
+    "english": "Cliffside Treasure Chest",
+    "chinese": "崖邊的藏寶箱"
+  },
+  {
+    "id": 7,
+    "kingdom": "Moon",
+    "english": "Moon Kingdom Timer Challenge 1",
+    "chinese": "月之國的滴答‧運動１"
+  },
+  {
+    "id": 8,
+    "kingdom": "Moon",
+    "english": "Taking Notes: On the Moon's Surface",
+    "chinese": "在月亮表面蒐集音符"
+  },
+  {
+    "id": 9,
+    "kingdom": "Moon",
+    "english": "Under the Bowser Statue",
+    "chinese": "在庫巴的石像下"
+  },
+  {
+    "id": 10,
+    "kingdom": "Moon",
+    "english": "In a Hole in the Magma",
+    "chinese": "岩漿洞穴之中"
+  },
+  {
+    "id": 11,
+    "kingdom": "Moon",
+    "english": "Around the Barrier Wall",
+    "chinese": "繞過防護牆"
+  },
+  {
+    "id": 12,
+    "kingdom": "Moon",
+    "english": "On Top of the Cannon",
+    "chinese": "在炮台上"
+  },
+  {
+    "id": 13,
+    "kingdom": "Moon",
+    "english": "Fly to the Treasure Chest and Back",
+    "chinese": "跳到藏寶箱那裡，再跳回來"
+  },
+  {
+    "id": 14,
+    "kingdom": "Moon",
+    "english": "Up in the Rafters",
+    "chinese": "在天花板裡找到了～！"
+  },
+  {
+    "id": 15,
+    "kingdom": "Moon",
+    "english": "Sneaking Around in the Crater",
+    "chinese": "在環形山下蠢動之物"
+  },
+  {
+    "id": 16,
+    "kingdom": "Moon",
+    "english": "Found on the Moon, Good Dog!",
+    "chinese": "在月亮找到汪！"
+  },
+  {
+    "id": 17,
+    "kingdom": "Moon",
+    "english": "Moon Shards on the Moon",
+    "chinese": "蒐集吧！月之月亮碎片"
+  },
+  {
+    "id": 18,
+    "kingdom": "Moon",
+    "english": "Moon Quiz: Amazing!",
+    "chinese": "了不起！答對月之謎題"
+  },
+  {
+    "id": 19,
+    "kingdom": "Moon",
+    "english": "Thanks, Moontain Toad!",
+    "chinese": "謝謝！奇諾比奧隊長"
+  },
+  {
+    "id": 20,
+    "kingdom": "Moon",
+    "english": "Shopping in Honeylune Ridge",
+    "chinese": "在甜蜜環形山購物"
+  },
+  {
+    "id": 21,
+    "kingdom": "Moon",
+    "english": "Walking on the Moon!",
+    "chinese": "在月亮表面健走！"
+  },
+  {
+    "id": 22,
+    "kingdom": "Moon",
+    "english": "Moon Kingdom Regular Cup",
+    "chinese": "月之國 標準杯"
+  },
+  {
+    "id": 23,
+    "kingdom": "Moon",
+    "english": "Doctor in the House",
+    "chinese": "請保重！"
+  },
+  {
+    "id": 24,
+    "kingdom": "Moon",
+    "english": "Sphynx's Hidden Vault",
+    "chinese": "斯芬‧奇思的秘密金庫"
+  },
+  {
+    "id": 25,
+    "kingdom": "Moon",
+    "english": "A Tourist in the Moon Kingdom!",
+    "chinese": "來到月之國了砂砂！"
+  },
+  {
+    "id": 26,
+    "kingdom": "Moon",
+    "english": "Peach in the Moon Kingdom",
+    "chinese": "碧姬公主在月之國"
+  },
+  {
+    "id": 27,
+    "kingdom": "Moon",
+    "english": "Found with Moon Kingdom Art",
+    "chinese": "找到在月之國看到的相片寶物"
+  },
+  {
+    "id": 28,
+    "kingdom": "Moon",
+    "english": "Mysterious Flying Object",
+    "chinese": "神秘飛行物體"
+  },
+  {
+    "id": 29,
+    "kingdom": "Moon",
+    "english": "Hidden on the Side of the Cliff",
+    "chinese": "在絕壁背面偷偷摸摸"
+  },
+  {
+    "id": 30,
+    "kingdom": "Moon",
+    "english": "Jumping High as a Frog",
+    "chinese": "利用青蛙大跳躍"
+  },
+  {
+    "id": 31,
+    "kingdom": "Moon",
+    "english": "Moon Kingdom Timer Challenge 2",
+    "chinese": "月之國的滴答‧運動２"
+  },
+  {
+    "id": 32,
+    "kingdom": "Moon",
+    "english": "Walking on the Moon: Again!",
+    "chinese": "再來！在月球表面健走"
+  },
+  {
+    "id": 33,
+    "kingdom": "Moon",
+    "english": "Moon Kingdom Master Cup",
+    "chinese": "月之國 大師杯"
+  },
+  {
+    "id": 34,
+    "kingdom": "Moon",
+    "english": "Taking Notes: In Low Gravity",
+    "chinese": "利用輕飄飄重力蒐集音符"
+  },
+  {
+    "id": 35,
+    "kingdom": "Moon",
+    "english": "Center of the Galaxy",
+    "chinese": "銀河的中心"
+  },
+  {
+    "id": 36,
+    "kingdom": "Moon",
+    "english": "Edge of the Galaxy",
+    "chinese": "銀河的盡頭"
+  },
+  {
+    "id": 37,
+    "kingdom": "Moon",
+    "english": "Navigating Giant Swings",
+    "chinese": "越過巨大的鐘擺"
+  },
+  {
+    "id": 38,
+    "kingdom": "Moon",
+    "english": "A Swing on Top of a Swing",
+    "chinese": "鐘擺上的鐘擺"
+  },
+  {
+    "id": 1,
+    "kingdom": "Mushroom",
+    "english": "Perched on the Castle Roof",
+    "chinese": "在城堡屋頂上"
+  },
+  {
+    "id": 2,
+    "kingdom": "Mushroom",
+    "english": "Pops Out of the Tail",
+    "chinese": "從尾巴尖端飛出來了"
+  },
+  {
+    "id": 3,
+    "kingdom": "Mushroom",
+    "english": "Caught Hopping at Peach's Castle!",
+    "chinese": "在碧姬公主城堡抓到蹦蹦！"
+  },
+  {
+    "id": 4,
+    "kingdom": "Mushroom",
+    "english": "Gardening for Toad: Garden Seed",
+    "chinese": "開花了！庭園的種子"
+  },
+  {
+    "id": 5,
+    "kingdom": "Mushroom",
+    "english": "Gardening for Toad: Field Seed",
+    "chinese": "開花了！花田的種子"
+  },
+  {
+    "id": 6,
+    "kingdom": "Mushroom",
+    "english": "Gardening for Toad: Pasture Seed",
+    "chinese": "開花了！牧場的種子"
+  },
+  {
+    "id": 7,
+    "kingdom": "Mushroom",
+    "english": "Gardening for Toad: Lake Seed",
+    "chinese": "開花了！蘑菇湖的種子"
+  },
+  {
+    "id": 8,
+    "kingdom": "Mushroom",
+    "english": "Grow a Flower Garden",
+    "chinese": "開花吧 後院的花"
+  },
+  {
+    "id": 9,
+    "kingdom": "Mushroom",
+    "english": "Mushroom Kingdom Timer Challenge",
+    "chinese": "蘑菇王國的滴答‧運動"
+  },
+  {
+    "id": 10,
+    "kingdom": "Mushroom",
+    "english": "Found at Peach's Castle! Good Dog!",
+    "chinese": "在碧姬公主城堡找到汪！"
+  },
+  {
+    "id": 11,
+    "kingdom": "Mushroom",
+    "english": "Taking Notes: Around the Well",
+    "chinese": "繞著水井蒐集音符"
+  },
+  {
+    "id": 12,
+    "kingdom": "Mushroom",
+    "english": "Herding Sheep at Peach's Castle",
+    "chinese": "在碧姬公主城堡趕綿羊"
+  },
+  {
+    "id": 13,
+    "kingdom": "Mushroom",
+    "english": "Gobbling Fruit with Yoshi",
+    "chinese": "還吃不夠耀西水果！"
+  },
+  {
+    "id": 14,
+    "kingdom": "Mushroom",
+    "english": "Yoshi's Second Helping!",
+    "chinese": "再來一份耀西水果！"
+  },
+  {
+    "id": 15,
+    "kingdom": "Mushroom",
+    "english": "Yoshi's All Filled Up!",
+    "chinese": "大飽口福耀西水果！"
+  },
+  {
+    "id": 16,
+    "kingdom": "Mushroom",
+    "english": "Love at Peach's Castle",
+    "chinese": "碧姬公主城堡的女朋友"
+  },
+  {
+    "id": 17,
+    "kingdom": "Mushroom",
+    "english": "Toad Defender",
+    "chinese": "奇諾比奧愛擋路"
+  },
+  {
+    "id": 18,
+    "kingdom": "Mushroom",
+    "english": "Forever Onward, Mushroomtain Toad!",
+    "chinese": "向前進！奇諾比奧隊長"
+  },
+  {
+    "id": 19,
+    "kingdom": "Mushroom",
+    "english": "Jammin' in the Mushroom Kingdom",
+    "chinese": "蘑菇王國的美妙音樂"
+  },
+  {
+    "id": 20,
+    "kingdom": "Mushroom",
+    "english": "Shopping Near Peach's Castle",
+    "chinese": "在碧姬公主城堡購物"
+  },
+  {
+    "id": 21,
+    "kingdom": "Mushroom",
+    "english": "Mushroom Kingdom Regular Cup",
+    "chinese": "蘑菇王國 標準杯"
+  },
+  {
+    "id": 22,
+    "kingdom": "Mushroom",
+    "english": "Mushroom Kingdom Master Cup",
+    "chinese": "蘑菇王國 大師杯"
+  },
+  {
+    "id": 23,
+    "kingdom": "Mushroom",
+    "english": "Picture Match: Basically Mario",
+    "chinese": "長得像嗎？五官拼圖瑪利歐"
+  },
+  {
+    "id": 24,
+    "kingdom": "Mushroom",
+    "english": "Picture Match: A Stellar Mario!",
+    "chinese": "一模一樣！五官拼圖瑪利歐"
+  },
+  {
+    "id": 25,
+    "kingdom": "Mushroom",
+    "english": "Light from the Ceiling",
+    "chinese": "來自天花板的光芒"
+  },
+  {
+    "id": 26,
+    "kingdom": "Mushroom",
+    "english": "Loose-Tile Trackdown",
+    "chinese": "凹凸不平的地板之謎"
+  },
+  {
+    "id": 27,
+    "kingdom": "Mushroom",
+    "english": "Totally Classic!",
+    "chinese": "那時候的回憶"
+  },
+  {
+    "id": 28,
+    "kingdom": "Mushroom",
+    "english": "Courtyard Chest Trap",
+    "chinese": "藏在中庭的藏寶箱陷阱"
+  },
+  {
+    "id": 29,
+    "kingdom": "Mushroom",
+    "english": "Yoshi's Feast in the Sea of Clouds",
+    "chinese": "雲海的耀西水果"
+  },
+  {
+    "id": 30,
+    "kingdom": "Mushroom",
+    "english": "Sunken Star in the Sea of Clouds",
+    "chinese": "沉入雲海的星辰"
+  },
+  {
+    "id": 31,
+    "kingdom": "Mushroom",
+    "english": "Secret 2D Treasure",
+    "chinese": "平面秘寶"
+  },
+  {
+    "id": 32,
+    "kingdom": "Mushroom",
+    "english": "2D Boost from Bullet Bill",
+    "chinese": "躍過平面炮彈刺客"
+  },
+  {
+    "id": 33,
+    "kingdom": "Mushroom",
+    "english": "Tussle in Tostarena: Rematch",
+    "chinese": "再現阿熾尼亞的對決"
+  },
+  {
+    "id": 34,
+    "kingdom": "Mushroom",
+    "english": "Struggle in Steam Gardens: Rematch",
+    "chinese": "再現斯機姆花園的生死搏鬥"
+  },
+  {
+    "id": 35,
+    "kingdom": "Mushroom",
+    "english": "Dust-Up in New Donk City: Rematch",
+    "chinese": "再現紐頓市的激戰"
+  },
+  {
+    "id": 36,
+    "kingdom": "Mushroom",
+    "english": "Battle in Bubblaine: Rematch",
+    "chinese": "再現舒瓦舒瓦娜的攻防"
+  },
+  {
+    "id": 37,
+    "kingdom": "Mushroom",
+    "english": "Blowup at Mount Volbono: Rematch",
+    "chinese": "再現波爾波諾的熱烈戰鬥"
+  },
+  {
+    "id": 38,
+    "kingdom": "Mushroom",
+    "english": "Rumble in Crumbleden: Rematch",
+    "chinese": "再現霍洛比亞的激烈衝突"
+  },
+  {
+    "id": 39,
+    "kingdom": "Mushroom",
+    "english": "Secret Path to Peach's Castle!",
+    "chinese": "歡迎來到碧姬公主城堡！"
+  },
+  {
+    "id": 40,
+    "kingdom": "Mushroom",
+    "english": "A Tourist in the Mushroom Kingdom!",
+    "chinese": "來到蘑菇王國了砂砂！"
+  },
+  {
+    "id": 41,
+    "kingdom": "Mushroom",
+    "english": "Found with Mushroom Kingdom Art",
+    "chinese": "找到在蘑菇王國看到的相片寶物"
+  },
+  {
+    "id": 42,
+    "kingdom": "Mushroom",
+    "english": "Hat-and-Seek: Mushroom Kingdom",
+    "chinese": "蘑菇王國的帽子捉迷藏"
+  },
+  {
+    "id": 43,
+    "kingdom": "Mushroom",
+    "english": "Princess Peach, Home Again!",
+    "chinese": "碧姬公主在蘑菇王國"
+  },
+  {
+    "id": 1,
+    "kingdom": "Dark Side",
+    "english": "Arrival at Rabbit Ridge!",
+    "chinese": "做個了結！兔子環形山"
+  },
+  {
+    "id": 2,
+    "kingdom": "Dark Side",
+    "english": "Dark Sidetain Toad on the Dark Side!",
+    "chinese": "在月球背面的巧遇！奇諾比奧隊長"
+  },
+  {
+    "id": 3,
+    "kingdom": "Dark Side",
+    "english": "Breakdown Road: Hurry!",
+    "chinese": "衝衝衝！崩塌的道路"
+  },
+  {
+    "id": 4,
+    "kingdom": "Dark Side",
+    "english": "Breakdown Road: Final Challenge!",
+    "chinese": "挑戰！崩塌的道路"
+  },
+  {
+    "id": 5,
+    "kingdom": "Dark Side",
+    "english": "Invisible Road: Rush!",
+    "chinese": "衝衝衝！透明道路"
+  },
+  {
+    "id": 6,
+    "kingdom": "Dark Side",
+    "english": "Invisible Road: Secret!",
+    "chinese": "挑戰！透明道路"
+  },
+  {
+    "id": 7,
+    "kingdom": "Dark Side",
+    "english": "Vanishing Road Rush",
+    "chinese": "衝衝衝！消失的道路"
+  },
+  {
+    "id": 8,
+    "kingdom": "Dark Side",
+    "english": "Vanishing Road Challenge",
+    "chinese": "挑戰！消失的道路"
+  },
+  {
+    "id": 9,
+    "kingdom": "Dark Side",
+    "english": "Yoshi Under Siege",
+    "chinese": "炮擊中的耀西"
+  },
+  {
+    "id": 10,
+    "kingdom": "Dark Side",
+    "english": "Fruit Feast Under Siege",
+    "chinese": "在炮擊中大吃一頓！"
+  },
+  {
+    "id": 11,
+    "kingdom": "Dark Side",
+    "english": "Yoshi on the Sinking Island",
+    "chinese": "沉沒之島的耀西"
+  },
+  {
+    "id": 12,
+    "kingdom": "Dark Side",
+    "english": "Fruit Feast on the Sinking Island",
+    "chinese": "在沉沒之島大吃一頓！"
+  },
+  {
+    "id": 13,
+    "kingdom": "Dark Side",
+    "english": "Yoshi's Magma Swamp",
+    "chinese": "岩漿沼澤的耀西"
+  },
+  {
+    "id": 14,
+    "kingdom": "Dark Side",
+    "english": "Fruit Feast in the Magma Swamp!",
+    "chinese": "在岩漿沼澤大吃一頓！"
+  },
+  {
+    "id": 15,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 1",
+    "chinese": "找到在月之國 背面看到的相片寶物１"
+  },
+  {
+    "id": 16,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 2",
+    "chinese": "找到在月之國 背面看到的相片寶物２"
+  },
+  {
+    "id": 17,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 3",
+    "chinese": "找到在月之國 背面看到的相片寶物３"
+  },
+  {
+    "id": 18,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 4",
+    "chinese": "找到在月之國 背面看到的相片寶物４"
+  },
+  {
+    "id": 19,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 5",
+    "chinese": "找到在月之國 背面看到的相片寶物５"
+  },
+  {
+    "id": 20,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 6",
+    "chinese": "找到在月之國 背面看到的相片寶物６"
+  },
+  {
+    "id": 21,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 7",
+    "chinese": "找到在月之國 背面看到的相片寶物７"
+  },
+  {
+    "id": 22,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 8",
+    "chinese": "找到在月之國 背面看到的相片寶物８"
+  },
+  {
+    "id": 23,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 9",
+    "chinese": "找到在月之國 背面看到的相片寶物９"
+  },
+  {
+    "id": 24,
+    "kingdom": "Dark Side",
+    "english": "Found with Dark Side Art 10",
+    "chinese": "找到在月之國 背面看到的相片寶物１０"
+  },
+  {
+    "id": 1,
+    "kingdom": "Darker Side",
+    "english": "Long Journey's End",
+    "chinese": "漫長旅途的終點"
+  }
+]
