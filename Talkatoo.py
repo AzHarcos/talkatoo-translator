@@ -92,7 +92,7 @@ for moon in moonlist:
 kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers", "Moon", "Mushroom"]
 current_kingdom = kingdom_list[1]  # Starting Kingdom
 collected_moons = []  # To be updated by JS probably?
-talkatoo_moons = {}  # Dictionary indexed by kingdom to see which moons Talkatoo has given us
+talkatoo_moons = {k: [] for k in kingdom_list}  # Dictionary indexed by kingdom to see which moons Talkatoo has given us
 
 # Final setup variables
 time_of_last_match = time.time() - 2
@@ -161,7 +161,7 @@ while True:
                 print("Possible Matches:", count)
         best_matches = len(ans)
         if best_matches == 1:
-            print("Best Match:\n\t{} (score={})\n".format("\n\t".join(ans[0]), max_corr))
+            print("Best Match:\n\t{} (score={})\n".format(ans, max_corr))
         else:
             print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join(ans), max_corr))
-        talkatoo_moons[ans[0]] = False
+        talkatoo_moons[current_kingdom].append({ans[0]: False})
