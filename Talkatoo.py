@@ -86,9 +86,9 @@ kingdoms = {}
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
     if this_kingdom in kingdoms:
-        kingdoms[this_kingdom][moon[TRANSLATE_FROM]] = {lang: moon[lang] for lang in LANGUAGES}  # Structured for future languages
+        kingdoms[this_kingdom][moon[TRANSLATE_FROM]] = {TRANSLATE_TO: moon[TRANSLATE_TO]}  # Structured for future languages
     else:
-        kingdoms[this_kingdom] = {moon[TRANSLATE_FROM]: {lang: moon[lang] for lang in LANGUAGES}}  # Structured for future languages
+        kingdoms[this_kingdom] = {moon[TRANSLATE_FROM]: {TRANSLATE_TO: moon[TRANSLATE_TO]}}  # Structured for future languages
 kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers", "Moon", "Mushroom"]
 current_kingdom = kingdom_list[1]  # Starting Kingdom
 collected_moons = []  # To be updated by JS probably?
