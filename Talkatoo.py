@@ -14,13 +14,16 @@ import pytesseract  # pip install pytesseract
 import time
 
 pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files (x86)/Tesseract-OCR/tesseract.exe"  # Path to tesseract executable
-TRANSLATE_FROM = "chi_tra"  # Use Pytesseract codes, chi_sim for Simplified Chinese and chi_tra for Traditional Chinese
-TRANSLATE_TO = "english"  # Language you want to translate to
-LANGUAGES = [TRANSLATE_TO]  # Include all languages supported, lowercase
+TRANSLATE_FROM_TESS = "chi_tra"  # Use Pytesseract codes, chi_sim for Simplified Chinese and chi_tra for Traditional Chinese
+LANGUAGES = ["english", "chinese_traditional", "chinese_simplified", "japanese", "korean", "dutch", "french_canada",
+             "french_france", "german", "italian", "spanish_spain", "spanish_latin_america", "russian"]
+TRANSLATE_FROM = "chinese_traditional"  # Language to translate from, moon-list.json keys
+TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
+
 DELAY_CONSTANT = 0.05  # Delays every iteration, used to reduce partial word readings as text scrolls. 0.05 is good here
 MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
 SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness
-VERBOSE = False
+VERBOSE = True  # Prints a lot more information
 
 VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 ENLARGE_COEF = 1  # Sometimes enlarging increased accuracy, keep to integer
@@ -47,7 +50,7 @@ def score_func(s, t):
 
 # Replace certain known problematic characters to make better matches
 def correct(string):
-    replacements = {" ": "", "，": "‧", ".": "‧", "1": "１", "2": "２", "3": "３", "!": "！"}
+    replacements = {" ": "", "，": "‧", ".": "‧", "1": "１", "|": "１", "2": "２", "3": "３", "!": "！"}
     for i in replacements:
         string = string.replace(i, replacements[i])
     return string
@@ -83,13 +86,13 @@ kingdoms = {}
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
     if this_kingdom in kingdoms:
-        kingdoms[this_kingdom][moon["chinese"]] = {lang: moon[lang] for lang in LANGUAGES}  # Structured for future languages
-        kingdoms[this_kingdom][moon["chinese"]]["collected"] = False
+        kingdoms[this_kingdom][moon[TRANSLATE_FROM]] = {lang: moon[lang] for lang in LANGUAGES}  # Structured for future languages
     else:
-        kingdoms[this_kingdom] = {moon["chinese"]: {lang: moon[lang] for lang in LANGUAGES}}  # Structured for future languages
-        kingdoms[this_kingdom][moon["chinese"]]["collected"] = False
+        kingdoms[this_kingdom] = {moon[TRANSLATE_FROM]: {lang: moon[lang] for lang in LANGUAGES}}  # Structured for future languages
 kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers", "Moon", "Mushroom"]
 current_kingdom = kingdom_list[1]  # Starting Kingdom
+collected_moons = []  # To be updated by JS probably?
+talkatoo_moons = {}  # Dictionary indexed by kingdom to see which moons Talkatoo has given us
 
 # Final setup variables
 time_of_last_match = time.time() - 2
@@ -129,7 +132,7 @@ while True:
         continue
 
     # Recognize and clean the output string
-    data = pytesseract.image_to_string(talkatoo_text, lang=TRANSLATE_FROM, config='--psm 6')
+    data = pytesseract.image_to_string(talkatoo_text, lang=TRANSLATE_FROM_TESS, config='--psm 6')
     data = correct(data.strip())
     if VERBOSE:
         print("Recognized Characters:", data)
@@ -158,6 +161,7 @@ while True:
                 print("Possible Matches:", count)
         best_matches = len(ans)
         if best_matches == 1:
-            print("Best Match:\n\t{}\n".format("\n\t".join(ans)))
+            print("Best Match:\n\t{} (score={})\n".format("\n\t".join(ans[0]), max_corr))
         else:
-            print("Best Matches({} total): {}".format(best_matches, " OR ".join(ans)))
+            print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join(ans), max_corr))
+        talkatoo_moons[ans[0]] = False
