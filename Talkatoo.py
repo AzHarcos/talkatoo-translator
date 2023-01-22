@@ -43,8 +43,6 @@ with open("moon-list.json", encoding="utf8") as moon_file:
     moonlist = json.loads(moonlist)  # moonlist now a list of dictionaries, one for each moon
 
 # Dictionary to store all moons by kingdom
-# Language indexing as follows: kingdoms["Cap"]["chinese_moon"]["language_name"]
-# Collected Boolean as follows: kingdoms["Cap"]["chinese_moon"]["collected"]
 kingdoms = {}
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
@@ -55,10 +53,7 @@ for moon in moonlist:
 
 kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom"]  # to store class values, DO NOT CHANGE ORDER
-active_kingdoms = ["Cascade", "Sand", "Wooded", "Lake", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers"]
-current_kingdom_idx = 0  # Start in Cascade
-current_kingdom = active_kingdoms[current_kingdom_idx]
-collected_moons = []  # To be updated by JS probably?
+current_kingdom = "Cascade"
 mentioned_moons = []  # list of moons mentioned by talkatoo
 
 # Setup kingdom recognizer

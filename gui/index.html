@@ -14,9 +14,9 @@
           </div>
         <div v-if="selectedKingdom" class="container">
             <div class="card">
-                <div class="list">
-                    <div v-for="moon in currentKingdomMoons" class="list-item" :class="{'collected': moon.collected}" @click="toggleMoonCollected(moon)">
-                        {{ moon.id }} - {{ moon.chinese_simplified }} - {{ moon.english }}
+                <div v-if="selectedKingdomMoons.length > 0" class="list">
+                    <div v-for="moon in selectedKingdomMoons" class="list-item" :class="{'collected': isCollected(moon)}" @click="toggleMoonCollected(moon)">
+                        {{ moon.id }} - {{ moon.english }} - {{ moon.chinese_simplified }}
                     </div>
                 </div>
             </div>
@@ -34,7 +34,8 @@
             return {
                 kingdoms: ["Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers"],
                 mentionedMoons: [],
-                selectedKingdom: "Cascade",
+                collectedMoons: [],
+                selectedKingdom: "Cascade"
             }
         },
         methods: {
@@ -42,9 +43,9 @@
                 eel.get_mentioned_moons()().then(response => {
                     if (response.length > this.mentionedMoons.length) {
                         this.mentionedMoons = response;
-                        const newestMoon = this.mentionedMoons[this.mentionedMoons.length - 1];
-                        console.log(newestMoon.english);
-                        this.selectedKingdom = newestMoon.kingdom;
+
+                        const latestMoon = response[response.length - 1];
+                        this.selectedKingdom = latestMoon.kingdom;
                     }
                 });
             },
@@ -52,11 +53,18 @@
                 this.selectedKingdom = kingdom;
             },
             toggleMoonCollected(moon) {
-                moon.collected = !moon.collected;
+                if (this.isCollected(moon)) {
+                    this.collectedMoons = this.collectedMoons.filter(m => m.id !== moon.id);
+                } else {
+                    this.collectedMoons.push(moon);
+                }
+            },
+            isCollected(moon) {
+                return this.collectedMoons.some(m => m.id === moon.id);
             }
         },
         computed: {
-            currentKingdomMoons() {
+            selectedKingdomMoons() {
                 return this.mentionedMoons.filter(moon => moon.kingdom === this.selectedKingdom);
             }
         },
