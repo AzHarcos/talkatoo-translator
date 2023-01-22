@@ -1,0 +1,163 @@
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<div id="app">
+    <head>
+        <title>SMO Talkatoo Translator</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="window" v-bind:style="{ backgroundImage: 'url(\'images/' + selectedKingdom + '.png\')' }">
+          <div class="tabs">
+            <div v-for="kingdom in kingdoms" class="tab" :class="{'selected': kingdom === selectedKingdom}" @click="selectKingdom(kingdom)">
+                {{ kingdom }}
+            </div>
+          </div>
+        <div v-if="selectedKingdom" class="container">
+            <div class="card">
+                <div v-if="selectedKingdomMoons.length > 0" class="list">
+                    <div v-for="moon in selectedKingdomMoons" class="list-item" :class="{'collected': isCollected(moon)}" @click="toggleMoonCollected(moon)">
+                        {{ moon.id }} - {{ moon.english }} - {{ moon.chinese_simplified }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</div>
+
+<script type="text/javascript" src="/eel.js"></script>
+
+<script>
+    const { createApp } = Vue
+
+    createApp({
+        data() {
+            return {
+                kingdoms: ["Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers"],
+                mentionedMoons: [],
+                collectedMoons: [],
+                selectedKingdom: "Cascade"
+            }
+        },
+        methods: {
+            updateData() {
+                eel.get_mentioned_moons()().then(response => {
+                    if (response.length > this.mentionedMoons.length) {
+                        this.mentionedMoons = response;
+
+                        const latestMoon = response[response.length - 1];
+                        this.selectedKingdom = latestMoon.kingdom;
+                    }
+                });
+            },
+            selectKingdom(kingdom) {
+                this.selectedKingdom = kingdom;
+            },
+            toggleMoonCollected(moon) {
+                if (this.isCollected(moon)) {
+                    this.collectedMoons = this.collectedMoons.filter(m => m.id !== moon.id);
+                } else {
+                    this.collectedMoons.push(moon);
+                }
+            },
+            isCollected(moon) {
+                return this.collectedMoons.some(m => m.id === moon.id);
+            }
+        },
+        computed: {
+            selectedKingdomMoons() {
+                return this.mentionedMoons.filter(moon => moon.kingdom === this.selectedKingdom);
+            }
+        },
+        created() {
+            setInterval(this.updateData, 1000);
+        },
+    }).mount('#app')
+
+</script>
+
+<style>
+
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .window {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        background-repeat: no-repeat; /* Do not repeat the image */
+        background-size: cover; /* Resize the background image to cover the entire container */
+        background-position: center;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12); /* This is the default border color for UI elements in Material Design */
+        background-color: #464454;
+        color: #f5f5f5;
+    }
+
+    .tab {
+        width: calc(100% / 12);
+        padding: 10px;
+        cursor: pointer;
+        font-size: 14px; /* This is the default font size for body text in Material Design */
+        font-weight: 500;
+        background-color: #464454;
+        text-align: center;
+        color: #f5f5f5;
+    }
+
+    .selected {
+        background-color: #343338;
+    }
+
+    .container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .card {
+        margin: 100px 32px 0;
+        width: 1000px;
+        border-radius: 6px; /* This will give the card rounded corners */
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); /* This will give the card a shadow */
+        display: flex;
+        justify-content: center; /* This will center the content inside the card */
+        align-items: center; /* This will center the content inside the card */
+        background-color: #464454;
+        opacity: 0.9;
+    }
+
+    .list {
+        background-color: #464454;
+        color: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin-top: 5px;
+    }
+
+    .list-item {
+        height: 24px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+
+    .collected {
+        text-decoration: line-through;
+    }
+</style>
+

@@ -7,11 +7,17 @@ This Python script takes the broad approach:
 """
 
 import cv2  # pip install opencv-python
+import eel  # pip install eel
 import json
 from PIL import Image  # pip install pillow
 import pytesseract  # pip install pytesseract
                     # Then install language files from https://github.com/tesseract-ocr/tessdata and place in tessdata
 import time
+import torch  # pip install pytorch
+import torchvision.transforms as transforms  # should come with pytorch
+
+
+# parameters that could be set in the gui: capture card resolution, game language, output language, kingdom list (which kingdoms + which order)
 
 pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files (x86)/Tesseract-OCR/tesseract.exe"  # Path to tesseract executable
 TRANSLATE_FROM_TESS = "chi_tra"  # Use Pytesseract codes, chi_sim for Simplified Chinese and chi_tra for Traditional Chinese
@@ -20,32 +26,68 @@ LANGUAGES = ["english", "chinese_traditional", "chinese_simplified", "japanese",
 TRANSLATE_FROM = "chinese_traditional"  # Language to translate from, moon-list.json keys
 TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
 
-DELAY_CONSTANT = 0.05  # Delays every iteration, used to reduce partial word readings as text scrolls. 0.05 is good here
-MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
+CHECK_KINGDOM_EVERY = 100  # Currently iterations are ~0.06s each, and checking kingdom is about 0.006s after in cache
 SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness
-VERBOSE = True  # Prints a lot more information
+VERBOSE = False  # Prints a lot more information
 
-VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 ENLARGE_COEF = 1  # Sometimes enlarging increased accuracy, keep to integer
 IM_WIDTH = 1280  # Width of game feed images in pixels
 IM_HEIGHT = 720  # Height of game feed images in pixels
+MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
+VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 
 
-# Pseudo-Levenshtein distance cost function
-# Note that this implementation does not consider ordering, which is safe enough in Chinese/Japanese
-# For languages that use our alphabet, we need a more restrictive/tuned matching system that will be far less efficient
-def score_func(s, t):
-    s = list(s)
-    t = list(t)
-    cost = 0
-    corr = 0
-    for c in s:
-        if c in t:  # Character match
-            t.remove(c)
-            corr += 1
-        else:
-            cost += 1
-    return corr - cost
+# Read JSON data
+with open("moon-list.json", encoding="utf8") as moon_file:
+    moonlist = "".join([line.strip() for line in moon_file.readlines()])
+    moonlist = json.loads(moonlist)  # moonlist now a list of dictionaries, one for each moon
+
+# Dictionary to store all moons by kingdom
+kingdoms = {}
+for moon in moonlist:
+    this_kingdom = moon["kingdom"]
+    if this_kingdom in kingdoms:
+        kingdoms[this_kingdom].append(moon)
+    else:
+        kingdoms[this_kingdom] = [moon]
+
+kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
+                "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom"]  # to store class values, DO NOT CHANGE ORDER
+current_kingdom = "Cascade"
+mentioned_moons = []  # list of moons mentioned by talkatoo
+
+# Setup kingdom recognizer
+kindom_classifier = torch.jit.load('model.zip')  # Load my model
+transform = transforms.PILToTensor()  # Needed to transform image
+
+# Final setup variables
+check_kingdom_in = 1  # Start at 1 to check immediately
+text_potential = 0  # So we don't read partial text
+time_of_last_match = time.time() - 2
+x1, y1, x2, y2 = int(200/1280*IM_WIDTH), int(565/720*IM_HEIGHT), int(1000/1280*IM_WIDTH), int(605/720*IM_HEIGHT)
+x3, y3, x4, y4 = int(180/1280*IM_WIDTH), int(40/720*IM_HEIGHT), int(230/1280*IM_WIDTH), int(90/720*IM_HEIGHT)
+stream = cv2.VideoCapture(VIDEO_INDEX)  # Set up capture card
+eel.init('gui')  # Initialize the gui package
+eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
+print("Setup complete! You may now approach the bird.\n")
+
+
+def check_matches():
+    max_corr = -100  # so low it will never matter
+    ans = []
+    count = 0
+    for m in kingdoms[current_kingdom]:  # Loop through moons in the current kingdom
+        corr = score_func(m[TRANSLATE_FROM], data)  # Determine score for moon being compared
+        if corr > max_corr:  # Best match so far
+            max_corr = corr
+            ans = [m]
+        elif corr == max_corr:  # Equally good as best match
+            ans.append(m)
+        if corr >= SCORE_THRESHOLD - 1:  # Loose match, we don't need this but could situationally be useful
+            if VERBOSE:
+                print("Possible Match:", m[TRANSLATE_TO], "(score={})".format(corr))
+            count += 1
+    return max_corr, ans, count
 
 
 # Replace certain known problematic characters to make better matches
@@ -56,101 +98,98 @@ def correct(string):
     return string
 
 
-# Crops an image to talkatoo text only. Not currently used.
-def crop_talkatoo(im):
-    min_x, min_y, max_x, max_y = 1000, 1000, 0, 0
-    for row in range(0, im.width):
-        for col in range(0, im.height):
-            if im.getpixel((row, col))[2] < 10:
-                if row > max_x:
-                    max_x = row
-                if row < min_x:
-                    min_x = row
-                if col > max_y:
-                    max_y = col
-                if col < min_y:
-                    min_y = col
-    cropped_talkatoo = im.crop((min_x, min_y, max_x, max_y))
-    return cropped_talkatoo
+# expose the moons given by talkatoo to the gui
+@eel.expose
+def get_mentioned_moons():
+    return mentioned_moons
 
 
-# Read JSON data
-with open("moon-list.json", encoding="utf8") as moon_file:
-    moonlist = "".join([line.strip() for line in moon_file.readlines()])
-    moonlist = json.loads(moonlist)  # moonlist now a list of dictionaries, one for each moon
+def kingdom_bw(kingdom_image):
+    for row in range(0, kingdom_image.width):
+        for col in range(0, kingdom_image.height):
+            pixel = kingdom_image.getpixel((row, col))
+            if pixel[0] > 240 and pixel[1] > 240 and pixel[2] > 240:  # Note that capture card coloring may vary slightly
+                kingdom_image.putpixel((row, col), (0, 0, 0))
+            else:
+                kingdom_image.putpixel((row, col), (255, 255, 255))
+    return kingdom_image
 
-# Dictionary to store all moons by kingdom
-# Language indexing as follows: kingdoms["Cap"]["chinese_moon"]["language_name"]
-# Collected Boolean as follows: kingdoms["Cap"]["chinese_moon"]["collected"]
-kingdoms = {}
-for moon in moonlist:
-    this_kingdom = moon["kingdom"]
-    if this_kingdom in kingdoms:
-        kingdoms[this_kingdom][moon[TRANSLATE_FROM]] = {TRANSLATE_TO: moon[TRANSLATE_TO]}  # Structured for future languages
-    else:
-        kingdoms[this_kingdom] = {moon[TRANSLATE_FROM]: {TRANSLATE_TO: moon[TRANSLATE_TO]}}  # Structured for future languages
-kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers", "Moon", "Mushroom"]
-current_kingdom = kingdom_list[1]  # Starting Kingdom
-collected_moons = []  # To be updated by JS probably?
-talkatoo_moons = {k: [] for k in kingdom_list}  # Dictionary indexed by kingdom to see which moons Talkatoo has given us
 
-# Final setup variables
-time_of_last_match = time.time() - 2
-x1, y1, x2, y2 = int(200/1280*IM_WIDTH), int(565/720*IM_HEIGHT), int(1000/1280*IM_WIDTH), int(605/720*IM_HEIGHT)
-stream = cv2.VideoCapture(VIDEO_INDEX)
-print("Setup complete! You may now approach the bird.\n")
+# Pseudo-Levenshtein distance cost function
+# Note that this implementation does not consider ordering, which is safe enough in Chinese/Japanese
+# For languages that use our alphabet, we need a more restrictive/tuned matching system that will be far less efficient
+def score_func(s, t):
+    s, t = list(s), list(t)
+    cost, cor = 0, 0
+    for c in s:
+        if c in t:  # Character match
+            t.remove(c)
+            cor += 1
+        else:
+            cost += 1
+    return cor - cost
 
-# Begin iteration
+
+def talkatoo_preprocess(img):
+    text_count = 0
+    total_count = 0
+    for row in range(0, img.width):
+        for col in range(0, img.height):
+            pixel = img.getpixel((row, col))
+            if pixel[0] > 200 and pixel[1] > 200 and pixel[2] < 120:  # Note that capture card coloring may vary slightly
+                img.putpixel((row, col), (0, 0, 0))
+                text_count += 1
+            else:
+                img.putpixel((row, col), (255, 255, 255))
+            total_count += 1
+    return img, text_count < MIN_TEXT_COUNT
+
+
+def update_kingdom(img):
+    kc_tensor = transform(img).unsqueeze(dim=0).type(torch.float32)
+    result = int(torch.argmax(kindom_classifier(kc_tensor), dim=1))
+    if result < 13:  # 13 is "Other" in my model
+        new_kingdom = kingdom_list[result]
+        return new_kingdom
+    return None
+
+
 while True:
+    # sleep is necessary to run both gui and image processing
+    eel.sleep(0.01)  # 0.001 is too little but 0.01 seems to work
     # Retrieve and resize image
     grabbed, frame = stream.read()
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     image = Image.fromarray(image)
+
+    check_kingdom_in -= 1
+    if check_kingdom_in == 0:
+        kingdom_checker = image.crop((x3, y3, x4, y4)).resize((50, 50))  # Must be resized (if not my resolution) in order to fit into the classifier
+        kingdom_checker = kingdom_bw(kingdom_checker)
+        new_kingdom = update_kingdom(kingdom_checker)
+        if new_kingdom and new_kingdom != current_kingdom:
+            current_kingdom = new_kingdom
+            print("Kingdom changed to: ", new_kingdom)
+        check_kingdom_in = CHECK_KINGDOM_EVERY
+
     talkatoo_text = image.crop((x1, y1, x2, y2))
-    talkatoo_text = talkatoo_text.resize(((x2-x1)*ENLARGE_COEF, (y2-y1)*ENLARGE_COEF))  # Enlarging sometimes helps
+    talkatoo_text = talkatoo_text.resize(((x2-x1)*ENLARGE_COEF, (y2-y1)*ENLARGE_COEF))  # Enlarging sometimes helps OCR
 
     # Make yellow pixels black, all else white
-    text_count = 0
-    total_count = 0
-    for row in range(0, talkatoo_text.width):
-        for col in range(0, talkatoo_text.height):
-            pixel = talkatoo_text.getpixel((row, col))
-            if pixel[0] > 200 and pixel[1] > 200 and pixel[2] < 120:  # Note that capture card coloring may vary slightly
-                talkatoo_text.putpixel((row, col), (0, 0, 0))
-                text_count += 1
-            else:
-                talkatoo_text.putpixel((row, col), (255, 255, 255))
-            total_count += 1
-
-    if text_count < MIN_TEXT_COUNT:  # If there isn't enough text, don't go to OCR step because OCR is very slow
-        time.sleep(DELAY_CONSTANT)  # Helps frequent partial-moon readings, can adjust if needed
+    talkatoo_text, is_no_text = talkatoo_preprocess(talkatoo_text)
+    if is_no_text:
         continue
-
-    # talkatoo_text.show()  # Show preprocessed text image
-
-    if time.time() - time_of_last_match < 1:  # If too soon after the last one, it's a repeat so skip
+    text_potential += 1
+    if text_potential < 3 or time.time() - time_of_last_match < 1:
         continue
 
     # Recognize and clean the output string
     data = pytesseract.image_to_string(talkatoo_text, lang=TRANSLATE_FROM_TESS, config='--psm 6')
     data = correct(data.strip())
     if VERBOSE:
-        print("Recognized Characters:", data)
+        print("Recognized Characters:", data, "({})".format(current_kingdom ))
 
-    max_corr = -100  # so low it will never matter
-    ans = []
-    count = 0
-    for m in kingdoms[current_kingdom]:  # Loop through moons in the current kingdom
-        corr = score_func(m, data)  # Determine score for moon being compared
-        if corr > max_corr:  # Best match so far
-            max_corr = corr
-            ans = [kingdoms[current_kingdom][m][TRANSLATE_TO]]  # English name, in this case
-        elif corr == max_corr:  # Equally good as best match
-            ans.append(kingdoms[current_kingdom][m][TRANSLATE_TO])  # English name, in this case
-        if corr >= SCORE_THRESHOLD - 1:  # Loose match , we don't need this but could situationally be useful
-            if VERBOSE:
-                print("Possible Match:", kingdoms[current_kingdom][m][TRANSLATE_TO], "(score={})".format(corr))
-            count += 1
+    max_corr, ans, count = check_matches()
 
     if max_corr >= SCORE_THRESHOLD:  # If any reasonable matches
         time_of_last_match = time.time()  # Set up so no duplicates
@@ -161,7 +200,9 @@ while True:
                 print("Possible Matches:", count)
         best_matches = len(ans)
         if best_matches == 1:
-            print("Best Match:\n\t{} (score={})\n".format(ans, max_corr))
+            print("Best Match:\n\t{} (score={})\n".format(ans[0]["english"], max_corr))
         else:
             print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join(ans), max_corr))
-        talkatoo_moons[current_kingdom].append({ans[0]: False})
+
+        if ans[0] not in mentioned_moons:
+            mentioned_moons.append(ans[0])
