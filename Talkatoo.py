@@ -169,7 +169,7 @@ while True:
 
     check_kingdom_in -= 1
     if check_kingdom_in == 0:
-        kingdom_checker = image.crop((x3, y3, x4, y4))
+        kingdom_checker = image.crop((x3, y3, x4, y4)).resize((50, 50))  # Must be resized (if not my resolution) in order to fit into the classifier
         kingdom_checker = kingdom_bw(kingdom_checker)
         new_kingdom = update_kingdom(kingdom_checker)
         if new_kingdom and new_kingdom != current_kingdom:
