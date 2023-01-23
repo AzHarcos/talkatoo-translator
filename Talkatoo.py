@@ -31,8 +31,8 @@ SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for
 VERBOSE = False  # Prints a lot more information
 
 ENLARGE_COEF = 1  # Sometimes enlarging increased accuracy, keep to integer
-IM_WIDTH = 1280  # Width of game feed images in pixels
-IM_HEIGHT = 720  # Height of game feed images in pixels
+IM_WIDTH = 1920  # Width of game feed images in pixels
+IM_HEIGHT = 1080  # Height of game feed images in pixels
 MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
 VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 
@@ -43,6 +43,8 @@ with open("moon-list.json", encoding="utf8") as moon_file:
     moonlist = json.loads(moonlist)  # moonlist now a list of dictionaries, one for each moon
 
 # Dictionary to store all moons by kingdom
+# Language indexing as follows: kingdoms["Cap"]["chinese_moon"]["language_name"]
+# Collected Boolean as follows: kingdoms["Cap"]["chinese_moon"]["collected"]
 kingdoms = {}
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
@@ -53,7 +55,10 @@ for moon in moonlist:
 
 kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom"]  # to store class values, DO NOT CHANGE ORDER
-current_kingdom = "Cascade"
+active_kingdoms = ["Cascade", "Sand", "Wooded", "Lake", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers"]
+current_kingdom_idx = 0  # Start in Cascade
+current_kingdom = active_kingdoms[current_kingdom_idx]
+collected_moons = []  # To be updated by JS probably?
 mentioned_moons = []  # list of moons mentioned by talkatoo
 
 # Setup kingdom recognizer
@@ -65,7 +70,7 @@ check_kingdom_in = 1  # Start at 1 to check immediately
 text_potential = 0  # So we don't read partial text
 time_of_last_match = time.time() - 2
 x1, y1, x2, y2 = int(200/1280*IM_WIDTH), int(565/720*IM_HEIGHT), int(1000/1280*IM_WIDTH), int(605/720*IM_HEIGHT)
-x3, y3, x4, y4 = int(180/1280*IM_WIDTH), int(40/720*IM_HEIGHT), int(230/1280*IM_WIDTH), int(90/720*IM_HEIGHT)
+x3, y3, x4, y4 = int(163/1280*IM_WIDTH), int(27/720*IM_HEIGHT), int(213/1280*IM_WIDTH), int(77/720*IM_HEIGHT)
 stream = cv2.VideoCapture(VIDEO_INDEX)  # Set up capture card
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
@@ -96,6 +101,33 @@ def correct(string):
     for i in replacements:
         string = string.replace(i, replacements[i])
     return string
+
+
+def determine_borders(im):
+    min_x, max_x, min_y, max_y = 0, im.width-1, 0, im.height-1
+    thresh_x = 20  # some cc error, but if sum of RGB for an entire row or column is less than this,
+    thresh_y = 20  # we can consider it to be black. 12 has worked for me but 20 to be slightly safer.
+    for i in range(im.width):
+        col_sum = max([sum(im.getpixel((i, j))) for j in range(im.height)])
+        min_x += 1
+        if col_sum > thresh_x:
+            break
+    for i in range(im.width-1, 0, -1):
+        col_sum = max([sum(im.getpixel((i, j))) for j in range(im.height)])
+        if col_sum > thresh_x:
+            break
+        max_x -= 1
+    for j in range(im.height):
+        col_sum = max([sum(im.getpixel((i, j))) for i in range(im.width)])
+        min_y += 1
+        if col_sum > thresh_y:
+            break
+    for j in range(im.height-1, 0, -1):
+        col_sum = max([sum(im.getpixel((i, j))) for i in range(im.width)])
+        if col_sum > thresh_y:
+            break
+        max_y -= 1
+    return min_x, min_y, max_x, max_y
 
 
 # expose the moons given by talkatoo to the gui
@@ -154,6 +186,10 @@ def update_kingdom(img):
     return None
 
 
+# Black borders on the sides of the screen
+# Make sure to be in an environment without black fully lining the side/black screen, or this won't work
+# Ideally can make a reset button on GUI to rerun this code?
+borders = determine_borders(Image.fromarray(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB)))
 while True:
     # sleep is necessary to run both gui and image processing
     eel.sleep(0.01)  # 0.001 is too little but 0.01 seems to work
@@ -161,10 +197,11 @@ while True:
     grabbed, frame = stream.read()
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     image = Image.fromarray(image)
+    image = image.crop(borders).resize((IM_WIDTH, IM_HEIGHT))
 
     check_kingdom_in -= 1
     if check_kingdom_in == 0:
-        kingdom_checker = image.crop((x3, y3, x4, y4)).resize((50, 50))  # Must be resized (if not my resolution) in order to fit into the classifier
+        kingdom_checker = image.crop((x3, y3, x4, y4)).resize((50, 50))
         kingdom_checker = kingdom_bw(kingdom_checker)
         new_kingdom = update_kingdom(kingdom_checker)
         if new_kingdom and new_kingdom != current_kingdom:
@@ -173,15 +210,19 @@ while True:
         check_kingdom_in = CHECK_KINGDOM_EVERY
 
     talkatoo_text = image.crop((x1, y1, x2, y2))
-    talkatoo_text = talkatoo_text.resize(((x2-x1)*ENLARGE_COEF, (y2-y1)*ENLARGE_COEF))  # Enlarging sometimes helps OCR
+    if ENLARGE_COEF != 1:
+        talkatoo_text = talkatoo_text.resize(((x2-x1)*ENLARGE_COEF, (y2-y1)*ENLARGE_COEF))  # Enlarging sometimes helps OCR
 
     # Make yellow pixels black, all else white
     talkatoo_text, is_no_text = talkatoo_preprocess(talkatoo_text)
+
     if is_no_text:
+        text_potential = 0
         continue
     text_potential += 1
     if text_potential < 3 or time.time() - time_of_last_match < 1:
         continue
+    text_potential = 0
 
     # Recognize and clean the output string
     data = pytesseract.image_to_string(talkatoo_text, lang=TRANSLATE_FROM_TESS, config='--psm 6')
@@ -202,7 +243,7 @@ while True:
         if best_matches == 1:
             print("Best Match:\n\t{} (score={})\n".format(ans[0]["english"], max_corr))
         else:
-            print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join(ans), max_corr))
+            print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join([poss["english"] for poss in ans]), max_corr))
 
         if ans[0] not in mentioned_moons:
             mentioned_moons.append(ans[0])
