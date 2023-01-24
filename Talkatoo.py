@@ -9,6 +9,7 @@ This Python script takes the broad approach:
 import cv2  # pip install opencv-python
 import eel  # pip install eel
 import json
+from math import sqrt
 from PIL import Image  # pip install pillow
 import pytesseract  # pip install pytesseract
                     # Then install language files from https://github.com/tesseract-ocr/tessdata and place in tessdata
@@ -26,7 +27,7 @@ LANGUAGES = ["english", "chinese_traditional", "chinese_simplified", "japanese",
 TRANSLATE_FROM = "chinese_traditional"  # Language to translate from, moon-list.json keys
 TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
 
-CHECK_KINGDOM_EVERY = 100  # Currently iterations are ~0.06s each, and checking kingdom is about 0.006s after in cache
+CHECK_KINGDOM_EVERY = 100  # Currently iterations are ~0.07s each, and checking kingdom is about 0.006s after in cache
 SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness
 VERBOSE = False  # Prints a lot more information
 
@@ -69,7 +70,7 @@ transform = transforms.PILToTensor()  # Needed to transform image
 check_kingdom_in = 1  # Start at 1 to check immediately
 text_potential = 0  # So we don't read partial text
 time_of_last_match = time.time() - 2
-x1, y1, x2, y2 = int(200/1280*IM_WIDTH), int(565/720*IM_HEIGHT), int(1000/1280*IM_WIDTH), int(605/720*IM_HEIGHT)
+x1, y1, x2, y2 = int(350/1280*IM_WIDTH), int(565/720*IM_HEIGHT), int(1000/1280*IM_WIDTH), int(615/720*IM_HEIGHT)
 x3, y3, x4, y4 = int(163/1280*IM_WIDTH), int(27/720*IM_HEIGHT), int(213/1280*IM_WIDTH), int(77/720*IM_HEIGHT)
 stream = cv2.VideoCapture(VIDEO_INDEX)  # Set up capture card
 eel.init('gui')  # Initialize the gui package
@@ -88,8 +89,8 @@ def check_matches():
             ans = [m]
         elif corr == max_corr:  # Equally good as best match
             ans.append(m)
-        if corr >= SCORE_THRESHOLD - 1:  # Loose match, we don't need this but could situationally be useful
-            if VERBOSE:
+        if corr >= SCORE_THRESHOLD:  # Loose match, we don't need this but could situationally be useful
+            if VERBOSE or True:
                 print("Possible Match:", m[TRANSLATE_TO], "(score={})".format(corr))
             count += 1
     return max_corr, ans, count
@@ -150,12 +151,20 @@ def kingdom_bw(kingdom_image):
 # Pseudo-Levenshtein distance cost function
 # Note that this implementation does not consider ordering, which is safe enough in Chinese/Japanese
 # For languages that use our alphabet, we need a more restrictive/tuned matching system that will be far less efficient
-def score_func(s, t):
-    s, t = list(s), list(t)
+def score_func(proper_moon, test_moon):
+    proper_moon, test_moon = list(proper_moon), list(test_moon)
     cost, cor = 0, 0
-    for c in s:
-        if c in t:  # Character match
-            t.remove(c)
+    trav_index = 0
+    for c in proper_moon:
+        ind = trav_index
+        found = False
+        while ind < len(test_moon):
+            if test_moon[ind] == c:
+                found = True
+                trav_index = ind + 1
+                break
+            ind += 1
+        if found:
             cor += 1
         else:
             cost += 1
@@ -165,10 +174,11 @@ def score_func(s, t):
 def talkatoo_preprocess(img):
     text_count = 0
     total_count = 0
+    g_val = 220 if current_kingdom == "Sand" else 200
     for row in range(0, img.width):
         for col in range(0, img.height):
             pixel = img.getpixel((row, col))
-            if pixel[0] > 200 and pixel[1] > 200 and pixel[2] < 120:  # Note that capture card coloring may vary slightly
+            if pixel[0] > 200 and pixel[1] > g_val and pixel[2] < 120:  # Note that capture card coloring may vary slightly
                 img.putpixel((row, col), (0, 0, 0))
                 text_count += 1
             else:
@@ -220,7 +230,7 @@ while True:
         text_potential = 0
         continue
     text_potential += 1
-    if text_potential < 3 or time.time() - time_of_last_match < 1:
+    if text_potential < 2 or time.time() - time_of_last_match < 1:
         continue
     text_potential = 0
 
