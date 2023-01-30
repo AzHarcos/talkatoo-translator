@@ -23,10 +23,10 @@ import torchvision.transforms as transforms  # should come with pytorch
 # parameters that could be set in the gui: capture card resolution, game language, output language, kingdom list (which kingdoms + which order)
 
 pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files (x86)/Tesseract-OCR/tesseract.exe"  # Path to tesseract executable
-TRANSLATE_FROM_TESS = "chi_tra"  # Use Tesseract codes, chi_sim for Simplified Chinese or chi_tra for Traditional Chinese
+TRANSLATE_FROM_TESS = "chi_sim"  # Use Tesseract codes, chi_sim for Simplified Chinese or chi_tra for Traditional Chinese
 LANGUAGES = ["english", "chinese_traditional", "chinese_simplified", "japanese", "korean", "dutch", "french_canada",
              "french_france", "german", "italian", "spanish_spain", "spanish_latin_america", "russian"]
-TRANSLATE_FROM = "chinese_traditional"  # Language to translate from, moon-list.json keys
+TRANSLATE_FROM = "chinese_simplified"  # Language to translate from, moon-list.json keys
 TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
 
 CHECK_KINGDOM_EVERY = 80  # Currently iterations are ~0.05s each
@@ -36,8 +36,8 @@ SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for
 TEXT_CERTAINTY = 0.90  # Classifier certainty that the input is text and not random pixels
 VERBOSE = False  # Prints a lot more information
 
-IM_WIDTH = 1280  # Width of game feed images in pixels
-IM_HEIGHT = 720  # Height of game feed images in pixels
+IM_WIDTH = 1920  # Width of game feed images in pixels
+IM_HEIGHT = 1080  # Height of game feed images in pixels
 MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
 VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 
@@ -49,13 +49,13 @@ with open("moon-list.json", encoding="utf8") as moon_file:
 
 # Dictionary to store all moons by kingdom
 # Language indexing as follows: kingdoms["Cap"]["chinese_moon"]["language_name"]
-kingdoms = {}
+moons_by_kingdom = {}
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
-    if this_kingdom in kingdoms:
-        kingdoms[this_kingdom].append(moon)
+    if this_kingdom in moons_by_kingdom:
+        moons_by_kingdom[this_kingdom].append(moon)
     else:
-        kingdoms[this_kingdom] = [moon]
+        moons_by_kingdom[this_kingdom] = [moon]
 
 kingdom_list = ["Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom"]  # to store class values, DO NOT CHANGE ORDER
@@ -96,7 +96,7 @@ def check_matches(poss_moon):
     max_corr = -100  # so low it will never matter
     ans = []  # best matches
     poss_matches = {}  # Loose matches
-    for m in kingdoms[current_kingdom]:  # Loop through moons in the current kingdom
+    for m in moons_by_kingdom[current_kingdom]:  # Loop through moons in the current kingdom
         corr = score_func(m[TRANSLATE_FROM], poss_moon)  # Determine score for moon being compared
         if corr > max_corr:  # Best match so far
             max_corr = corr
@@ -155,6 +155,12 @@ def determine_borders(im):
         min_y = 0
         max_y = IM_HEIGHT - 1
     return min_x, min_y, max_x, max_y
+
+
+# Expose the kingdom moons dictionary to the gui
+@eel.expose
+def get_moons_by_kingdom():
+    return moons_by_kingdom
 
 
 # Expose the moons given by talkatoo to the gui
@@ -334,9 +340,9 @@ while True:
         best_matches = len(ans)
         if best_matches == 1:
             print("Best Match:\n\t{} (score={})\n".format(ans[0]["english"], max_corr))
-            if ans[0] not in mentioned_moons:
-                mentioned_moons.append(ans[0])
         else:
             print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join([poss["english"] for poss in ans]), max_corr))
-            if ans[0] not in mentioned_moons:
-                mentioned_moons.append(ans[0])  # Note that this only adds one match! To be fixed, but should mark as "unsure"
+        if ans not in mentioned_moons:
+            for m in ans:
+                m['certainty'] = possible[m[TRANSLATE_TO]]
+            mentioned_moons.append(ans)
