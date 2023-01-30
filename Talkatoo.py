@@ -9,7 +9,10 @@ This Python script takes the broad approach:
 import cv2  # pip install opencv-python
 import eel  # pip install eel
 import json
+import os
 from PIL import Image  # pip install pillow
+import platform
+import psutil  # pip install psutil
 import pytesseract  # pip install pytesseract
                     # Then install language files from https://github.com/tesseract-ocr/tessdata and place in tessdata
 import time
@@ -28,12 +31,13 @@ TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json ke
 
 CHECK_KINGDOM_EVERY = 80  # Currently iterations are ~0.05s each
 KINGDOM_CERTAINTY = 0.85  # Classifier certainty to prevent uncertain kingdom switches
-SCORE_THRESHOLD = -1.5  # Score from score_func where a moon can be considered for correctness, -1.5 is about right
+POSS_MOON_CERTAINTY = 0.1  # Show moon if it's at least 10% possible
+SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness, -1.5 or 2 is about right
 TEXT_CERTAINTY = 0.90  # Classifier certainty that the input is text and not random pixels
 VERBOSE = False  # Prints a lot more information
 
-IM_WIDTH = 1920  # Width of game feed images in pixels
-IM_HEIGHT = 1080  # Height of game feed images in pixels
+IM_WIDTH = 1280  # Width of game feed images in pixels
+IM_HEIGHT = 720  # Height of game feed images in pixels
 MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless short moon names aren't seen
 VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 
@@ -74,6 +78,16 @@ x3, y3, x4, y4 = int(163/1280*IM_WIDTH), int(27/720*IM_HEIGHT), int(213/1280*IM_
 stream = cv2.VideoCapture(VIDEO_INDEX)  # Set up capture card
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
+
+# This is to ensure a more reliable runtime, if you tab out then the program runs slower due to caching,
+# which can cause performance issues (missed moons)
+this_OS = platform.system()
+if this_OS == "Windows":
+    p = psutil.Process(os.getpid())
+    p.nice(psutil.REALTIME_PRIORITY_CLASS)  # For Windows, highest priority
+elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
+    p = psutil.Process(os.getpid())
+    p.nice(15)  # 20 is max
 print("Setup complete! You may now approach the bird.\n")
 
 
@@ -81,7 +95,7 @@ print("Setup complete! You may now approach the bird.\n")
 def check_matches(poss_moon):
     max_corr = -100  # so low it will never matter
     ans = []  # best matches
-    count = 0  # Loose matches
+    poss_matches = {}  # Loose matches
     for m in kingdoms[current_kingdom]:  # Loop through moons in the current kingdom
         corr = score_func(m[TRANSLATE_FROM], poss_moon)  # Determine score for moon being compared
         if corr > max_corr:  # Best match so far
@@ -90,9 +104,10 @@ def check_matches(poss_moon):
         elif corr == max_corr:  # Equally good as best match
             ans.append(m)
         if corr >= SCORE_THRESHOLD-1:  # Loose match, we don't need this but could situationally be useful
-            print("Possible Match:", m[TRANSLATE_TO], "(score={})".format(corr))
-            count += 1
-    return max_corr, ans, count
+            # print("Possible Match:", m[TRANSLATE_TO], "(score={})".format(corr))
+            poss_matches[m[TRANSLATE_TO]] = corr
+    poss_matches = score_to_pct(poss_matches)
+    return max_corr, ans, poss_matches
 
 
 # Replace certain known problematic characters to make better matches
@@ -133,6 +148,12 @@ def determine_borders(im):
         if col_sum > thresh_y:
             break
         max_y -= 1
+    if max_x - min_x < IM_WIDTH / 2:
+        min_x = 0
+        max_x = IM_WIDTH - 1
+    if max_y - min_y < IM_HEIGHT / 2:
+        min_y = 0
+        max_y = IM_HEIGHT - 1
     return min_x, min_y, max_x, max_y
 
 
@@ -193,6 +214,13 @@ def score_func(proper_moon, test_moon):
     return cor - cost
 
 
+def score_to_pct(poss_moon_dict):
+    poss_moon_dict["Uncertain"] = SCORE_THRESHOLD
+    keys = list(poss_moon_dict.keys())
+    percents = torch.softmax(torch.tensor([float(poss_moon_dict[key]) for key in poss_moon_dict]), dim=0)
+    return {keys[i]: round(float(percents[i])*100, 2) for i in range(len(keys)) if percents[i] > POSS_MOON_CERTAINTY}
+
+
 def talkatoo_potential(img):
     r_min = 220
     g_min = 220
@@ -212,9 +240,10 @@ def talkatoo_potential(img):
 def talkatoo_preprocess(img):
     text_count = 0
     total_count = 0
-    r_min = 220
-    g_min = 220
-    b_max = 120
+    if current_kingdom in ["Metro", "Seaside"]:
+        r_min, g_min, b_max = 220, 220, 120  # Problem kingdoms
+    else:
+        r_min, g_min, b_max = 200, 200, 150  # Looser numbers usually work
     for row in range(0, img.width):
         for col in range(0, img.height):
             pixel = img.getpixel((row, col))
@@ -242,7 +271,13 @@ def update_kingdom(img):
 # Remove black borders on the sides of the screen
 # Make sure to be in an environment without black fully lining the side/black screen, or this won't work
 borders = determine_borders(Image.fromarray(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB)))
+change_kingdom = ""
+old_time = time.time()
 while True:
+    new_time = time.time()
+    frame_time = new_time - old_time
+    old_time = new_time
+    # print(frame_time)
     # sleep is necessary to run both gui and image processing
     eel.sleep(0.01)  # 0.001 is too little but 0.01 seems to work
     # Retrieve and resize image
@@ -258,14 +293,19 @@ while True:
         kingdom_checker = kingdom_bw(kingdom_checker)
         new_kingdom, check_kingdom_in = update_kingdom(kingdom_checker)
         if new_kingdom and check_kingdom_in == CHECK_KINGDOM_EVERY and new_kingdom != current_kingdom:  # strong match for new
-            current_kingdom = new_kingdom
-            print("Kingdom changed to: ", new_kingdom)
+            if change_kingdom == new_kingdom:  # make sure we get two in a row of the same kingdom
+                current_kingdom = new_kingdom
+                check_kingdom_in = 20
+                change_kingdom = ""
+                print("Kingdom changed to: ", new_kingdom)
+            else:
+                change_kingdom = new_kingdom
 
     talkatoo_text = image.crop((x1, y1, x2, y2)).resize((650, 50))
     if talkatoo_potential(talkatoo_text):
         # There is potential for text, but we need to wait for it all to appear
         text_potential += 1
-        if text_potential < 3:
+        if text_potential * frame_time <= 0.19 or text_potential < 2 or frame_time > 0.3:
             continue
     else:
         text_potential = 0
@@ -288,14 +328,9 @@ while True:
         print("Recognized Characters:", data, "({})".format(current_kingdom))
         talkatoo_text.show()
 
-    max_corr, ans, count = check_matches(data)
+    max_corr, ans, possible = check_matches(data)
+    print(possible)
     if max_corr >= SCORE_THRESHOLD:  # If any reasonable matches
-        # time_of_last_match = this_time  # Set up so no duplicates, but account for OCR delay
-        if VERBOSE:
-            if count == 1:
-                print("Possible Match:", count)
-            else:
-                print("Possible Matches:", count)
         best_matches = len(ans)
         if best_matches == 1:
             print("Best Match:\n\t{} (score={})\n".format(ans[0]["english"], max_corr))
