@@ -1,4 +1,5 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <html>
     <div id="app">
@@ -14,23 +15,32 @@
                 </div>
               </div>
             <div v-if="selectedKingdom" class="container">
-                <div v-if="selectedKingdomMoons.length > 0" class="card">
+                <div v-if="selectedKingdomHasMoons" class="card">
                     <ul class="list">
-                        <li v-for="(possibleMoons, index) in selectedKingdomMoons" class="list-item" :class="{'collected': isCollected(index)}" @click="toggleMoonCollected(index)">
-                            <template v-if="possibleMoons.length > 1">
-                                 <div>
-                                  {{ possibleMoons.length }} possible options:
+                        <template v-for="(possibleMoons, index) in mentionedMoons">
+                            <li v-if="mentionedMoons[index][0].kingdom === selectedKingdom" class="list-item">
+                                <template v-if="possibleMoons.length > 1">
+                                    <template v-if="possibleMoons.some(moon => moon.correct)">
+                                        <span @click="toggleMoonCollected(index)" :class="{'collected': isCollected(index)}">{{ moonToString(possibleMoons.find(moon => moon.correct)) }}</span>
+                                        <span @click="undoCorrectOption(index)" class="material-symbols-outlined">undo</span>
+                                    </template>
+                                    <template v-else>
+                                        <div>
+                                            {{ possibleMoons.length }} possible options:
+                                        </div>
+                                        <ul>
+                                            <li v-for="(moon, optionIndex) in possibleMoons" class="moon-option">
+                                                 {{ moonToString(moon) }}
+                                                <span @click="markCorrectOption(index, optionIndex)" class="material-symbols-outlined">check</span>
+                                            </li>
+                                        </ul>
+                                    </template>
+                                </template>
+                                <div v-else>
+                                    <span @click="toggleMoonCollected(index)" :class="{'collected': isCollected(index)}">{{ moonToString(possibleMoons[0]) }}</span>
                                 </div>
-                                <ul>
-                                    <li v-for="moon in possibleMoons" class="moon-option">
-                                        {{ moonToString(moon) }} ( {{ moon.certainty }}% )
-                                    </li>
-                                </ul>
-                            </template>
-                            <div v-else>
-                                {{ moonToString(possibleMoons[0]) }}
-                            </div>
-                        </li>
+                            </li>
+                        </template>
                     </ul>
                 </div>
             </div>
@@ -68,8 +78,14 @@
 
                         const latestMoon = response[response.length - 1][0];
                         this.selectedKingdom = latestMoon.kingdom;
+
+                        setTimeout(this.scrollToBottom, 10);
                     }
                 });
+            },
+            scrollToBottom() {
+                const card = document.querySelector('.card');
+                card.scrollTop = card.scrollHeight;
             },
             moonToString(moon) {
                 return `${moon.id} - ${moon.english} - ${moon.chinese_simplified}`;
@@ -90,10 +106,17 @@
                     });
                 }
             },
+            markCorrectOption(index, optionIndex) {
+                this.mentionedMoons[index][optionIndex].correct = true;
+            },
+            undoCorrectOption(index) {
+                this.collectedMoons = this.collectedMoons.filter(m => m.index !== index || m.kingdom !== this.selectedKingdom);
+                this.mentionedMoons[index] = this.mentionedMoons[index].map(({correct, ...attrs}) => attrs);
+            }
         },
         computed: {
-            selectedKingdomMoons() {
-                return this.mentionedMoons.filter(possibleMoons => possibleMoons[0].kingdom === this.selectedKingdom);
+            selectedKingdomHasMoons() {
+                return this.mentionedMoons.some(possibleMoons => possibleMoons[0].kingdom === this.selectedKingdom);
             }
         },
         created() {
@@ -163,7 +186,6 @@
         background-color: #464454;
         overflow: auto;
         opacity: 0.9;
-        overflow: auto;
     }
 
     /* Hide scrollbar for Chrome, Safari and Opera */

@@ -237,7 +237,7 @@ def talkatoo_potential(img):
             pixel = img.getpixel((row, col))
             if pixel[0] > r_min and pixel[1] > g_min and pixel[2] < b_max:  # Note that capture card coloring may vary slightly
                 text_count += 1
-            if text_count > 200:
+            if text_count > 180:
                 return True
     return False
 
@@ -342,7 +342,5 @@ while True:
             print("Best Match:\n\t{} (score={})\n".format(ans[0]["english"], max_corr))
         else:
             print("Best Matches({} total): {} (score={})".format(best_matches, " OR ".join([poss["english"] for poss in ans]), max_corr))
-        if ans not in mentioned_moons:
-            for m in ans:
-                m['certainty'] = possible[m[TRANSLATE_TO]]
+        if not mentioned_moons or ans != mentioned_moons[-1]:
             mentioned_moons.append(ans)
