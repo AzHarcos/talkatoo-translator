@@ -124,7 +124,7 @@ def kingdom_bw_better(k_img):
     red = image_arr[:, :, 0] <= 240
     green = image_arr[:, :, 1] <= 240
     blue = image_arr[:, :, 2] <= 240
-    image_arr[:, :, 0] = np.maximum(red, green, blue) * 255  # if any untrue make white, else black
+    image_arr[:, :, 0] = np.maximum.reduce([red, green, blue]) * 255  # if any untrue make white, else black
     image_arr[:, :, 1] = image_arr[:, :, 2] = image_arr[:, :, 0]
     return Image.fromarray(image_arr.astype(np.uint8))
 
