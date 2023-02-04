@@ -354,7 +354,7 @@ while True:
             moon_matches = match_moon_text(moon_check_im, prepend="Collected")
             if moon_matches:
                 check_moon_at += 5  # Wait 5 extra seconds after a moon
-                if moon_matches != collected_moons[-1]:
+                if not collected_moons or moon_matches != collected_moons[-1]:
                     collected_moons.append(moon_matches)
                     continue
 
