@@ -8,6 +8,7 @@ This Python script takes the broad approach:
 """
 
 import cv2  # pip install opencv-python
+import easyocr
 import eel  # pip install eel
 import json
 import numpy as np  # pip install numpy
@@ -15,8 +16,8 @@ import os
 from PIL import Image  # pip install pillow
 import platform
 import psutil  # pip install psutil
-import pytesseract  # pip install pytesseract
-                    # Then install language files from https://github.com/tesseract-ocr/tessdata and place in tessdata
+# import pytesseract  # pip install pytesseract
+#                     # Then install language files from https://github.com/tesseract-ocr/tessdata and place in tessdata
 import time
 import torch  # pip install pytorch
 import torchvision.transforms as transforms  # should come with pytorch
@@ -24,7 +25,8 @@ import torchvision.transforms as transforms  # should come with pytorch
 
 # parameters that could be set in the gui: capture card resolution, game language, output language, kingdom list (which kingdoms + which order)
 
-pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files (x86)/Tesseract-OCR/tesseract.exe"  # Path to tesseract executable
+# pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files (x86)/Tesseract-OCR/tesseract.exe"  # Path to tesseract executable
+reader = easyocr.Reader(["ch_tra"])
 TRANSLATE_FROM_TESS = "chi_tra"  # Use Tesseract codes, chi_sim for Simplified Chinese or chi_tra for Traditional Chinese
 LANGUAGES = ["english", "chinese_traditional", "chinese_simplified", "japanese", "korean", "dutch", "french_canada",
              "french_france", "german", "italian", "spanish_spain", "spanish_latin_america", "russian"]
@@ -35,44 +37,72 @@ CHECK_KINGDOM_EVERY = 40  # Currently iterations are ~0.05s each
 KINGDOM_CERTAINTY = 0.85  # Classifier certainty to prevent uncertain kingdom switches (must occur 2 times in a row)
 POSS_MOON_CERTAINTY = 0.1  # Show moon percentage if it's at least 10% possible
 SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness, -1.5 or 2 is about right
-TEXT_CERTAINTY = 0.90  # Classifier certainty that the input is text and not random pixels
+TEXT_CERTAINTY = 0.9  # Classifier certainty that the input is text and not random pixels, usually 0.9 is safe
 
 IM_WIDTH = 1280  # Don't change! Testing this way for time save on resizing
 IM_HEIGHT = 720  # Don't change! Testing this way for time save on resizing
-MIN_TEXT_COUNT = 400  # Number of pixels to count as text, don't change unless moon names aren't seen
+MIN_TEXT_COUNT = 800  # Number of pixels to count as text, don't change unless moon names aren't seen
 VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
 
 
 # Checks recognized text against moons fromm the current kingdom
-def check_matches(poss_moon, story=False):
+def check_matches(poss_moon):
     max_corr = -100  # so low it will never matter
     ans = []  # best matches
     poss_matches = {}  # Loose matches
     for i, m in enumerate(moons_by_kingdom[current_kingdom]):  # Loop through moons in the current kingdom
         corr = score_func(m[TRANSLATE_FROM], poss_moon)  # Determine score for moon being compared
-        if corr >= SCORE_THRESHOLD:  # Loose match, we don't need this but could situationally be useful
+        if corr >= SCORE_THRESHOLD:
             poss_matches[m[TRANSLATE_TO]] = corr
             if corr > max_corr:  # Best match so far
                 max_corr = corr
                 ans = [m]
             elif corr == max_corr:  # Equally good as best match
                 ans.append(m)
-        if i == 7 and story:
-            break
     poss_matches = score_to_pct(poss_matches)
     return max_corr, ans, poss_matches
+
+
+def check_matches_story_multi(poss_moon, multi=False):
+    story_moons = {"Cap": [], "Cascade": [1], "Sand": [1, 2], "Lake": [], "Wooded": [1, 3], "Lost": [],
+                   "Metro": [2, 3, 4, 5, 6], "Snow": [1, 2, 3, 4], "Seaside": [1, 2, 3, 4], "Luncheon": [1, 2, 4],
+                   "Bowsers": [1, 2, 3], "Moon": [], "Mushroom": []}
+    multi_moons = {"Cap": [], "Cascade": [2], "Sand": [3, 4], "Lake": [1], "Wooded": [2, 4], "Lost": [],
+                   "Metro": [1, 7], "Snow": [5], "Seaside": [5], "Luncheon": [3, 5], "Bowsers": [4], "Moon": [],
+                   "Mushroom": [33, 34, 35, 36, 37, 38]}
+    max_corr = -100  # so low it will never matter
+    ans = []  # best matches
+    poss_matches = {}  # Loose matches
+    if multi:
+        moons_to_check = [moons_by_kingdom[current_kingdom][i-1] for i in multi_moons[current_kingdom]]
+        moons_to_check.extend(special_multi_moons)
+    else:
+        moons_to_check = [moons_by_kingdom[current_kingdom][i-1] for i in story_moons[current_kingdom]]
+
+    for i, m in enumerate(moons_to_check):  # Loop through moons in the current kingdom
+        i += 1  # SMO moons are 1-indexed
+        corr = score_func(m[TRANSLATE_FROM], poss_moon, can_fail_out=False)
+        if corr >= max_corr:
+            if corr > max_corr:
+                max_corr = corr
+                ans = [m]
+            elif corr == max_corr:
+                ans.append(m)
+            poss_matches[m[TRANSLATE_TO]] = corr
+    poss_matches = score_to_pct(poss_matches, force_match=True)
+    return max_corr if max_corr > SCORE_THRESHOLD else SCORE_THRESHOLD, ans, poss_matches
 
 
 # Very ugly and naive checker for story/multi moon
 def check_story_multi(img, expected="RED"):
     if expected == "RED":
-        min_red, max_red = 6400, 6400
+        min_red, max_red = 4000, 6400
         min_white, max_white = 0, 0
         min_blue, max_blue = 0, 0
     elif expected == "STORY":
         min_red, max_red = 4350, 4500
-        min_white, max_white = 500, 700
-        min_blue, max_blue = 450, 600
+        min_white, max_white = 450, 700
+        min_blue, max_blue = 450, 700
     elif expected == "MULTI":
         min_red, max_red = 4050, 4200
         min_white, max_white = 200, 500
@@ -82,6 +112,10 @@ def check_story_multi(img, expected="RED"):
     image_arr = np.array(img)
     red = image_arr[:, :, 0] > 200
     blue_green = np.logical_and(image_arr[:, :, 1] > 200, image_arr[:, :, 2] > 200)
+    # print("Mode:", expected)
+    # print("White:", np.logical_and(red, blue_green).sum())
+    # print("Red:", np.logical_and(red, np.logical_not(blue_green)).sum())
+    # print("Blue:", np.logical_and(blue_green, np.logical_not(red)).sum(), end="\n\n")
     white_count_right = min_white <= np.logical_and(red, blue_green).sum() <= max_white
     red_count_right = min_red <= np.logical_and(red, np.logical_not(blue_green)).sum() <= max_red
     blue_count_right = min_blue <= np.logical_and(blue_green, np.logical_not(red)).sum() <= max_blue
@@ -148,11 +182,10 @@ def get_moons_by_kingdom():
 
 # checks if moon text is possibly present
 def is_moon(img):
-    img = img.resize((400, 40))
     new_im_arr = np.ones((50, 650, 3)).astype(np.uint8) * 255
-    new_im_arr[5:-5, 125:-125] = np.array(img)
+    new_im_arr[:, 75:-75] = np.array(img)
     new_im = Image.fromarray(new_im_arr)
-    return is_text(new_im, cert=0.5)
+    return is_text(new_im)
 
 
 # Checks to see if image is talkatoo text or random pixels
@@ -174,34 +207,36 @@ def image_to_bw(img, white=240):
 
 
 # Recognize, clean, and check moon text
-def match_moon_text(moon_img, prepend="Unlocked", story=False):
-    print("Going to OCR... ", end="")
-    ocr_text = pytesseract.image_to_string(moon_img, lang=TRANSLATE_FROM_TESS, config='--psm 6')
-    ocr_text = correct(ocr_text.strip())
-    print("Finished OCR -> ", end="")
+def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
+    # ocr_text = pytesseract.image_to_string(moon_img, lang=TRANSLATE_FROM_TESS, config='--psm 6')
+    # ocr_text = correct(ocr_text.strip())
+    ocr_text = reader.readtext(np.array(moon_img))
+    ocr_text = correct("".join([ocr_text[i][1] for i in range(len(ocr_text))]))
     if len(ocr_text) < 3:
         return None
 
-    max_corr, ans, possible = check_matches(ocr_text, story=story)
-    if max_corr >= SCORE_THRESHOLD:  # If any reasonable matches, lower by one if story moon
+    if story or multi:
+        max_corr, ans, possible = check_matches_story_multi(ocr_text, multi)
+    else:
+        max_corr, ans, possible = check_matches(ocr_text)
+    if max_corr >= SCORE_THRESHOLD:  # If any reasonable matches, guarantee match if story moon
         best_matches = len(ans)
         if best_matches == 1:
-            print(prepend, "a moon: {} (score={})".format(ans[0]["english"], max_corr))
+            print("[{}] {} (score={})  ->  {}".format(prepend, ans[0]["english"].upper(), max_corr, possible))
         else:
-            print(prepend, "multiple moons({} total): {} (score={})".format(best_matches, " OR ".join([poss["english"] for poss in ans]), max_corr))
-        print(possible, end="\n\n")
+            print("[{}] {} (score={})  ->  {}".format(prepend, " OR ".join([poss["english"].upper() for poss in ans]), max_corr, possible))
         return ans
-    print(possible, end="\n\n")
+    print("\tNo good matches  ->  ".format(possible))
     return None
 
 
 # Replacement Levenshtein distance cost function
 # May not be as effective with English alphabet as spurious character matches will be far more common, and thresholds are different
-def score_func(proper_moon, test_moon):
+def score_func(proper_moon, test_moon, can_fail_out=True):
     proper_len = len(proper_moon)
     test_len = len(test_moon)
     len_diff = proper_len - test_len
-    if len_diff > 3:
+    if len_diff > 3 and can_fail_out:
         return -10
     fail_out = SCORE_THRESHOLD - 2 - (proper_len / 4)
     cost = max(len_diff/2, 0)  # Penalize missing characters 1.5x as much as the rest
@@ -222,14 +257,15 @@ def score_func(proper_moon, test_moon):
             cor += 1
         else:
             cost += 1
-        if cor - cost <= fail_out:  # if the score is bad enough then don't bother
+        if cor - cost <= fail_out and can_fail_out:  # if the score is bad enough then don't bother
             return -10
     return cor - cost
 
 
 # Translate scores to percent certainty
-def score_to_pct(poss_moon_dict):
-    poss_moon_dict["Uncertain"] = SCORE_THRESHOLD
+def score_to_pct(poss_moon_dict, force_match=False):
+    if not force_match:
+        poss_moon_dict["Uncertain"] = SCORE_THRESHOLD
     keys = list(poss_moon_dict.keys())
     percents = torch.softmax(torch.tensor([float(poss_moon_dict[key]) for key in poss_moon_dict]), dim=0)
     return {keys[i]: round(float(percents[i])*100, 2) for i in range(len(keys)) if percents[i] > POSS_MOON_CERTAINTY}
@@ -250,7 +286,6 @@ def talkatoo_preprocess_better(talk_img, kingd):
     text_count = np.sum(image_arr[:, :, 0] == 0)
     return Image.fromarray(image_arr.astype(np.uint8)), text_count > MIN_TEXT_COUNT
 
-
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img):
     kc_tensor = transform(img).unsqueeze(dim=0).type(torch.float32)
@@ -267,8 +302,8 @@ with open("moon-list.json", encoding="utf8") as moon_file:
     moonlist = json.loads(moonlist)  # moonlist now a list of dictionaries, one for each moon
 
 # Dictionary to store all moons by kingdom
-# Language indexing as follows: kingdoms["Cap"]["chinese_moon"]["language_name"]
 moons_by_kingdom = {}
+special_multi_moons = []  # Ruined/Dark/Darker need to be matched separately
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
     this_moon = {"id": moon["id"], "kingdom": moon["kingdom"], TRANSLATE_FROM: moon[TRANSLATE_FROM],
@@ -277,16 +312,18 @@ for moon in moonlist:
         moons_by_kingdom[this_kingdom].append(this_moon)
     else:
         moons_by_kingdom[this_kingdom] = [this_moon]
+    if this_kingdom in ["Ruined", "Dark Side", "Darker Side"] and moon["id"] == 1:
+        special_multi_moons.append(this_moon)
 
 kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, DO NOT CHANGE ORDER
-current_kingdom = kingdom_list[-3]  # Start in first kingdom (fine to start in Cap)
+current_kingdom = kingdom_list[1]  # Start in first kingdom (fine to start in Cap)
 mentioned_moons = []  # list of moons mentioned by Talkatoo
 collected_moons = []  # list of auto-recognized collected moons
 
 # Load kingdom and text recognizers
 kindom_classifier = torch.jit.load("KingdomModel.zip")  # Pretrained kingdom recognizer, output 0-13 inclusive
-text_classifier = torch.jit.load("TextModel.zip")  # Pretrained text classifier, output 0 or 1
+text_classifier = torch.jit.load("TextModel2.zip")  # Pretrained text classifier, output 0 or 1
 transform = transforms.PILToTensor()  # Needed to transform image
 
 # This is to ensure a more reliable runtime, if you tab out then the program runs slower due to caching,
@@ -309,7 +346,7 @@ moon_borders = (400, 525, 900, 575)
 multi_borders = (870, 170, 950, 250)
 red_borders = (0, 0, 128, 50)
 story_borders = (210, 240, 260, 368)
-story_text_borders = (350, 520, 900, 650)
+story_text_borders = (300, 550, 950, 610)
 talkatoo_borders = (350, 565, 1000, 615)
 text_potential = 0  # So we don't read partial text
 old_time = time.time()
@@ -318,6 +355,7 @@ borders = determine_borders(Image.fromarray(cv2.cvtColor(stream.read()[1], cv2.C
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
 print("Setup complete! You may now approach the bird.\n")
+
 
 while True:
     new_time = time.time()
@@ -353,7 +391,7 @@ while True:
         if is_moon(moon_check_im):
             moon_matches = match_moon_text(moon_check_im, prepend="Collected")
             if moon_matches:
-                check_moon_at += 5  # Wait 5 extra seconds after a moon
+                check_moon_at += 5.5  # 5s tends to be too short so wait 6s
                 if not collected_moons or moon_matches != collected_moons[-1]:
                     collected_moons.append(moon_matches)
                     continue
@@ -366,14 +404,17 @@ while True:
             story_check_im = image.crop(story_borders)
             if check_story_multi(story_check_im, expected="STORY"):
                 print("Got a story moon!", end=" ")
-                story_text = image.crop(story_text_borders)
-                story_text = image_to_bw(story_text, white=240).rotate(-2.5)
+                story_text = image.rotate(-3).crop(story_text_borders)
+                story_text = image_to_bw(story_text, white=240)
                 match_moon_text(story_text, story=True, prepend="Collected")
                 check_story_at += 10
                 continue
             multi_check_im = image.crop(multi_borders)
             if check_story_multi(multi_check_im, expected="MULTI"):
-                print("Got a multi moon!", end="\n")  # Don't bother with OCR since moon border makes it unreliable
+                print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
+                multi_text = image.rotate(-3).crop(story_text_borders)
+                multi_text = image_to_bw(multi_text, white=240)
+                match_moon_text(multi_text, multi=True, prepend="Collected")
                 check_story_at += 10
                 continue
 
