@@ -14,34 +14,53 @@
                     {{ kingdom }}
                 </div>
               </div>
-            <div v-if="selectedKingdom" class="container">
-                <div v-if="selectedKingdomHasMoons" class="card">
-                    <ul class="list">
-                        <template v-for="(possibleMoons, index) in mentionedMoons">
-                            <li v-if="mentionedMoons[index][0].kingdom === selectedKingdom" class="list-item">
-                                <template v-if="possibleMoons.length > 1">
-                                    <template v-if="possibleMoons.some(moon => moon.correct)">
-                                        <span @click="toggleMoonCollected(index)" :class="{'collected': isCollected(index)}">{{ moonToString(possibleMoons.find(moon => moon.correct)) }}</span>
-                                        <span @click="undoCorrectOption(index)" class="material-symbols-outlined">undo</span>
-                                    </template>
-                                    <template v-else>
-                                        <div>
-                                            {{ possibleMoons.length }} possible options:
+            <div v-if="selectedKingdom && (selectedKingdomPendingMoons.length > 0 || selectedKingdomCollectedMoons.length > 0)" class="container">
+                <div class="card">
+                    <div class="list-container">
+                        <div v-if="selectedKingdomPendingMoons.length > 0" class="list-wrapper">
+                            <div class="list-header">Pending Moons:</div>
+                            <ul class="list">
+                                <li v-for="possibleMoons in selectedKingdomPendingMoons" class="list-item">
+                                    <template  v-if="getFilteredPossibleMoons(possibleMoons).length > 0">
+                                        <div v-if="getFilteredPossibleMoons(possibleMoons).length === 1">
+                                            <span @click="setMoonCollected(getFilteredPossibleMoons(possibleMoons)[0])">{{ moonToString(getFilteredPossibleMoons(possibleMoons)[0]) }}</span>
                                         </div>
-                                        <ul>
-                                            <li v-for="(moon, optionIndex) in possibleMoons" class="moon-option">
-                                                 {{ moonToString(moon) }}
-                                                <span @click="markCorrectOption(index, optionIndex)" class="material-symbols-outlined">check</span>
-                                            </li>
-                                        </ul>
+                                        <template v-else>
+                                            <div v-if="getFilteredPossibleMoons(possibleMoons).some(moon => moon.correct)" class="list-item-content">
+                                                <span @click="setMoonCollected(getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct))">{{ moonToString(getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct)) }}</span>
+                                                <span @click="undoCorrectOption(getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct), getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct).index)" class="material-symbols-outlined">undo</span>
+                                            </div>
+                                            <template v-else>
+                                                <div>
+                                                    {{ getFilteredPossibleMoons(possibleMoons).length }} possible options:
+                                                </div>
+                                                <ul>
+                                                    <li v-for="(moon, optionIndex) in getFilteredPossibleMoons(possibleMoons)" class="moon-option">
+                                                        <div class="list-item-content">
+                                                            <span>{{ moonToString(moon) }}</span>
+                                                            <span @click="markCorrectOption(moon.index, optionIndex)" class="material-symbols-outlined">check</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </template>
+                                        </template>
                                     </template>
-                                </template>
-                                <div v-else>
-                                    <span @click="toggleMoonCollected(index)" :class="{'collected': isCollected(index)}">{{ moonToString(possibleMoons[0]) }}</span>
-                                </div>
-                            </li>
-                        </template>
-                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="selectedKingdomCollectedMoons.length > 0" class="list-wrapper">
+                            <div class="list-header">Collected Moons:</div>
+                            <ul class="list">
+                                <li v-for="moon in selectedKingdomCollectedMoons" :key="moon.kingdom + moon.id" class="list-item">
+                                    <div v-if="isMoonUnmentioned(moon)" class="list-item-content">
+                                        <span>{{ moonToString(moon) }}</span>
+                                        <span class="material-symbols-outlined">close</span>
+                                    </div>
+                                    <span v-else @click="setMoonUncollected(moon)">{{ moonToString(moon) }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             </div>
@@ -74,49 +93,86 @@
             updateMoons() {
                 eel.get_mentioned_moons()().then(response => {
                     if (response.length > this.mentionedMoons.length) {
-                        this.mentionedMoons = response;
+                        const newlyMentionedMoons = response.slice(this.mentionedMoons.length - response.length)
+
+                        newlyMentionedMoons.forEach(possibleMoons => {
+                            this.mentionedMoons.push(possibleMoons.map(moon => ({
+                                ...moon,
+                                index: this.mentionedMoons.length
+                            })));
+                        });
 
                         const latestMoon = response[response.length - 1][0];
                         this.selectedKingdom = latestMoon.kingdom;
 
-                        setTimeout(this.scrollToBottom, 10);
+                        setTimeout(this.scrollToTop, 10);
                     }
                 });
+                eel.get_collected_moons()().then(response => {
+                    const definiteCollectedMoons = response.filter(possibleMoons => possibleMoons.length === 1).map(possibleMoons => possibleMoons[0]);
+                    const newlyCollectedMoons = definiteCollectedMoons.filter(moon => !this.isMoonCollected(moon));
+
+                    this.collectedMoons.push(...newlyCollectedMoons);
+                });
             },
-            scrollToBottom() {
+            scrollToTop() {
                 const card = document.querySelector('.card');
-                card.scrollTop = card.scrollHeight;
+                if (card) {
+                    card.scrollTop = 0;
+                }
             },
             moonToString(moon) {
-                return `${moon.id} - ${moon.english} - ${moon.chinese_simplified}`;
+                return `${moon.id} - ${moon.english} - ${moon.chinese_traditional}`;
             },
             selectKingdom(kingdom) {
                 this.selectedKingdom = kingdom;
             },
-            isCollected(index) {
-                return this.collectedMoons.some(m => m.index === index && m.kingdom === this.selectedKingdom);
+            moonsAreEqual(first, other) {
+                return first && other && first.id === other.id && first.kingdom === other.kingdom;
             },
-            toggleMoonCollected(index) {
-                if (this.isCollected(index)) {
-                    this.collectedMoons = this.collectedMoons.filter(m => m.index !== index || m.kingdom !== this.selectedKingdom);
-                } else {
-                    this.collectedMoons.push({
-                        kingdom: this.selectedKingdom,
-                        index: index
-                    });
-                }
+            areMoonsPending(possibleMoons) {
+                const hasCorrectKingdom = possibleMoons[0].kingdom === this.selectedKingdom;
+                const hasUncollectedOptions = possibleMoons.some(moon => !this.isMoonCollected(moon));
+                const indexIsNotCollected = !this.collectedMoons.some(moon => moon.index === possibleMoons[0].index);
+
+                return hasCorrectKingdom && hasUncollectedOptions && indexIsNotCollected;
+            },
+            isMoonCollected(moon) {
+                return this.collectedMoons.some(m => this.moonsAreEqual(moon, m));
+            },
+            isMoonUnmentioned(moon) {
+                return !moon.is_story && !this.mentionedMoons.some(possibleMoons => possibleMoons.some(m => this.moonsAreEqual(moon, m)));
+            },
+            getFilteredPossibleMoons(possibleMoons) {
+                return possibleMoons.filter(moon => !this.collectedOrCorrectMoons.some(m => m.index !== moon.index && this.moonsAreEqual(moon, m)));
+            },
+            getCorrectMoonOptional(possibleMoons) {
+                return possibleMoons.length === 1 ? possibleMoons[0] : possibleMoons.find(moon => moon.correct);
+            },
+            setMoonCollected(moon) {
+                this.collectedMoons.push(moon);
+            },
+            setMoonUncollected(moon) {
+                this.collectedMoons = this.collectedMoons.filter(m => !this.moonsAreEqual(moon, m));
             },
             markCorrectOption(index, optionIndex) {
                 this.mentionedMoons[index][optionIndex].correct = true;
             },
-            undoCorrectOption(index) {
-                this.collectedMoons = this.collectedMoons.filter(m => m.index !== index || m.kingdom !== this.selectedKingdom);
-                this.mentionedMoons[index] = this.mentionedMoons[index].map(({correct, ...attrs}) => attrs);
+            undoCorrectOption(moon, index) {
+                this.setMoonUncollected(moon);
+                this.mentionedMoons[index] = this.mentionedMoons[index].map(({correct, ...val}) => val);
             }
         },
         computed: {
-            selectedKingdomHasMoons() {
-                return this.mentionedMoons.some(possibleMoons => possibleMoons[0].kingdom === this.selectedKingdom);
+            selectedKingdomPendingMoons() {
+                return this.mentionedMoons.filter(this.areMoonsPending);
+            },
+            selectedKingdomCollectedMoons() {
+                return this.collectedMoons.filter(moon => moon.kingdom === this.selectedKingdom);
+            },
+            collectedOrCorrectMoons() {
+                const correctMoons = this.selectedKingdomPendingMoons.map(possibleMoons => possibleMoons.find(moon => moon.correct)).filter(moon => moon);
+                return [...this.selectedKingdomCollectedMoons, ...correctMoons];
             }
         },
         created() {
@@ -199,18 +255,39 @@
       scrollbar-width: none;  /* Firefox */
     }
 
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    .list-container {
+        display: table;
+        margin: auto;
+    }
+
+    .list-wrapper {
+        margin: 2em 0;
+    }
+
+    .list-header {
+        margin-bottom: 1em;
+        background-color: #464454;
+        color: #f5f5f5;
+    }
+
     .list {
         background-color: #464454;
         color: #f5f5f5;
-        display: table;
-        margin: auto;
-        padding-top: 10px;
-        padding-bottom: 5px;
     }
 
     .list-item {
-        margin: auto;
-        margin-bottom: 5px;
+        margin: 3px 0;
+    }
+
+    .list-item-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .collected {
@@ -218,7 +295,12 @@
     }
 
     .moon-option {
-        margin-left: 12px;
+        margin-left: 0.5em;
+    }
+
+    .material-symbols-outlined {
+        font-size: 22px !important;
+        margin-left: 0.25em !important;
     }
 
 </style>

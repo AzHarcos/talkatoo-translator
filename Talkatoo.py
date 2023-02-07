@@ -140,6 +140,15 @@ def get_mentioned_moons():
     return mentioned_moons
 
 
+# Expose the auto-recognized collected moons and clear the list (collected moons only need to be updated once)
+@eel.expose
+def get_collected_moons():
+    global collected_moons
+    newly_collected_moons = collected_moons
+    collected_moons = []
+    return newly_collected_moons
+
+
 # Expose the kingdom moons dictionary to the gui
 @eel.expose
 def get_moons_by_kingdom():
