@@ -1,28 +1,73 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-<div id="app">
-    <head>
-        <title>SMO Talkatoo Translator</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body>
-        <div class="window" v-bind:style="{ backgroundImage: 'url(\'images/' + selectedKingdom + '.png\')' }">
-          <div class="tabs">
-            <div v-for="kingdom in kingdoms" class="tab" :class="{'selected': kingdom === selectedKingdom}" @click="selectKingdom(kingdom)">
-                {{ kingdom }}
-            </div>
-          </div>
-        <div v-if="selectedKingdom" class="container">
-            <div class="card">
-                <div v-if="selectedKingdomMoons.length > 0" class="list">
-                    <div v-for="moon in selectedKingdomMoons" class="list-item" :class="{'collected': isCollected(moon)}" @click="toggleMoonCollected(moon)">
-                        {{ moon.id }} - {{ moon.english }} - {{ moon.chinese_simplified }}
+<html>
+    <div id="app">
+        <head>
+            <title>SMO Talkatoo Translator</title>
+            <link rel="stylesheet" type="text/css" href="style.css">
+        </head>
+        <body>
+            <div class="window" v-bind:style="{ backgroundImage: 'url(\'images/' + selectedKingdom + '.png\')' }">
+              <div class="tabs">
+                <div v-for="kingdom in kingdoms" class="tab" :class="{'selected': kingdom === selectedKingdom}" @click="selectKingdom(kingdom)">
+                    {{ kingdom }}
+                </div>
+              </div>
+            <div v-if="selectedKingdom && (selectedKingdomPendingMoons.length > 0 || selectedKingdomCollectedMoons.length > 0)" class="container">
+                <div class="card">
+                    <div class="list-container">
+                        <div v-if="selectedKingdomPendingMoons.length > 0" class="list-wrapper">
+                            <div class="list-header">Pending Moons:</div>
+                            <ul class="list">
+                                <li v-for="possibleMoons in selectedKingdomPendingMoons" class="list-item">
+                                    <template  v-if="getFilteredPossibleMoons(possibleMoons).length > 0">
+                                        <div v-if="getFilteredPossibleMoons(possibleMoons).length === 1">
+                                            <span @click="setMoonCollected(getFilteredPossibleMoons(possibleMoons)[0])">{{ moonToString(getFilteredPossibleMoons(possibleMoons)[0]) }}</span>
+                                        </div>
+                                        <template v-else>
+                                            <div v-if="getFilteredPossibleMoons(possibleMoons).some(moon => moon.correct)" class="list-item-content">
+                                                <span @click="setMoonCollected(getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct))">{{ moonToString(getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct)) }}</span>
+                                                <span @click="undoCorrectOption(getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct), getFilteredPossibleMoons(possibleMoons).find(moon => moon.correct).index)" class="material-symbols-outlined">undo</span>
+                                            </div>
+                                            <template v-else>
+                                                <div>
+                                                    {{ getFilteredPossibleMoons(possibleMoons).length }} possible options:
+                                                </div>
+                                                <ul>
+                                                    <li v-for="(moon, optionIndex) in getFilteredPossibleMoons(possibleMoons)" class="moon-option">
+                                                        <div class="list-item-content">
+                                                            <span>{{ moonToString(moon) }}</span>
+                                                            <span @click="markCorrectOption(moon.index, optionIndex)" class="material-symbols-outlined">check</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="selectedKingdomCollectedMoons.length > 0" class="list-wrapper">
+                            <div class="list-header">Collected Moons:</div>
+                            <ul class="list">
+                                <li v-for="moon in selectedKingdomCollectedMoons" :key="moon.kingdom + moon.id" class="list-item">
+                                    <div v-if="isMoonUnmentioned(moon)" class="list-item-content">
+                                        <span>{{ moonToString(moon) }}</span>
+                                        <span class="material-symbols-outlined">close</span>
+                                    </div>
+                                    <span v-else @click="setMoonUncollected(moon)">{{ moonToString(moon) }}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </body>
-</div>
+            </div>
+        </body>
+    </div>
+</html>
+
 
 <script type="text/javascript" src="/eel.js"></script>
 
@@ -33,43 +78,106 @@
         data() {
             return {
                 kingdoms: ["Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Snow", "Seaside", "Luncheon", "Bowsers"],
+                moonsByKingdom: [],
                 mentionedMoons: [],
                 collectedMoons: [],
                 selectedKingdom: "Cascade"
             }
         },
         methods: {
-            updateData() {
+            getMoonsByKingdom() {
+                eel.get_moons_by_kingdom()().then(response => {
+                    this.moonsByKingdom = response;
+                });
+            },
+            updateMoons() {
                 eel.get_mentioned_moons()().then(response => {
                     if (response.length > this.mentionedMoons.length) {
-                        this.mentionedMoons = response;
+                        const newlyMentionedMoons = response.slice(this.mentionedMoons.length - response.length)
 
-                        const latestMoon = response[response.length - 1];
+                        newlyMentionedMoons.forEach(possibleMoons => {
+                            this.mentionedMoons.push(possibleMoons.map(moon => ({
+                                ...moon,
+                                index: this.mentionedMoons.length
+                            })));
+                        });
+
+                        const latestMoon = response[response.length - 1][0];
                         this.selectedKingdom = latestMoon.kingdom;
+
+                        setTimeout(this.scrollToTop, 10);
                     }
                 });
+                eel.get_collected_moons()().then(response => {
+                    const definiteCollectedMoons = response.filter(possibleMoons => possibleMoons.length === 1).map(possibleMoons => possibleMoons[0]);
+                    const newlyCollectedMoons = definiteCollectedMoons.filter(moon => !this.isMoonCollected(moon));
+
+                    this.collectedMoons.push(...newlyCollectedMoons);
+                });
+            },
+            scrollToTop() {
+                const card = document.querySelector('.card');
+                if (card) {
+                    card.scrollTop = 0;
+                }
+            },
+            moonToString(moon) {
+                return `${moon.id} - ${moon.english} - ${moon.chinese_traditional}`;
             },
             selectKingdom(kingdom) {
                 this.selectedKingdom = kingdom;
             },
-            toggleMoonCollected(moon) {
-                if (this.isCollected(moon)) {
-                    this.collectedMoons = this.collectedMoons.filter(m => m.id !== moon.id);
-                } else {
-                    this.collectedMoons.push(moon);
-                }
+            moonsAreEqual(first, other) {
+                return first && other && first.id === other.id && first.kingdom === other.kingdom;
             },
-            isCollected(moon) {
-                return this.collectedMoons.some(m => m.id === moon.id);
+            areMoonsPending(possibleMoons) {
+                const hasCorrectKingdom = possibleMoons[0].kingdom === this.selectedKingdom;
+                const hasUncollectedOptions = possibleMoons.some(moon => !this.isMoonCollected(moon));
+                const indexIsNotCollected = !this.collectedMoons.some(moon => moon.index === possibleMoons[0].index);
+
+                return hasCorrectKingdom && hasUncollectedOptions && indexIsNotCollected;
+            },
+            isMoonCollected(moon) {
+                return this.collectedMoons.some(m => this.moonsAreEqual(moon, m));
+            },
+            isMoonUnmentioned(moon) {
+                return !moon.is_story && !this.mentionedMoons.some(possibleMoons => possibleMoons.some(m => this.moonsAreEqual(moon, m)));
+            },
+            getFilteredPossibleMoons(possibleMoons) {
+                return possibleMoons.filter(moon => !this.collectedOrCorrectMoons.some(m => m.index !== moon.index && this.moonsAreEqual(moon, m)));
+            },
+            getCorrectMoonOptional(possibleMoons) {
+                return possibleMoons.length === 1 ? possibleMoons[0] : possibleMoons.find(moon => moon.correct);
+            },
+            setMoonCollected(moon) {
+                this.collectedMoons.push(moon);
+            },
+            setMoonUncollected(moon) {
+                this.collectedMoons = this.collectedMoons.filter(m => !this.moonsAreEqual(moon, m));
+            },
+            markCorrectOption(index, optionIndex) {
+                this.mentionedMoons[index][optionIndex].correct = true;
+            },
+            undoCorrectOption(moon, index) {
+                this.setMoonUncollected(moon);
+                this.mentionedMoons[index] = this.mentionedMoons[index].map(({correct, ...val}) => val);
             }
         },
         computed: {
-            selectedKingdomMoons() {
-                return this.mentionedMoons.filter(moon => moon.kingdom === this.selectedKingdom);
+            selectedKingdomPendingMoons() {
+                return this.mentionedMoons.filter(this.areMoonsPending);
+            },
+            selectedKingdomCollectedMoons() {
+                return this.collectedMoons.filter(moon => moon.kingdom === this.selectedKingdom);
+            },
+            collectedOrCorrectMoons() {
+                const correctMoons = this.selectedKingdomPendingMoons.map(possibleMoons => possibleMoons.find(moon => moon.correct)).filter(moon => moon);
+                return [...this.selectedKingdomCollectedMoons, ...correctMoons];
             }
         },
         created() {
-            setInterval(this.updateData, 1000);
+            this.getMoonsByKingdom();
+            setInterval(this.updateMoons, 1000);
         },
     }).mount('#app')
 
@@ -87,9 +195,8 @@
     }
 
     .window {
-        width: 100%;
         height: 100%;
-        box-sizing: border-box;
+        width: 100%;
         display: flex;
         flex-direction: column;
         background-repeat: no-repeat; /* Do not repeat the image */
@@ -106,8 +213,8 @@
     }
 
     .tab {
-        width: calc(100% / 12);
         padding: 10px;
+        flex-grow: 1;
         cursor: pointer;
         font-size: 14px; /* This is the default font size for body text in Material Design */
         font-weight: 500;
@@ -121,7 +228,6 @@
     }
 
     .container {
-        height: 100%;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -130,34 +236,72 @@
     .card {
         margin: 100px 32px 0;
         width: 1000px;
+        max-height: calc(100vh - 250px);
         border-radius: 6px; /* This will give the card rounded corners */
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2); /* This will give the card a shadow */
-        display: flex;
-        justify-content: center; /* This will center the content inside the card */
-        align-items: center; /* This will center the content inside the card */
         background-color: #464454;
+        overflow: auto;
         opacity: 0.9;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .card::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .card {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    .list-container {
+        display: table;
+        margin: auto;
+    }
+
+    .list-wrapper {
+        margin: 2em 0;
+    }
+
+    .list-header {
+        margin-bottom: 1em;
+        background-color: #464454;
+        color: #f5f5f5;
     }
 
     .list {
         background-color: #464454;
         color: #f5f5f5;
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        margin-top: 5px;
     }
 
     .list-item {
-        height: 24px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
+        margin: 3px 0;
     }
 
+    .list-item-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
     .collected {
         text-decoration: line-through;
     }
+
+    .moon-option {
+        margin-left: 0.5em;
+    }
+
+    .material-symbols-outlined {
+        font-size: 22px !important;
+        margin-left: 0.25em !important;
+    }
+
 </style>
 
