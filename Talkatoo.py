@@ -9,7 +9,7 @@ This Python script takes the broad approach:
 """
 
 import cv2  # pip install opencv-python
-import easyocr
+import easyocr  # pip install easyocr
 import eel  # pip install eel
 import json
 import numpy as np  # pip install numpy
@@ -24,17 +24,15 @@ import torchvision.transforms as transforms  # should come with pytorch
 
 # parameters that could be set in the gui: capture card resolution, game language, output language, kingdom list (which kingdoms + which order)
 
-reader = easyocr.Reader(["ch_tra"])
-TRANSLATE_FROM_TESS = "chi_tra"  # Use Tesseract codes, chi_sim for Simplified Chinese or chi_tra for Traditional Chinese
-LANGUAGES = ["english", "chinese_traditional", "chinese_simplified", "japanese", "korean", "dutch", "french_canada",
-             "french_france", "german", "italian", "spanish_spain", "spanish_latin_america", "russian"]
+TRANSLATE_FROM_OCR = "chi_tra"  # Use EasyOCR codes, ch_sim for Simplified Chinese or ch_tra for Traditional Chinese
+LANGUAGES = ("english", "chinese_traditional", "chinese_simplified", "japanese", "korean", "dutch", "french_canada",
+             "french_france", "german", "italian", "spanish_spain", "spanish_latin_america", "russian")
 TRANSLATE_FROM = "chinese_traditional"  # Language to translate from, moon-list.json keys
 TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
 
 KINGDOM_CERTAINTY = 0.85  # Classifier certainty to prevent uncertain kingdom switches (must occur 2 times in a row)
 POSS_MOON_CERTAINTY = 0.1  # Show moon percentage if it's at least 10% possible
 SCORE_THRESHOLD = -2  # Score from score_func where a moon can be considered for correctness, -1.5 or 2 is about right
-TEXT_CERTAINTY = 0.9  # Classifier certainty that the input is text and not random pixels, usually 0.9 is safe
 
 KINGDOM_TIMER = 3
 MOON_TIMER = 0.5
@@ -101,11 +99,11 @@ def check_story_multi(img, expected="RED"):
         min_white, max_white = 0, 0
         min_blue, max_blue = 0, 0
     elif expected == "STORY":
-        min_red, max_red = 4350, 4500
-        min_white, max_white = 450, 700
-        min_blue, max_blue = 450, 700
+        min_red, max_red = 4350, 4600
+        min_white, max_white = 425, 700
+        min_blue, max_blue = 425, 700
     elif expected == "MULTI":
-        min_red, max_red = 4050, 4200
+        min_red, max_red = 4050, 4250
         min_white, max_white = 200, 500
         min_blue, max_blue = 700, 900
     else:
@@ -133,37 +131,32 @@ def correct(string):
 
 
 # Used to set capture card borders, for cropping to work the game must be the whole screen
-def determine_borders(im):
-    min_x, max_x, min_y, max_y = 0, im.width-1, 0, im.height-1
-    thresh_x = 20  # some cc error, but if sum of RGB for an entire row or column is less than this,
-    thresh_y = 20  # we can consider it to be black. 12 has worked for me but 20 to be slightly safer.
-    for i in range(im.width):
-        col_sum = max([sum(im.getpixel((i, j))) for j in range(im.height)])
-        min_x += 1
-        if col_sum > thresh_x:
+def determine_borders(img_arr):
+    min_x, min_y, max_x, max_y = 0, 0, img_arr.shape[1]-1, img_arr.shape[0]-1
+    black_arr = np.sum(img_arr[:, :, :], axis=2) >= 20  # im.width by im.height array of True/False
+    black_horiz = np.sum(black_arr, axis=1)  # row sums
+    black_vert = np.sum(black_arr, axis=0)  # column sums
+    for i, over_thresh in enumerate(black_vert):
+        if over_thresh:  # If any pixel in col is over threshold
+            min_x = i
             break
-    for i in range(im.width-1, 0, -1):
-        col_sum = max([sum(im.getpixel((i, j))) for j in range(im.height)])
-        if col_sum > thresh_x:
+    for i in range(max_x, 0, -1):
+        if black_vert[i]:  # If any pixel in col is over threshold
+            max_x = i
             break
-        max_x -= 1
-    for j in range(im.height):
-        col_sum = max([sum(im.getpixel((i, j))) for i in range(im.width)])
-        min_y += 1
-        if col_sum > thresh_y:
+    for i, over_thresh in enumerate(black_horiz):
+        if over_thresh:  # If any pixel in row is over threshold
+            min_y = i
             break
-    for j in range(im.height-1, 0, -1):
-        col_sum = max([sum(im.getpixel((i, j))) for i in range(im.width)])
-        if col_sum > thresh_y:
+    for i in range(max_y, 0, -1):
+        if black_horiz[i]:  # If any pixel in row is over threshold
+            max_y = i
             break
-        max_y -= 1
     # Defaults
-    if max_x - min_x < im.width / 2:
-        min_x = 0
-        max_x = im.width - 1
-    if max_y - min_y < im.height / 2:
-        min_y = 0
-        max_y = im.height - 1
+    if max_x - min_x < img_arr.shape[1] / 2:
+        min_x, max_x = 0, img_arr.shape[1] - 1
+    if max_y - min_y < img_arr.shape[0] / 2:
+        min_y, max_y = 0, img_arr.shape[0] - 1
     return min_x, min_y, max_x, max_y
 
 
@@ -191,40 +184,39 @@ def get_moons_by_kingdom():
 # Assumes a well preprocessed, black and white image
 # Create bounding box for text -> check black pixel density
 # Hopefully can find a cleaner way to do this
-def is_text_naive(img):
-    img_arr = np.array(img)
+def is_text_naive(img_arr):
     black_arr = img_arr[:, :, 0] == 0  # R, G, and B are the same
     black_horiz = np.sum(black_arr, axis=1)
-    top_bound, bottom_bound = 0, img.height
+    thresh_x, thresh_y = 20, 10
+    top_bound, left_bound, bottom_bound, right_bound = 0, 0, img_arr.shape[0], img_arr.shape[1]
     for i, row_sum in enumerate(black_horiz):
-        if row_sum > 10:  # found a row with black
+        if row_sum > thresh_x:  # found a row with black
             top_bound = i
             break
-    if top_bound < 3:
+    if top_bound < 3 or top_bound > 30:
         return False
-    for i in range(len(black_horiz)-1, 0, -1):
-        if black_horiz[i] > 5:  # found a row with black
+    for i in range(bottom_bound-1, 0, -1):
+        if black_horiz[i] > thresh_x:  # found a row with black
             bottom_bound = i
             break
-    if bottom_bound >= img.height - 3 or bottom_bound - top_bound < 20:  # not enough whitespace on bottom or too small of a range for text
+    if bottom_bound >= len(black_horiz) - 3 or bottom_bound - top_bound < 20:  # not enough whitespace on bottom or too small of a range for text
         return False
     # If not enough black pixels or too many irrational white lines (allowed some, i.e. the character i has white lines)
     if np.max(black_horiz[top_bound:bottom_bound]) < 20 or np.sum(black_horiz[top_bound:bottom_bound] == 0) > 3:
         return False
 
     black_vert = np.sum(black_arr[top_bound:bottom_bound, :], axis=0)
-    left_bound, right_bound = 0, img.width
     for i, col in enumerate(black_vert):
-        if col > 10:  # found a column with black
+        if col > thresh_y:  # found a column with black
             left_bound = i
             break
     if left_bound < 5:
         return False
-    for i in range(len(black_vert)-1, 0, -1):
-        if black_vert[i] > 10:  # found a column with black
+    for i in range(right_bound-1, 0, -1):
+        if black_vert[i] > thresh_y:  # found a column with black
             right_bound = i
             break
-    if right_bound >= img.width - 5 or right_bound - left_bound < 30:  # not enough whitespace on right or too small of a range for text
+    if right_bound >= len(black_vert) - 5 or right_bound - left_bound < 30:  # not enough whitespace on right or too small of a range for text
         return False
 
     black_count = np.sum(black_vert[left_bound:right_bound])
@@ -232,9 +224,9 @@ def is_text_naive(img):
     black_pct = black_count/total_count
 
     if 0.15 < black_pct < 0.75:
-        print("Going to OCR ({})".format(black_pct))
+        print("Going to OCR ({}) -> ".format(black_pct), end="")
         return True
-    print("No match ({})".format(black_pct))
+    print("No match ({}) -> ".format(black_pct))
     return False
     # return 0.15 < black_pct < 0.75
 
@@ -247,15 +239,14 @@ def image_to_bw(img, white=240):
     blue = image_arr[:, :, 2] <= white
     image_arr[:, :, 0] = np.maximum.reduce([red, green, blue]) * 255  # if any untrue make white, else black
     image_arr[:, :, 1] = image_arr[:, :, 2] = image_arr[:, :, 0]
-    return Image.fromarray(image_arr.astype(np.uint8))
+    return image_arr.astype(np.uint8)
 
 
 # Recognize, clean, and check moon text
 def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
     ocr_text = reader.readtext(np.array(moon_img))
     ocr_text = correct("".join([ocr_text[i][1] for i in range(len(ocr_text))]))
-    if len(ocr_text) < 2:
-        return None
+    print(ocr_text)
 
     if story or multi:
         max_corr, ans, possible = check_matches_story_multi(ocr_text, multi)
@@ -320,6 +311,8 @@ def talkatoo_preprocess_better(talk_img, kingd):
     image_arr = np.array(talk_img)
     if kingd in ["Metro", "Seaside"]:
         r_min, g_min, b_max = 220, 220, 120  # Problem kingdoms
+    elif kingd in ["Sand"]:
+        r_min, g_min, b_max = 210, 210, 140  # Middle kingdoms
     else:
         r_min, g_min, b_max = 200, 200, 150  # Looser numbers usually work
     red = image_arr[:, :, 0] <= r_min
@@ -328,11 +321,12 @@ def talkatoo_preprocess_better(talk_img, kingd):
     image_arr[:, :, 0] = np.maximum.reduce([red, green, blue]) * 255  # if any untrue make white, else black
     image_arr[:, :, 1] = image_arr[:, :, 2] = image_arr[:, :, 0]
     text_count = np.sum(image_arr[:, :, 0] == 0)
-    return Image.fromarray(image_arr.astype(np.uint8)), text_count > MIN_TEXT_COUNT
+    return image_arr.astype(np.uint8), text_count > MIN_TEXT_COUNT
 
 
 # Check kingdom via recognition and update it if needed
-def update_kingdom(img):
+def update_kingdom(img_arr):
+    img = Image.fromarray(img_arr)
     kc_tensor = transform(img).unsqueeze(dim=0).type(torch.float32)
     probs = torch.softmax(kindom_classifier(kc_tensor), dim=1)
     result = int(torch.argmax(probs))
@@ -362,7 +356,7 @@ for moon in moonlist:
 
 kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, DO NOT CHANGE ORDER
-current_kingdom = kingdom_list[1]  # Start in first kingdom (fine to start in Cap)
+current_kingdom = kingdom_list[2]  # Start in first kingdom (fine to start in Cap)
 mentioned_moons = []  # list of moons mentioned by Talkatoo
 collected_moons = []  # list of auto-recognized collected moons
 
@@ -383,8 +377,8 @@ elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
 # Final setup variables
 change_kingdom = ""  # Confirmation variable for kingdom changes
 check_kingdom_at = time.time()  # Check right after start
-check_moon_at = check_kingdom_at
-check_story_at = check_kingdom_at
+check_moon_at = time.time()
+check_story_at = time.time()
 kingdom_borders = (161, 27, 211, 77)
 moon_borders = (400, 525, 900, 575)
 multi_borders = (870, 170, 950, 250)
@@ -394,8 +388,9 @@ story_text_borders = (300, 550, 950, 610)
 talkatoo_borders = (350, 565, 1000, 615)
 text_potential = 0  # So we don't read partial text
 old_time = time.time()
+reader = easyocr.Reader(["ch_tra"])
 stream = cv2.VideoCapture(VIDEO_INDEX)  # Set up capture card
-borders = determine_borders(Image.fromarray(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB)))  # Find borders to crop every iteration
+borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))  # Find borders to crop every iteration
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
 print("Setup complete! You may now approach the bird.\n")
@@ -434,9 +429,9 @@ while True:
         if is_text_naive(moon_check_im):
             moon_matches = match_moon_text(moon_check_im, prepend="Collected")
             if moon_matches:
-                check_moon_at = new_time + 6  # 5s tends to be too short so wait 6s
                 if not collected_moons or moon_matches != collected_moons[-1]:
                     collected_moons.append(moon_matches)
+                    check_moon_at = new_time + 6  # 5s tends to be too short so wait 6s
                     continue
         check_moon_at = new_time + MOON_TIMER  # Reset timer
 
@@ -447,7 +442,7 @@ while True:
             story_check_im = image.crop(story_borders)
             if check_story_multi(story_check_im, expected="STORY"):
                 print("Got a story moon!", end=" ")
-                story_text = image.rotate(-3).crop(story_text_borders)
+                story_text = image.rotate(-3.5).crop(story_text_borders)
                 story_text = image_to_bw(story_text, white=240)
                 moon_matches = match_moon_text(story_text, story=True, prepend="Collected")
                 collected_moons.append(moon_matches)
@@ -456,7 +451,7 @@ while True:
             multi_check_im = image.crop(multi_borders)
             if check_story_multi(multi_check_im, expected="MULTI"):
                 print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
-                multi_text = image.rotate(-3).crop(story_text_borders)
+                multi_text = image.rotate(-3.5).crop(story_text_borders)
                 multi_text = image_to_bw(multi_text, white=240)
                 moon_matches = match_moon_text(multi_text, multi=True, prepend="Collected")
                 collected_moons.append(moon_matches)
