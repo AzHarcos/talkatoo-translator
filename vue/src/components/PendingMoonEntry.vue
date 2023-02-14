@@ -10,7 +10,7 @@
   const store = useStore();
 
   const correctMoonOptional = computed(() => {
-    return possibleMoons.find((moon) => moon.correct);
+    return props.possibleMoons.find((moon) => moon.correct);
   });
 </script>
 

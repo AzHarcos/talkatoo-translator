@@ -1,5 +1,9 @@
+import { useStore } from './store';
+
 export function isMoonCollected(moon) {
-  return store.collectedMoons.some((m) => moonsAreEqual(moon, m));
+  const store = useStore();
+
+  return store.collectedMoons.some((m) => areMoonsEqual(moon, m));
 }
 
 export function areMoonsEqual(first, other) {
@@ -7,13 +11,17 @@ export function areMoonsEqual(first, other) {
 }
 
 export function areMoonsPending(possibleMoons) {
+  const store = useStore();
+
   const hasCorrectKingdom = possibleMoons[0].kingdom === store.selectedKingdom;
   const hasUncollectedOptions = possibleMoons.some((moon) => !isMoonCollected(moon));
-  const indexIsNotCollected = !store.collectedMoons.some(
-    (moon) => moon.index === possibleMoons[0].index
+  const correctMoon = possibleMoons.find((moon) => moon.correct);
+
+  const hasNotBeenCollected = !store.collectedMoons.some(
+    (moon) => moon.index === possibleMoons[0].index || areMoonsEqual(moon, correctMoon)
   );
 
-  return hasCorrectKingdom && hasUncollectedOptions && indexIsNotCollected;
+  return hasCorrectKingdom && hasUncollectedOptions && hasNotBeenCollected;
 }
 
 export function getCorrectMoonOptional(possibleMoons) {

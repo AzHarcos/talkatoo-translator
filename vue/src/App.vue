@@ -1,6 +1,8 @@
 <script setup>
   import MoonList from './components/MoonList.vue';
 
+  import useCurrentInstance from './hooks/useCurrentInstance';
+
   import CascadeImg from './assets/images/Cascade.png';
   import SandImg from './assets/images/Sand.png';
   import LakeImg from './assets/images/Lake.png';
@@ -12,10 +14,13 @@
   import LuncheonImg from './assets/images/Luncheon.png';
   import BowsersImg from './assets/images/Bowsers.png';
 
-  import { ref, reactive, computed } from 'vue';
+  import { ref } from 'vue';
   import { useStore } from './store';
+  import { isMoonCollected } from './composables';
 
   const store = useStore();
+
+  const { globalProperties } = useCurrentInstance();
 
   const kingdoms = ref({
     Cascade: CascadeImg,
@@ -31,7 +36,7 @@
   });
 
   function getMoonsByKingdom() {
-    eel
+    globalProperties.$eel
       .get_moons_by_kingdom()()
       .then((response) => {
         store.setMoonsByKingdom(response);
@@ -39,7 +44,7 @@
   }
 
   function updateMoons() {
-    eel.get_mentioned_moons()((response) => {
+    globalProperties.$eel.get_mentioned_moons()((response) => {
       if (response.length > store.mentionedMoons.length) {
         const newlyMentionedMoons = response.slice(store.mentionedMoons.length - response.length);
 
@@ -58,11 +63,16 @@
         setTimeout(scrollToTop, 10);
       }
     });
-    eel.get_collected_moons()((response) => {
+    globalProperties.$eel.get_collected_moons()((response) => {
       const definiteCollectedMoons = response
         .filter((possibleMoons) => possibleMoons.length === 1)
         .map((possibleMoons) => possibleMoons[0]);
       const newlyCollectedMoons = definiteCollectedMoons.filter((moon) => !isMoonCollected(moon));
+
+      if (newlyCollectedMoons.length === 0) return;
+
+      const latestMoon = newlyCollectedMoons[newlyCollectedMoons.length - 1];
+      selectKingdom(latestMoon.kingdom);
 
       store.addCollectedMoons(newlyCollectedMoons);
     });

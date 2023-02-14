@@ -1,7 +1,8 @@
 <script setup>
-  import { computed } from 'vue';
   import PendingMoonList from './PendingMoonList.vue';
   import CollectedMoonList from './CollectedMoonList.vue';
+
+  import { computed } from 'vue';
   import { useStore } from '../store';
   import { areMoonsPending } from '../composables';
 

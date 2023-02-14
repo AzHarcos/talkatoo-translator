@@ -1,4 +1,6 @@
 <script setup>
+  import CollectedMoonEntry from './CollectedMoonEntry.vue';
+
   const props = defineProps({
     moons: Array,
   });
