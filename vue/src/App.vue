@@ -1,19 +1,19 @@
 <script setup>
-  import MoonList from './components/MoonList.vue'
+  import MoonList from './components/MoonList.vue';
 
-  import CascadeImg from './assets/images/Cascade.png'
-  import SandImg from './assets/images/Sand.png'
-  import LakeImg from './assets/images/Lake.png'
-  import WoodedImg from './assets/images/Wooded.png'
-  import LostImg from './assets/images/Lost.png'
-  import MetroImg from './assets/images/Metro.png'
-  import SnowImg from './assets/images/Snow.png'
-  import SeasideImg from './assets/images/Seaside.png'
-  import LuncheonImg from './assets/images/Luncheon.png'
-  import BowsersImg from './assets/images/Bowsers.png'
+  import CascadeImg from './assets/images/Cascade.png';
+  import SandImg from './assets/images/Sand.png';
+  import LakeImg from './assets/images/Lake.png';
+  import WoodedImg from './assets/images/Wooded.png';
+  import LostImg from './assets/images/Lost.png';
+  import MetroImg from './assets/images/Metro.png';
+  import SnowImg from './assets/images/Snow.png';
+  import SeasideImg from './assets/images/Seaside.png';
+  import LuncheonImg from './assets/images/Luncheon.png';
+  import BowsersImg from './assets/images/Bowsers.png';
 
-  import { ref, reactive, computed } from "vue";
-  import { useStore } from './store'
+  import { ref, reactive, computed } from 'vue';
+  import { useStore } from './store';
 
   const store = useStore();
 
@@ -27,48 +27,52 @@
     Snow: SnowImg,
     Seaside: SeasideImg,
     Luncheon: LuncheonImg,
-    Bowsers: BowsersImg
+    Bowsers: BowsersImg,
   });
 
   function getMoonsByKingdom() {
-    eel.get_moons_by_kingdom()().then(response => {
+    eel
+      .get_moons_by_kingdom()()
+      .then((response) => {
         store.setMoonsByKingdom(response);
-    });
+      });
   }
 
   function updateMoons() {
-      eel.get_mentioned_moons()(response => {
-          if (response.length > store.mentionedMoons.length) {
-              const newlyMentionedMoons = response.slice(store.mentionedMoons.length - response.length)
+    eel.get_mentioned_moons()((response) => {
+      if (response.length > store.mentionedMoons.length) {
+        const newlyMentionedMoons = response.slice(store.mentionedMoons.length - response.length);
 
-              newlyMentionedMoons.forEach(possibleMoons => {
-                  const moonsWithIndex = possibleMoons.map(moon => ({
-                      ...moon,
-                      index: store.mentionedMoons.length,
-                      correct: possibleMoons.length === 0
-                  }));
-                  store.addMentionedMoons(moonsWithIndex)
-              });
+        newlyMentionedMoons.forEach((possibleMoons) => {
+          const moonsWithIndex = possibleMoons.map((moon) => ({
+            ...moon,
+            index: store.mentionedMoons.length,
+            correct: possibleMoons.length === 0,
+          }));
+          store.addMentionedMoons(moonsWithIndex);
+        });
 
-              const latestMoon = response[response.length - 1][0];
-              selectKingdom(latestMoon.kingdom);
+        const latestMoon = response[response.length - 1][0];
+        selectKingdom(latestMoon.kingdom);
 
-              setTimeout(scrollToTop, 10);
-          }
-      });
-      eel.get_collected_moons()(response => {
-          const definiteCollectedMoons = response.filter(possibleMoons => possibleMoons.length === 1).map(possibleMoons => possibleMoons[0]);
-          const newlyCollectedMoons = definiteCollectedMoons.filter(moon => !isMoonCollected(moon));
+        setTimeout(scrollToTop, 10);
+      }
+    });
+    eel.get_collected_moons()((response) => {
+      const definiteCollectedMoons = response
+        .filter((possibleMoons) => possibleMoons.length === 1)
+        .map((possibleMoons) => possibleMoons[0]);
+      const newlyCollectedMoons = definiteCollectedMoons.filter((moon) => !isMoonCollected(moon));
 
-          store.addCollectedMoons(newlyCollectedMoons);
-      });
+      store.addCollectedMoons(newlyCollectedMoons);
+    });
   }
 
   function scrollToTop() {
-      const card = document.querySelector('.card');
-      if (card) {
-          card.scrollTop = 0;
-      }
+    const card = document.querySelector('.card');
+    if (card) {
+      card.scrollTop = 0;
+    }
   }
 
   function selectKingdom(kingdom) {
@@ -80,16 +84,20 @@
 </script>
 
 <template>
-  <div class="window" v-bind:style="{ backgroundImage: 'url(' + kingdoms[store.selectedKingdom] + ')' }">
+  <div
+    class="window"
+    v-bind:style="{ backgroundImage: 'url(' + kingdoms[store.selectedKingdom] + ')' }">
     <div class="tabs">
-      <div v-for="kingdom in Object.keys(kingdoms)" class="tab" :class="{'selected': kingdom === store.selectedKingdom}" @click="selectKingdom(kingdom)">
-          {{ kingdom }}
+      <div
+        v-for="kingdom in Object.keys(kingdoms)"
+        class="tab"
+        :class="{ selected: kingdom === store.selectedKingdom }"
+        @click="selectKingdom(kingdom)">
+        {{ kingdom }}
       </div>
     </div>
-    <MoonList/>
+    <MoonList />
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

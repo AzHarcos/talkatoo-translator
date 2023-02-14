@@ -1,14 +1,14 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 import { areMoonsEqual } from './composables';
 
 export const useStore = defineStore('store', {
   state: () => {
     return {
-        moonsByKingdom: [],
-        mentionedMoons: [],
-        collectedMoons: [],
-        selectedKingdom: "Cascade"
-    }
+      moonsByKingdom: [],
+      mentionedMoons: [],
+      collectedMoons: [],
+      selectedKingdom: 'Cascade',
+    };
   },
   actions: {
     setMoonsByKingdom(moonsByKingdom) {
@@ -22,7 +22,7 @@ export const useStore = defineStore('store', {
     },
     undoCorrectOption(moon, index) {
       this.setMoonUncollected(moon);
-      this.mentionedMoons[index] = this.mentionedMoons[index].map(({correct, ...val}) => val);
+      this.mentionedMoons[index] = this.mentionedMoons[index].map(({ correct, ...val }) => val);
     },
     addCollectedMoons(moons) {
       this.collectedMoons.push(...moons);
@@ -31,10 +31,10 @@ export const useStore = defineStore('store', {
       this.collectedMoons.push(moon);
     },
     setMoonUncollected(moon) {
-      this.collectedMoons = this.collectedMoons.filter(m => !areMoonsEqual(moon, m));
+      this.collectedMoons = this.collectedMoons.filter((m) => !areMoonsEqual(moon, m));
     },
     setSelectedKingdom(kingdom) {
       this.selectedKingdom = kingdom;
-    }
-  }
-})
+    },
+  },
+});
