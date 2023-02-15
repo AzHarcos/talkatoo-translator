@@ -24,10 +24,6 @@ export function areMoonsPending(possibleMoons) {
   return hasCorrectKingdom && hasUncollectedOptions && hasNotBeenCollected;
 }
 
-export function getCorrectMoonOptional(possibleMoons) {
-  return possibleMoons.length === 1 ? possibleMoons[0] : possibleMoons.find((moon) => moon.correct);
-}
-
 export function moonToString(moon) {
   return `${moon.id} - ${moon.english} - ${moon.chinese_traditional}`;
 }
