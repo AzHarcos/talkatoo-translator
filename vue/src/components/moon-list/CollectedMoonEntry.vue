@@ -1,18 +1,18 @@
 <script setup>
   import { computed } from 'vue';
-  import { useStore } from '../store';
-  import { areMoonsEqual, moonToString } from '../composables';
+  import { useState } from '../../stores/state';
+  import { areMoonsEqual, moonToString } from '../../composables';
 
   const props = defineProps({
     moon: Object,
   });
 
-  const store = useStore();
+  const state = useState();
 
   const isMoonUnmentioned = computed(() => {
     return (
       !props.moon.is_story &&
-      !store.mentionedMoons.some((possibleMoons) =>
+      !state.mentionedMoons.some((possibleMoons) =>
         possibleMoons.some((m) => areMoonsEqual(props.moon, m))
       )
     );
@@ -26,9 +26,10 @@
 <template>
   <div v-if="isMoonUnmentioned" class="list-item-content">
     <span>{{ moonString }}</span>
-    <span class="tooltip material-symbols-outlined"
-      >error<span class="tooltiptext">Not mentioned by Talkatoo</span></span
-    >
+    <span class="tooltip">
+      <v-icon icon="mdi-alert-circle-outline"></v-icon>
+      <span class="tooltip-text">Not mentioned by Talkatoo</span>
+    </span>
   </div>
-  <span v-else @click="store.setMoonUncollected(moon)">{{ moonString }}</span>
+  <span v-else @click="state.setMoonUncollected(moon)">{{ moonString }}</span>
 </template>

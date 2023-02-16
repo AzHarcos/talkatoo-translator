@@ -2,14 +2,14 @@
   import PendingMoonEntry from './PendingMoonEntry.vue';
 
   import { computed } from 'vue';
-  import { useStore } from '../store';
-  import { areMoonsEqual } from '../composables';
+  import { useState } from '@/stores/state';
+  import { areMoonsEqual } from '@/composables';
 
   const props = defineProps({
     moons: Array,
   });
 
-  const store = useStore();
+  const state = useState();
 
   // moons that have been collected or marked as correct
   const definitiveMoons = computed(() => {
@@ -17,7 +17,7 @@
       .map((possibleMoons) => possibleMoons.find((moon) => moon.correct))
       .filter((moon) => moon);
 
-    return [...store.collectedMoons, ...correctMoons];
+    return [...state.collectedMoons, ...correctMoons];
   });
 
   const filteredMoons = computed(() => {

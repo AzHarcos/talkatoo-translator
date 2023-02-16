@@ -1,9 +1,9 @@
-import { useStore } from './store';
+import { useState } from '@/stores/state';
 
 export function isMoonCollected(moon) {
-  const store = useStore();
+  const state = useState();
 
-  return store.collectedMoons.some((m) => areMoonsEqual(moon, m));
+  return state.collectedMoons.some((m) => areMoonsEqual(moon, m));
 }
 
 export function areMoonsEqual(first, other) {
@@ -11,13 +11,13 @@ export function areMoonsEqual(first, other) {
 }
 
 export function areMoonsPending(possibleMoons) {
-  const store = useStore();
+  const state = useState();
 
-  const hasCorrectKingdom = possibleMoons[0].kingdom === store.selectedKingdom;
+  const hasCorrectKingdom = possibleMoons[0].kingdom === state.selectedKingdom;
   const hasUncollectedOptions = possibleMoons.some((moon) => !isMoonCollected(moon));
   const correctMoon = possibleMoons.find((moon) => moon.correct);
 
-  const hasNotBeenCollected = !store.collectedMoons.some(
+  const hasNotBeenCollected = !state.collectedMoons.some(
     (moon) => moon.index === possibleMoons[0].index || areMoonsEqual(moon, correctMoon)
   );
 

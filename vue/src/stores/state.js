@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { areMoonsEqual } from './composables';
+import { areMoonsEqual } from '@/composables';
 
-export const useStore = defineStore('store', {
+export const useState = defineStore('state', {
   state: () => {
     return {
       moonsByKingdom: [],
