@@ -1,12 +1,9 @@
 <script setup>
-  import { ref, computed } from 'vue';
   import { useSettings } from '@/stores/settings';
+  import KingdomsPicker from './KingdomsPicker.vue';
   import LanguagePicker from './LanguagePicker.vue';
 
   const settings = useSettings();
-
-  const inputLanguage = ref('');
-  const outputLanguage = ref('');
 </script>
 
 <template>
@@ -18,32 +15,21 @@
         <v-row>
           <v-col cols="12" sm="6">
             <LanguagePicker
-              v-model="inputLanguage"
+              @input="(language) => settings.setInputLanguage(language)"
               label="Input Language"
-              preselected="chinese_simplified"
+              :preselected="settings.inputLanguage"
               pattern="Chinese" />
           </v-col>
           <v-col cols="12" sm="6">
             <LanguagePicker
-              v-model="outputLanguage"
+              @input="(language) => settings.setOutputLanguage(language)"
               label="Output Language"
-              preselected="english" />
+              :preselected="settings.outputLanguage" />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-text-field
-              v-model="activeKingdoms"
-              label="Kingdom Selection"
-              required></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <v-checkbox v-model="useCompactMode" label="Compact Mode"></v-checkbox>
-          </v-col>
-          <v-col cols="6">
-            <v-checkbox v-model="useTraditionalMode" label="Traditional Mode"></v-checkbox>
+            <KingdomsPicker />
           </v-col>
         </v-row>
       </v-form>

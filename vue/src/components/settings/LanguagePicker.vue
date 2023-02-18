@@ -1,91 +1,35 @@
 <script setup>
   import { ref } from 'vue';
+  import availableLanguages from '../../consts/availableLanguages';
 
   const props = defineProps({
-    modelValue: String,
     label: String,
     preselected: String,
     pattern: String,
   });
 
-  defineEmits(['update:modelValue']);
+  const emit = defineEmits(['input']);
 
-  const availableLanguages = [
-    {
-      id: 'english',
-      label: 'English',
-    },
-    {
-      id: 'chinese_simplified',
-      label: 'Simplified Chinese',
-    },
-    {
-      id: 'chinese_traditional',
-      label: 'Traditional Chinese',
-    },
-    {
-      id: 'dutch',
-      label: 'Dutch',
-    },
-    {
-      id: 'french_france',
-      label: 'French',
-    },
-    {
-      id: 'french_canada',
-      label: 'French (Canadian)',
-    },
-    {
-      id: 'german',
-      label: 'German',
-    },
-    {
-      id: 'italian',
-      label: 'Italian',
-    },
-    {
-      id: 'japanese',
-      label: 'Japanese',
-    },
-    {
-      id: 'korean',
-      label: 'Korean',
-    },
-    {
-      id: 'russian',
-      label: 'Russian',
-    },
-    {
-      id: 'spanish_spain',
-      label: 'Spanish',
-    },
-    {
-      id: 'spanish_latin_america',
-      label: 'Spanish (Latin America)',
-    },
-  ];
+  const filteredLanguages = props.pattern
+    ? availableLanguages.filter((language) => language.label.includes(props.pattern))
+    : availableLanguages;
 
   const preselectedLanguage =
     availableLanguages.find((entry) => entry.id === props.preselected)?.id ?? '';
 
   const selectedLanguage = ref(preselectedLanguage);
-  const requiredRules = [() => 'Language is required'];
 
-  function filterByPattern(item) {
-    return props.pattern && item.includes(pattern);
-  }
+  const requiredRules = [(value) => Boolean(value) || 'Language is required'];
 </script>
 
 <template>
   <v-autocomplete
     v-model="selectedLanguage"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @update:modelValue="(event) => $emit('input', event)"
     :label="label"
-    :items="availableLanguages"
-    :filter="filterByPattern"
+    :items="filteredLanguages"
     item-value="id"
     item-title="label"
     :rules="requiredRules"
     required></v-autocomplete>
 </template>
-p

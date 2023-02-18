@@ -4,22 +4,12 @@
 
   import useCurrentInstance from '@/hooks/useCurrentInstance';
 
-  import CascadeImg from './assets/images/Cascade.png';
-  import SandImg from './assets/images/Sand.png';
-  import LakeImg from './assets/images/Lake.png';
-  import WoodedImg from './assets/images/Wooded.png';
-  import LostImg from './assets/images/Lost.png';
-  import MetroImg from './assets/images/Metro.png';
-  import SnowImg from './assets/images/Snow.png';
-  import SeasideImg from './assets/images/Seaside.png';
-  import LuncheonImg from './assets/images/Luncheon.png';
-  import BowsersImg from './assets/images/Bowsers.png';
-
   import { ref } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonCollected } from '@/composables';
   import { storeToRefs } from 'pinia';
+  import { kingdomImages } from './consts/availableKingdoms';
 
   const state = useState();
   const settings = useSettings();
@@ -29,19 +19,6 @@
   const { globalProperties } = useCurrentInstance();
 
   const showSettings = ref(false);
-
-  const kingdomImages = ref({
-    Cascade: CascadeImg,
-    Sand: SandImg,
-    Lake: LakeImg,
-    Wooded: WoodedImg,
-    Lost: LostImg,
-    Metro: MetroImg,
-    Snow: SnowImg,
-    Seaside: SeasideImg,
-    Luncheon: LuncheonImg,
-    Bowsers: BowsersImg,
-  });
 
   function getMoonsByKingdom() {
     globalProperties.$eel
