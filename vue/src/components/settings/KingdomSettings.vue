@@ -1,21 +1,47 @@
 <script setup>
-  import { ref, computed, watch } from 'vue';
+  import { ref, computed } from 'vue';
   import { useSettings } from '@/stores/settings';
   import { mainGameKingdoms, availableKingdoms } from '../../consts/availableKingdoms';
 
   const settings = useSettings();
 
-  const kingdomPresets = ['Any%', 'Postgame'];
+  const selectedKingdoms = ref([...settings.activeKingdoms]);
 
-  const selectedKingdoms = ref([...mainGameKingdoms]);
-  const selectedPreset = ref(kingdomPresets[0]);
+  const includePostGame = computed({
+    get() {
+      return settings.includePostGame;
+    },
+    set(value) {
+      settings.setIncludePostGame(value);
+
+      selectedKingdoms.value = value ? [...availableKingdoms] : [...mainGameKingdoms];
+
+      if (!settings.woodedFirst) {
+        swapKingdoms('Lake', 'Wooded');
+      }
+
+      if (settings.seasideFirst) {
+        swapKingdoms('Snow', 'Seaside');
+      }
+
+      settings.setActiveKingdoms(selectedKingdoms.value);
+    },
+  });
+
+  const isHardcore = computed({
+    get() {
+      return settings.isHardcore;
+    },
+    set(value) {
+      settings.setIsHardcore(value);
+    },
+  });
 
   const woodedFirst = computed({
     get() {
       return settings.woodedFirst;
     },
     set(value) {
-      console.log(value);
       settings.setWoodedFirst(value);
       swapKingdoms('Lake', 'Wooded');
     },
@@ -26,28 +52,9 @@
       return settings.seasideFirst;
     },
     set(value) {
-      console.log(value);
       settings.setSeasideFirst(value);
       swapKingdoms('Snow', 'Seaside');
     },
-  });
-
-  watch(selectedPreset, (preset) => {
-    if (preset === 'Postgame') {
-      selectedKingdoms.value = [...availableKingdoms];
-    } else {
-      selectedKingdoms.value = [...mainGameKingdoms];
-    }
-
-    if (!settings.woodedFirst) {
-      swapKingdoms('Lake', 'Wooded');
-    }
-
-    if (settings.seasideFirst) {
-      swapKingdoms('Snow', 'Seaside');
-    }
-
-    settings.setActiveKingdoms(selectedKingdoms.value);
   });
 
   function swapKingdoms(kingdom1, kingdom2) {
@@ -69,17 +76,17 @@
 
 <template>
   <v-row>
-    <v-col cols="6">
-      <v-autocomplete
-        v-model="selectedPreset"
-        label="Kingdom Selection"
-        :items="kingdomPresets"></v-autocomplete>
+    <v-col cols="3">
+      <v-switch v-model="includePostGame" label="Include post game"></v-switch>
     </v-col>
     <v-col cols="3">
       <v-switch v-model="woodedFirst" label="Wooded first"></v-switch>
     </v-col>
     <v-col cols="3">
       <v-switch v-model="seasideFirst" label="Seaside first"></v-switch>
+    </v-col>
+    <v-col cols="3">
+      <v-switch v-model="isHardcore" label="Hardcore?"></v-switch>
     </v-col>
   </v-row>
 </template>

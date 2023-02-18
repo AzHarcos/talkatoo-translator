@@ -1,3 +1,4 @@
+import CapImg from '../assets/images/Cap.png';
 import CascadeImg from '../assets/images/Cascade.png';
 import SandImg from '../assets/images/Sand.png';
 import LakeImg from '../assets/images/Lake.png';
@@ -8,9 +9,11 @@ import SnowImg from '../assets/images/Snow.png';
 import SeasideImg from '../assets/images/Seaside.png';
 import LuncheonImg from '../assets/images/Luncheon.png';
 import BowsersImg from '../assets/images/Bowsers.png';
+import MoonImg from '../assets/images/Moon.png';
+import MushroomImg from '../assets/images/Mushroom.png';
 
 export const kingdomImages = {
-  Cap: CascadeImg, //TODO
+  Cap: CapImg,
   Cascade: CascadeImg,
   Sand: SandImg,
   Lake: LakeImg,
@@ -21,8 +24,8 @@ export const kingdomImages = {
   Seaside: SeasideImg,
   Luncheon: LuncheonImg,
   Bowsers: BowsersImg,
-  Moon: CascadeImg,
-  Mushroom: CascadeImg,
+  Moon: MoonImg,
+  Mushroom: MushroomImg,
 };
 
 export const mainGameKingdoms = [

@@ -7,8 +7,10 @@ export const useSettings = defineStore('settings', {
       inputLanguage: 'chinese_simplified',
       outputLanguage: 'english',
       activeKingdoms: [...mainGameKingdoms],
+      includePostGame: false,
       woodedFirst: true,
       seasideFirst: false,
+      isHardcore: false,
     };
   },
   actions: {
@@ -21,11 +23,17 @@ export const useSettings = defineStore('settings', {
     setActiveKingdoms(activeKingdoms) {
       this.activeKingdoms = [...activeKingdoms];
     },
+    setIncludePostGame(includePostGame) {
+      this.includePostGame = includePostGame;
+    },
     setWoodedFirst(woodedFirst) {
       this.woodedFirst = woodedFirst;
     },
     setSeasideFirst(seasideFirst) {
       this.seasideFirst = seasideFirst;
+    },
+    setIsHardcore(isHardcore) {
+      this.isHardcore = isHardcore;
     },
   },
 });

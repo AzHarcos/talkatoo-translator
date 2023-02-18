@@ -1,4 +1,5 @@
 import { useState } from '@/stores/state';
+import { useSettings } from '@/stores/settings';
 
 export function isMoonCollected(moon) {
   const state = useState();
@@ -25,5 +26,7 @@ export function areMoonsPending(possibleMoons) {
 }
 
 export function moonToString(moon) {
-  return `${moon.id} - ${moon.english} - ${moon.chinese_traditional}`;
+  const settings = useSettings();
+
+  return `${moon.id} - ${moon[settings.outputLanguage]} - ${moon[settings.inputLanguage]}`;
 }

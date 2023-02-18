@@ -20,9 +20,7 @@
 <template>
   <v-card
     v-if="selectedKingdomPendingMoons.length > 0 || selectedKingdomCollectedMoons.length > 0"
-    flat
-    rounded="lg"
-    style="opacity: 0.95">
+    flat>
     <v-card-text>
       <div class="list-container">
         <PendingMoonList

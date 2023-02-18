@@ -181,6 +181,20 @@ def get_moons_by_kingdom():
     return moons_by_kingdom
 
 
+# Allow the gui to overwrite the language to translate from for image recognition
+@eel.expose
+def set_translate_from(translate_from):
+    global TRANSLATE_FROM
+    TRANSLATE_FROM = translate_from
+
+
+# Allow the gui to overwrite the language to translate to for logging purposes
+@eel.expose
+def set_translate_to(translate_to):
+    global TRANSLATE_TO
+    TRANSLATE_TO = translate_to
+
+
 # Assumes a well preprocessed, black and white image
 # Create bounding box for text -> check black pixel density
 # Hopefully can find a cleaner way to do this
@@ -345,14 +359,12 @@ moons_by_kingdom = {}
 special_multi_moons = []  # Ruined/Dark/Darker need to be matched separately
 for moon in moonlist:
     this_kingdom = moon["kingdom"]
-    this_moon = {"id": moon["id"], "kingdom": moon["kingdom"], TRANSLATE_FROM: moon[TRANSLATE_FROM],
-                 TRANSLATE_TO: moon[TRANSLATE_TO], "chinese_simplified": moon["chinese_simplified"]}
     if this_kingdom in moons_by_kingdom:
-        moons_by_kingdom[this_kingdom].append(this_moon)
+        moons_by_kingdom[this_kingdom].append(moon)
     else:
-        moons_by_kingdom[this_kingdom] = [this_moon]
+        moons_by_kingdom[this_kingdom] = [moon]
     if this_kingdom in ["Ruined", "Dark Side", "Darker Side"] and moon["id"] == 1:
-        special_multi_moons.append(this_moon)
+        special_multi_moons.append(moon)
 
 kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, DO NOT CHANGE ORDER
