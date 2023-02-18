@@ -36,8 +36,7 @@
       <LanguagePicker
         @input="setInputLanguage"
         label="Input Language"
-        :preselected="settings.inputLanguage"
-        pattern="Chinese" />
+        :preselected="settings.inputLanguage" />
     </v-col>
     <v-col cols="12" sm="6">
       <LanguagePicker
