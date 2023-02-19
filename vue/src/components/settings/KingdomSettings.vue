@@ -75,18 +75,22 @@
 </script>
 
 <template>
-  <v-row>
-    <v-col cols="3">
-      <v-switch v-model="includePostGame" label="Include post game"></v-switch>
-    </v-col>
-    <v-col cols="3">
-      <v-switch v-model="woodedFirst" label="Wooded first"></v-switch>
-    </v-col>
-    <v-col cols="3">
-      <v-switch v-model="seasideFirst" label="Seaside first"></v-switch>
-    </v-col>
-    <v-col cols="3">
-      <v-switch v-model="isHardcore" label="Hardcore?"></v-switch>
-    </v-col>
-  </v-row>
+  <v-card flat>
+    <v-card-title>Kingdom settings</v-card-title>
+    <v-card-text>
+      <v-row>
+        <v-col cols="3">
+          <v-switch v-model="includePostGame" label="Include post game"></v-switch>
+        </v-col>
+        <v-col cols="3">
+          <v-switch v-model="woodedFirst" label="Wooded first"></v-switch>
+        </v-col>
+        <v-col cols="3">
+          <v-switch v-model="seasideFirst" label="Seaside first"></v-switch>
+        </v-col>
+        <v-col cols="3">
+          <v-switch v-model="isHardcore" label="Hardcore?"></v-switch>
+        </v-col> </v-row
+    ></v-card-text>
+  </v-card>
 </template>
