@@ -1,8 +1,11 @@
 <script setup>
   import { computed } from 'vue';
+  import { useDisplay } from 'vuetify';
 
   import { useSettings } from '@/stores/settings';
   import useCurrentInstance from '@/hooks/useCurrentInstance';
+
+  const { smAndUp, lgAndUp } = useDisplay();
 
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
@@ -44,16 +47,19 @@
       >Set the video index of your capture card and test if the video feed is setup
       properly.</v-card-subtitle
     >
-    <v-card-text>
-      <v-row>
-        <v-col cols="12" sm="6">
+    <v-card-text class="mt-4">
+      <v-row align="center">
+        <v-col cols="12" sm="6" md="3">
           <v-autocomplete
             v-model="videoIndex"
+            label="Video index"
             :items="videoIndexOptions"
-            label="Video index"></v-autocomplete>
+            hide-details></v-autocomplete>
         </v-col>
-        <v-col cols="12" sm="6">
-          <v-btn @click="resetBorders">Reset capture border</v-btn>
+        <v-col cols="12" sm="6" md="3" :class="{ 'd-flex justify-center align-center': smAndUp }">
+          <v-btn @click="resetBorders">{{
+            lgAndUp ? 'Reset capture borders' : 'Reset borders'
+          }}</v-btn>
         </v-col>
       </v-row>
     </v-card-text>

@@ -1,15 +1,23 @@
 <script setup>
-  import { useSettings } from '@/stores/settings';
   import ImageRecognitionSettings from './ImageRecognitionSettings.vue';
   import KingdomsPicker from './KingdomSettings.vue';
   import LanguageSettings from './LanguageSettings.vue';
 
-  const settings = useSettings();
+  import { useState } from '@/stores/state';
+
+  const state = useState();
+
+  function closeSettings {
+    state.setShowSettings(false)
+  }
 </script>
 
 <template>
   <v-card flat>
-    <v-card-title class="ml-1 py-4 text-h5">Settings</v-card-title>
+    <v-card-title class="ml-1 py-4 d-flex justify-space-between">
+      <div class="text-h5">Settings</div>
+      <v-icon @click="closeSettings" size="1em" class="close-icon">mdi-close</v-icon>
+    </v-card-title>
     <v-card-text>
       <LanguageSettings class="border mb-4" />
       <KingdomsPicker class="border mb-4" />
@@ -19,6 +27,9 @@
 </template>
 
 <style scoped>
+  .close-icon:hover {
+    cursor: pointer;
+  }
   .border {
     border: solid 1px white;
   }

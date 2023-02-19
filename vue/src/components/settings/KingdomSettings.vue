@@ -82,19 +82,42 @@
       Post game kingdoms include Cap, Moon and Mushroom.</v-card-subtitle
     >
     <v-card-text>
-      <v-row>
-        <v-col cols="3">
-          <v-switch v-model="includePostGame" label="Include post game" hide-details></v-switch>
-        </v-col>
-        <v-col cols="3">
-          <v-switch v-model="woodedFirst" label="Wooded first" hide-details></v-switch>
-        </v-col>
-        <v-col cols="3">
-          <v-switch v-model="seasideFirst" label="Seaside first" hide-details></v-switch>
-        </v-col>
-        <v-col cols="3">
-          <v-switch v-model="isHardcore" label="Hardcore?" hide-details></v-switch>
-        </v-col> </v-row
-    ></v-card-text>
+      <div class="d-flex flex-column flex-lg-row justify-lg-space-between">
+        <v-switch
+          v-model="includePostGame"
+          label="Include post game"
+          hide-details
+          class="slider-width"
+          color="primary"></v-switch>
+        <v-switch
+          v-model="woodedFirst"
+          label="Wooded first"
+          hide-details
+          class="slider-width"
+          color="primary"></v-switch>
+        <v-switch
+          v-model="seasideFirst"
+          label="Seaside first"
+          hide-details
+          class="slider-width"
+          color="primary"></v-switch>
+        <v-switch
+          v-model="isHardcore"
+          label="Hardcore?"
+          hide-details
+          class="slider-width"
+          color="primary"></v-switch>
+      </div>
+    </v-card-text>
   </v-card>
 </template>
+
+<style>
+  .slider-width {
+    max-width: 220px;
+  }
+
+  .v-switch__thumb {
+    color: white;
+  }
+</style>

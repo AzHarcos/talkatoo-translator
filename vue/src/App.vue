@@ -4,7 +4,6 @@
 
   import useCurrentInstance from '@/hooks/useCurrentInstance';
 
-  import { ref } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonCollected } from '@/composables';
@@ -13,8 +12,6 @@
   const state = useState();
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
-
-  const showSettings = ref(false);
 
   function getMoonsByKingdom() {
     globalProperties.$eel
@@ -70,26 +67,34 @@
     state.setSelectedKingdom(kingdom);
   }
 
+  function toggleShowSettings() {
+    state.setShowSettings(!state.showSettings);
+  }
+
   getMoonsByKingdom();
   setInterval(updateMoons, 1000);
 </script>
 
 <template>
   <v-app>
-    <v-app-bar color="primary" flat density="compact">
-      <v-tabs v-model="state.selectedKingdom" grow show-arrows>
+    <v-app-bar flat density="compact">
+      <v-tabs v-model="state.selectedKingdom" grow show-arrows color="primary">
         <v-tab v-for="kingdom in settings.activeKingdoms" :key="kingdom" :value="kingdom">
           {{ kingdom }}
         </v-tab>
       </v-tabs>
-      <v-icon @click="showSettings = !showSettings" icon="mdi-cog" size="30" class="mx-4"></v-icon>
+      <v-icon
+        @click="toggleShowSettings"
+        :icon="state.showSettings ? 'mdi-home' : 'mdi-cog'"
+        size="30"
+        class="mx-4"></v-icon>
     </v-app-bar>
     <v-main>
       <v-container
         fluid
         class="image-container pa-8"
         :style="{ backgroundImage: 'url(' + kingdomImages[state.selectedKingdom] + ')' }">
-        <div class="main-content"><Settings v-if="showSettings" /> <MoonList v-else /></div>
+        <div class="main-content"><Settings v-if="state.showSettings" /> <MoonList v-else /></div>
       </v-container>
     </v-main>
   </v-app>

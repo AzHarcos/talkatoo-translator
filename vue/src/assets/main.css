@@ -7,6 +7,7 @@ html {
   max-height: calc(100vh - 250px);
   margin: auto;
   overflow: auto;
+  opacity: 0.95;
   border-radius: 0.5em;
 }
 

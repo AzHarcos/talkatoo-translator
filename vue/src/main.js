@@ -20,8 +20,8 @@ const vuetify = createVuetify({
       darkTheme: {
         dark: true,
         colors: {
-          surface: '#464454',
-          primary: '#464454', //#212121
+          surface: '#333333',
+          primary: '#03DAC6',
         },
       },
     },
@@ -37,8 +37,12 @@ const vuetify = createVuetify({
     global: {
       ripple: false,
     },
+    VBtn: {
+      variant: 'outlined',
+    },
     VAutocomplete: {
       variant: 'outlined',
+      color: 'primary',
     },
   },
 });

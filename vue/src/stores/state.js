@@ -4,6 +4,7 @@ import { areMoonsEqual } from '@/composables';
 export const useState = defineStore('state', {
   state: () => {
     return {
+      showSettings: false,
       moonsByKingdom: [],
       mentionedMoons: [],
       collectedMoons: [],
@@ -11,6 +12,9 @@ export const useState = defineStore('state', {
     };
   },
   actions: {
+    setShowSettings(showSettings) {
+      this.showSettings = showSettings;
+    },
     setMoonsByKingdom(moonsByKingdom) {
       this.moonsByKingdom = moonsByKingdom;
     },
