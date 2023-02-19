@@ -24,7 +24,7 @@
   });
 
   const tooltipText = computed(() => {
-    return settings.isHardcore
+    return props.moon.is_story
       ? "Story moons don't count in Hardcore"
       : 'Not mentioned by Talkatoo';
   });
@@ -33,10 +33,12 @@
 <template>
   <div v-if="isMoonUnmentioned" class="list-item-content">
     <span>{{ moonString }}</span>
-    <span class="tooltip">
-      <v-icon icon="mdi-alert-circle-outline"></v-icon>
-      <span class="tooltip-text">Not mentioned by Talkatoo</span>
+    <span class="tooltip ml-4">
+      <v-icon icon="mdi-alert-circle-outline" size="24"></v-icon>
+      <span class="tooltip-text">{{ tooltipText }}</span>
     </span>
   </div>
-  <span v-else @click="state.setMoonUncollected(moon)">{{ moonString }}</span>
+  <span v-else @click="() => state.setMoonUncollected(moon)" class="clickable">{{
+    moonString
+  }}</span>
 </template>

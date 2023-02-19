@@ -37,6 +37,7 @@
 
         const latestMoon = response[response.length - 1][0];
         selectKingdom(latestMoon.kingdom);
+        state.setShowSettings(false);
 
         setTimeout(scrollToTop, 10);
       }
@@ -51,6 +52,7 @@
 
       const latestMoon = newlyCollectedMoons[newlyCollectedMoons.length - 1];
       selectKingdom(latestMoon.kingdom);
+      state.setShowSettings(false);
 
       state.addCollectedMoons(newlyCollectedMoons);
     });
@@ -79,7 +81,11 @@
   <v-app>
     <v-app-bar flat density="compact">
       <v-tabs v-model="state.selectedKingdom" grow show-arrows color="primary">
-        <v-tab v-for="kingdom in settings.activeKingdoms" :key="kingdom" :value="kingdom">
+        <v-tab
+          v-for="kingdom in settings.activeKingdoms"
+          :key="kingdom"
+          :value="kingdom"
+          class="clickable">
           {{ kingdom }}
         </v-tab>
       </v-tabs>
@@ -87,7 +93,7 @@
         @click="toggleShowSettings"
         :icon="state.showSettings ? 'mdi-home' : 'mdi-cog'"
         size="30"
-        class="mx-4"></v-icon>
+        class="mx-4 clickable"></v-icon>
     </v-app-bar>
     <v-main>
       <v-container

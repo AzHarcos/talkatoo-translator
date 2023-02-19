@@ -7,8 +7,8 @@
 
   const state = useState();
 
-  function closeSettings {
-    state.setShowSettings(false)
+  function closeSettings() {
+    state.setShowSettings(false);
   }
 </script>
 
@@ -16,7 +16,7 @@
   <v-card flat>
     <v-card-title class="ml-1 py-4 d-flex justify-space-between">
       <div class="text-h5">Settings</div>
-      <v-icon @click="closeSettings" size="1em" class="close-icon">mdi-close</v-icon>
+      <v-icon @click="closeSettings" size="1em" class="close-icon clickable">mdi-close</v-icon>
     </v-card-title>
     <v-card-text>
       <LanguageSettings class="border mb-4" />

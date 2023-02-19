@@ -54,10 +54,11 @@
             v-model="videoIndex"
             label="Video index"
             :items="videoIndexOptions"
-            hide-details></v-autocomplete>
+            hide-details
+            class="clickable"></v-autocomplete>
         </v-col>
         <v-col cols="12" sm="6" md="3" :class="{ 'd-flex justify-center align-center': smAndUp }">
-          <v-btn @click="resetBorders">{{
+          <v-btn @click="resetBorders" class="clickable">{{
             lgAndUp ? 'Reset capture borders' : 'Reset borders'
           }}</v-btn>
         </v-col>

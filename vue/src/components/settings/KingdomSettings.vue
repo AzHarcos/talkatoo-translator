@@ -116,8 +116,4 @@
   .slider-width {
     max-width: 220px;
   }
-
-  .v-switch__thumb {
-    color: white;
-  }
 </style>

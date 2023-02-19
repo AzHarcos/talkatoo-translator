@@ -4,7 +4,7 @@ html {
 
 .main-content {
   max-width: 1200px;
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 112px);
   margin: auto;
   overflow: auto;
   opacity: 0.95;
@@ -68,10 +68,23 @@ li {
   visibility: hidden;
   position: absolute;
   text-align: center;
+  margin-top: 2px;
   margin-left: 8px;
   z-index: 1;
 }
 
 .tooltip:hover .tooltip-text {
   visibility: visible;
+}
+
+.clickable:hover {
+  color: #03dac6 !important;
+}
+
+.v-switch__thumb {
+  color: white;
+}
+
+.v-switch__thumb:hover {
+  color: #03dac6 !important;
 }

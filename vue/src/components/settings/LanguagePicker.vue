@@ -28,5 +28,6 @@
     :items="filteredLanguages"
     item-value="id"
     item-title="label"
-    hide-details></v-autocomplete>
+    hide-details
+    class="clickable"></v-autocomplete>
 </template>
