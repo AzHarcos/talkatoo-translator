@@ -37,6 +37,9 @@ const vuetify = createVuetify({
     global: {
       ripple: false,
     },
+    VAutocomplete: {
+      variant: 'outlined',
+    },
   },
 });
 

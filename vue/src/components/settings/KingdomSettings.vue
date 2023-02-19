@@ -77,19 +77,23 @@
 <template>
   <v-card flat>
     <v-card-title>Kingdom settings</v-card-title>
+    <v-card-subtitle
+      >Edit which kingdoms should be displayed and in which order you're planning to visit them.
+      Post game kingdoms include Cap, Moon and Mushroom.</v-card-subtitle
+    >
     <v-card-text>
       <v-row>
         <v-col cols="3">
-          <v-switch v-model="includePostGame" label="Include post game"></v-switch>
+          <v-switch v-model="includePostGame" label="Include post game" hide-details></v-switch>
         </v-col>
         <v-col cols="3">
-          <v-switch v-model="woodedFirst" label="Wooded first"></v-switch>
+          <v-switch v-model="woodedFirst" label="Wooded first" hide-details></v-switch>
         </v-col>
         <v-col cols="3">
-          <v-switch v-model="seasideFirst" label="Seaside first"></v-switch>
+          <v-switch v-model="seasideFirst" label="Seaside first" hide-details></v-switch>
         </v-col>
         <v-col cols="3">
-          <v-switch v-model="isHardcore" label="Hardcore?"></v-switch>
+          <v-switch v-model="isHardcore" label="Hardcore?" hide-details></v-switch>
         </v-col> </v-row
     ></v-card-text>
   </v-card>

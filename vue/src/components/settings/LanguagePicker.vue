@@ -18,8 +18,6 @@
     availableLanguages.find((entry) => entry.id === props.preselected)?.id ?? '';
 
   const selectedLanguage = ref(preselectedLanguage);
-
-  const requiredRules = [(value) => Boolean(value) || 'Language is required'];
 </script>
 
 <template>
@@ -30,6 +28,5 @@
     :items="filteredLanguages"
     item-value="id"
     item-title="label"
-    :rules="requiredRules"
-    required></v-autocomplete>
+    hide-details></v-autocomplete>
 </template>

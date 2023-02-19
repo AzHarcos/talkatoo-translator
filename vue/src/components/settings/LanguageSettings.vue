@@ -33,7 +33,11 @@
 <template>
   <v-card flat>
     <v-card-title> Language settings </v-card-title>
-    <v-card-text>
+    <v-card-subtitle
+      >Set the language you're playing the game on (will be used for image recognition) and the
+      language you want the moon names to be translated to.</v-card-subtitle
+    >
+    <v-card-text class="mt-4">
       <v-row>
         <v-col cols="12" sm="6">
           <LanguagePicker
@@ -46,8 +50,8 @@
             @input="setOutputLanguage"
             label="Output Language"
             :preselected="settings.outputLanguage" />
-        </v-col> </v-row
-      >p
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

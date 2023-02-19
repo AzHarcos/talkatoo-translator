@@ -11,6 +11,7 @@ export const useSettings = defineStore('settings', {
       woodedFirst: true,
       seasideFirst: false,
       isHardcore: false,
+      videoIndex: 0,
     };
   },
   actions: {
@@ -34,6 +35,9 @@ export const useSettings = defineStore('settings', {
     },
     setIsHardcore(isHardcore) {
       this.isHardcore = isHardcore;
+    },
+    setVideoIndex(videoIndex) {
+      this.videoIndex = videoIndex;
     },
   },
 });

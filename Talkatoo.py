@@ -26,7 +26,7 @@ DEFAULTS = (0.15, 0.75, -2)  # Lower, upper bound for text, score threshold. Chi
 LANGUAGES = {
              "english": ("en", *DEFAULTS),
              "chinese_traditional": ("ch_tra", *DEFAULTS),
-             "chinese_simplified": ("ch:sim", *DEFAULTS),
+             "chinese_simplified": ("ch_sim", *DEFAULTS),
              "japanese": ("ja", *DEFAULTS),
              "korean": ("ko", 0.1, 0.55, 0),
              "dutch": ("nl", *DEFAULTS),
@@ -217,6 +217,27 @@ def set_translate_to(translate_to):
     TRANSLATE_TO = translate_to
     print("\nTRANSLATE_TO set to {}\n".format(TRANSLATE_TO))
 
+
+# Allow the gui to overwrite the video index
+@eel.expose
+def set_video_index(video_index):
+    global VIDEO_INDEX, stream
+    VIDEO_INDEX = video_index
+    stream = cv2.VideoCapture(VIDEO_INDEX)
+    print("\nVIDEO_INDEX set to {}\n".format(VIDEO_INDEX))
+    reset_capture_card_borders()
+
+
+# Allow the gui to reset the borders of the capture card feed
+@eel.expose
+def reset_borders():
+    reset_capture_card_borders()
+
+
+def reset_capture_card_borders():
+    global borders
+    borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))
+    print("\n Resetted capture card borders\n")
 
 # Assumes a well preprocessed, black and white image
 # Create bounding box for text -> check black pixel density

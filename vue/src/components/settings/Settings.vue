@@ -9,12 +9,17 @@
 
 <template>
   <v-card flat>
-    <v-card-title>Settings</v-card-title>
+    <v-card-title class="ml-1 py-4 text-h5">Settings</v-card-title>
     <v-card-text>
-      <LanguageSettings />
-      <KingdomsPicker />
-      <ImageRecognitionSettings />
+      <LanguageSettings class="border mb-4" />
+      <KingdomsPicker class="border mb-4" />
+      <ImageRecognitionSettings class="border" />
     </v-card-text>
   </v-card>
 </template>
-p
+
+<style scoped>
+  .border {
+    border: solid 1px white;
+  }
+</style>
