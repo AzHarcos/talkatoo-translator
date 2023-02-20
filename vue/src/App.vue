@@ -4,10 +4,10 @@
 
   import useCurrentInstance from '@/hooks/useCurrentInstance';
 
+  import { computed } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonCollected } from '@/composables';
-  import { kingdomImages } from './consts/availableKingdoms';
 
   const state = useState();
   const settings = useSettings();
@@ -19,6 +19,21 @@
       .then((response) => {
         state.setMoonsByKingdom(response);
       });
+  }
+
+  function getVideoDevices() {
+    globalProperties.$eel
+      .get_video_devices()()
+      .then((response) => {
+        if (response) {
+          const videoDevices = Object.entries(response).map(([index, deviceName]) => ({
+            index,
+            deviceName,
+          }));
+          settings.setVideoDevice(videoDevices[0]);
+        }
+      })
+      .catch(() => console.log('error getting video devices'));
   }
 
   function updateMoons() {
@@ -73,7 +88,15 @@
     state.setShowSettings(!state.showSettings);
   }
 
+  const backgroundImageStyle = computed(() => {
+    const imageUrl = `http://localhost:8083/assets/${state.selectedKingdom}.png`;
+    return {
+      backgroundImage: `url(${imageUrl})`,
+    };
+  });
+
   getMoonsByKingdom();
+  getVideoDevices();
   setInterval(updateMoons, 1000);
 </script>
 
@@ -96,10 +119,7 @@
         class="mx-4 clickable"></v-icon>
     </v-app-bar>
     <v-main>
-      <v-container
-        fluid
-        class="image-container pa-8"
-        :style="{ backgroundImage: 'url(' + kingdomImages[state.selectedKingdom] + ')' }">
+      <v-container fluid class="image-container pa-8" :style="backgroundImageStyle">
         <div class="main-content"><Settings v-if="state.showSettings" /> <MoonList v-else /></div>
       </v-container>
     </v-main>

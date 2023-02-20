@@ -1,5 +1,5 @@
 <script setup>
-  import { computed } from 'vue';
+  import { ref } from 'vue';
   import { useDisplay } from 'vuetify';
 
   import { useSettings } from '@/stores/settings';
@@ -10,31 +10,58 @@
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
 
-  const videoIndexOptions = [0, 1, 2]; //TODO: get from python
+  const videoDevices = ref([]);
+  const selectedDevice = ref(settings.videoDevice);
+  const DEBUG_IMAGE_URL = 'http://localhost:8083/assets/border_reset_img.png';
+  const debugImageUrl = ref(DEBUG_IMAGE_URL);
 
-  const videoIndex = computed({
-    get() {
-      return settings.videoIndex;
-    },
-    set(index) {
-      globalProperties.$eel
-        .set_video_index(index)()
-        .then(() => {
-          settings.setVideoIndex(index);
-        })
-        .catch(() => {
-          console.log('error setting video index');
-        });
-    },
-  });
+  globalProperties.$eel
+    .get_video_devices()()
+    .then((response) => {
+      if (response) {
+        videoDevices.value = Object.entries(response).map(([index, deviceName]) => ({
+          index,
+          deviceName,
+        }));
+      }
+    })
+    .catch(() => console.log('error getting video devices'));
 
-  function resetBorders() {
+  function setVideoDevice(device) {
+    debugImageUrl.value = '';
     globalProperties.$eel
-      .reset_borders()()
-      .then(() => {
-        console.log('resetted borders'); // TODO: display test image
+      .set_video_index(device.index)()
+      .then((response) => {
+        if (response) {
+          settings.setVideoDevice(device);
+          debugImageUrl.value = DEBUG_IMAGE_URL;
+        } else {
+          selectedDevice.value = settings.videoDevice;
+          console.log('error setting video device');
+          document.activeElement.blur();
+        }
       })
       .catch(() => {
+        selectedDevice.value = settings.videoDevice;
+        console.log('error setting video device');
+        document.activeElement.blur();
+      });
+  }
+
+  function resetBorders() {
+    debugImageUrl.value = '';
+
+    globalProperties.$eel
+      .reset_borders()()
+      .then((response) => {
+        if (response) {
+          debugImageUrl.value = DEBUG_IMAGE_URL;
+        } else {
+          console.log('error resetting borders');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
         console.log('error resetting borders');
       });
   }
@@ -43,26 +70,53 @@
 <template>
   <v-card flat>
     <v-card-title> Image recognition settings </v-card-title>
-    <v-card-subtitle
-      >Set the video index of your capture card and test if the video feed is setup
-      properly.</v-card-subtitle
-    >
+    <v-card-subtitle>
+      Select your capture card as the input video device and test if it's setup properly.
+    </v-card-subtitle>
     <v-card-text class="mt-4">
-      <v-row align="center">
-        <v-col cols="12" sm="6" md="3">
+      <v-row v-if="lgAndUp" align="center">
+        <v-col cols="3">
           <v-autocomplete
-            v-model="videoIndex"
-            label="Video index"
-            :items="videoIndexOptions"
+            v-model="selectedDevice"
+            @update:model-value="setVideoDevice"
+            label="Video device"
+            :items="videoDevices"
+            item-value="index"
+            item-title="deviceName"
             hide-details
+            return-object
             class="clickable"></v-autocomplete>
         </v-col>
-        <v-col cols="12" sm="6" md="3" :class="{ 'd-flex justify-center align-center': smAndUp }">
-          <v-btn @click="resetBorders" class="clickable">{{
-            lgAndUp ? 'Reset capture borders' : 'Reset borders'
-          }}</v-btn>
+        <v-col cols="3">
+          <v-btn @click="resetBorders" class="clickable">Reset capture borders</v-btn>
         </v-col>
       </v-row>
+      <div v-else class="d-flex flex-column picker-width">
+        <v-autocomplete
+          v-model="selectedDevice"
+          @update:model-value="setVideoDevice"
+          label="Video device"
+          :items="videoDevices"
+          item-title="deviceName"
+          hide-details
+          return-object
+          class="clickable"></v-autocomplete>
+        <v-btn @click="resetBorders" class="clickable mt-4">{{
+          smAndUp ? 'Reset capture borders' : 'Reset borders'
+        }}</v-btn>
+      </div>
+      <v-img :src="debugImageUrl" class="border mt-4">
+        <template v-slot:placeholder>
+          <div class="d-flex align-center justify-center fill-height">
+            <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+          </div> </template
+      ></v-img>
     </v-card-text>
   </v-card>
 </template>
+
+<style scoped>
+  .picker-width {
+    max-width: 300px;
+  }
+</style>

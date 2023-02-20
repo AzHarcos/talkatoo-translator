@@ -7,7 +7,6 @@ html {
   max-height: calc(100vh - 112px);
   margin: auto;
   overflow: auto;
-  opacity: 0.95;
   border-radius: 0.5em;
 }
 
@@ -87,4 +86,16 @@ li {
 
 .v-switch__thumb:hover {
   color: #03dac6 !important;
+}
+
+.border {
+  border: solid 1px white;
+}
+
+.v-card {
+  background-color: rgba(51, 51, 51, 0.9);
+}
+
+.v-card .v-card {
+  background-color: transparent;
 }

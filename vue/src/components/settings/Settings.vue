@@ -30,7 +30,4 @@
   .close-icon:hover {
     cursor: pointer;
   }
-  .border {
-    border: solid 1px white;
-  }
 </style>

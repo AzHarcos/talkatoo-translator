@@ -336,6 +336,25 @@ def update_kingdom(img_arr):
     return None  # Was not able to determine kingdom
 
 
+# Reset image borders
+def reset_image_borders():
+    global borders
+    next_frame = stream.read()
+
+    if not next_frame[0]:
+        print("Could not reset image borders\n")
+        return None
+
+    img_arr = cv2.cvtColor(next_frame[1], cv2.COLOR_BGR2RGB)
+    borders = determine_borders(img_arr)
+    if VERBOSE:
+        print("Reset image borders\n")
+
+    # Save image so it can be displayed in the GUI
+    img_path = "gui/assets/border_reset_img.png"
+    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(img_path)
+    return img_path
+
 ########################################################################################################################
 # Functions that can be called by the JS GUI via eel
 ########################################################################################################################
@@ -363,7 +382,7 @@ def get_moons_by_kingdom():
 
 # Allow the gui to see possible capture cards and names
 @eel.expose
-def get_video_indices():
+def get_video_devices():
     devices = FilterGraph().get_input_devices()
     available_cameras = {}
     for device_index, device_name in enumerate(devices):
@@ -395,26 +414,26 @@ def set_translate_to(translate_to):
 @eel.expose
 def set_video_index(new_index):
     global video_index, stream
+    stream = cv2.VideoCapture(new_index)
+    updated_borders_image = reset_image_borders()
+
+    if not updated_borders_image:
+        print("video_index could not be set to {}\n".format(new_index))
+        stream = cv2.VideoCapture(video_index)
+        return None
+
     video_index = new_index
-    stream = cv2.VideoCapture(video_index)
+
     if VERBOSE:
         print("video_index set to {}\n".format(video_index))
-    return reset_borders()
+
+    return updated_borders_image
 
 
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
 def reset_borders():
-    global borders
-    img_arr = cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB)
-    borders = determine_borders(img_arr)
-    if VERBOSE:
-        print("Reset capture card borders\n")
-
-    # Save image so it can be displayed in the GUI
-    img_path = "gui/assets/border_reset_img.png"
-    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(img_path)
-    return img_path
+    return reset_image_borders()
 
 
 ########################################################################################################################
@@ -475,8 +494,10 @@ text_potential = 0  # So we don't read partial text
 old_time = time.time()
 reader = easyocr.Reader([TRANSLATE_FROM_OCR], verbose=False)
 video_index = 0  # Usually capture card is 0, but if you have other video sources it may not be
-stream = cv2.VideoCapture(video_index)  # Set up capture card
-borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))  # Find borders to crop every iteration
+stream = ""  # Declare empty capture card
+borders = ""  # Declare empty borders
+set_video_index(video_index)  # Initialize capture card and borders
+
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
 if VERBOSE:
