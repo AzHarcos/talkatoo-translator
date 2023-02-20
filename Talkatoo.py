@@ -5,7 +5,7 @@ This Python script takes the broad approach:
     Preprocess game feed for better Optical Character Recognition
     Use OCR to look for Talkatoo text in any supported language
     Output the translated version and other close matches
-    Check kingdom/moons periodically
+    Check kingdom/moons/story moons periodically
 """
 
 import cv2  # pip install opencv-python
@@ -17,6 +17,7 @@ import os
 from PIL import Image  # pip install pillow
 import platform
 import psutil  # pip install psutil
+from pygrabber.dshow_graph import FilterGraph  # pip install pygrabber
 import time
 import torch  # pip install pytorch
 import torchvision.transforms as transforms
@@ -38,7 +39,7 @@ LANGUAGES = {
              "spanish_latin_america": ("es", *DEFAULTS),
              "russian": ("ru", *DEFAULTS)
              }
-TRANSLATE_FROM = "korean"  # Language to translate from, moon-list.json keys
+TRANSLATE_FROM = "chinese_simplified"  # Language to translate from, moon-list.json keys
 TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
 TRANSLATE_FROM_OCR = LANGUAGES[TRANSLATE_FROM][0]  # EasyOCR language code
 
@@ -55,7 +56,7 @@ STORY_MOON_TIMER = 0.5
 IM_WIDTH = 1280  # This number should not change
 IM_HEIGHT = 720  # This number should not change
 MIN_TEXT_COUNT = 500  # Number of pixels to count as text, don't change unless moon names aren't seen
-VIDEO_INDEX = 0  # Usually capture card is 0, but if you have other video sources it may not be
+VERBOSE = True
 
 
 # Checks recognized text against moons fromm the current kingdom
@@ -72,7 +73,7 @@ def check_matches(poss_moon):
                 ans = [m]
             elif corr == max_corr:  # Equally good as best match
                 ans.append(m)
-        elif corr >= SCORE_THRESHOLD - 3:
+        elif corr >= SCORE_THRESHOLD - 3 and VERBOSE:
             print("\t-->", m[TRANSLATE_TO], "had score", corr)
     poss_matches = score_to_pct(poss_matches)
     return max_corr, ans, poss_matches
@@ -142,8 +143,6 @@ def correct(string):
     if TRANSLATE_FROM.startswith("chinese"):  # Designed from
         replacements = {" ": "", "，": "‧", ".": "‧", "!": "！", "『": "！", "|": "１", "]": "１", "１": "１", "鑾": "", "}": "！",
                         "”": "", "ˋ": "", "\"": "", "'": "", "‵": "", "(": "", ")": "", "1": "１", "2": "２", "3": "３"}
-    if TRANSLATE_FROM == "korean":
-        replacements = {"3": "3"}
     for i in replacements:
         string = string.replace(i, replacements[i])
     return string
@@ -178,66 +177,6 @@ def determine_borders(img_arr):
         min_y, max_y = 0, img_arr.shape[0] - 1
     return min_x, min_y, max_x, max_y
 
-
-# Expose the auto-recognized collected moons and clear the list (collected moons only need to be updated once)
-@eel.expose
-def get_collected_moons():
-    global collected_moons
-    newly_collected_moons = collected_moons
-    collected_moons = []
-    return newly_collected_moons
-
-
-# Expose the moons given by talkatoo to the gui
-@eel.expose
-def get_mentioned_moons():
-    return mentioned_moons
-
-
-# Expose the kingdom moons dictionary to the gui
-@eel.expose
-def get_moons_by_kingdom():
-    return moons_by_kingdom
-
-
-# Allow the gui to overwrite the language to translate from for image recognition
-@eel.expose
-def set_translate_from(translate_from):
-    global TRANSLATE_FROM, TRANSLATE_FROM_OCR, reader
-    TRANSLATE_FROM = translate_from
-    TRANSLATE_FROM_OCR = LANGUAGES[TRANSLATE_FROM][0]
-    reader = easyocr.Reader([TRANSLATE_FROM_OCR])
-    print("\nTRANSLATE_FROM set to {}\n".format(TRANSLATE_FROM))
-
-
-# Allow the gui to overwrite the language to translate to for logging purposes
-@eel.expose
-def set_translate_to(translate_to):
-    global TRANSLATE_TO
-    TRANSLATE_TO = translate_to
-    print("\nTRANSLATE_TO set to {}\n".format(TRANSLATE_TO))
-
-
-# Allow the gui to overwrite the video index
-@eel.expose
-def set_video_index(video_index):
-    global VIDEO_INDEX, stream
-    VIDEO_INDEX = video_index
-    stream = cv2.VideoCapture(VIDEO_INDEX)
-    print("\nVIDEO_INDEX set to {}\n".format(VIDEO_INDEX))
-    reset_capture_card_borders()
-
-
-# Allow the gui to reset the borders of the capture card feed
-@eel.expose
-def reset_borders():
-    reset_capture_card_borders()
-
-
-def reset_capture_card_borders():
-    global borders
-    borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))
-    print("\n Resetted capture card borders\n")
 
 # Assumes a well preprocessed, black and white image
 # Create bounding box for text -> check black pixel density
@@ -281,9 +220,11 @@ def is_text_naive(img_arr):
     black_pct = black_count/total_count
 
     if TEXT_LOWER_BOUND < black_pct < TEXT_UPPER_BOUND:
-        print("Going to OCR ({}) -> ".format(black_pct), end="")
+        if VERBOSE:
+            print("Going to OCR ({}) -> ".format(black_pct), end="")
         return True
-    print("No match ({}) -> ".format(black_pct))
+    if VERBOSE:
+        print("No match ({}) -> ".format(black_pct))
     return False
     # return TEXT_LOWER_BOUND < black_pct < TEXT_UPPER_BOUND
 
@@ -303,7 +244,8 @@ def image_to_bw(img, white=240):
 def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
     ocr_text = reader.readtext(np.array(moon_img))
     ocr_text = correct("".join([ocr_text[i][1] for i in range(len(ocr_text))]))
-    print(ocr_text)
+    if VERBOSE:
+        print(ocr_text)
 
     if story or multi:
         max_corr, ans, possible = check_matches_story_multi(ocr_text, multi)
@@ -313,12 +255,14 @@ def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
         max_corr, ans, possible = check_matches(ocr_text)
     if max_corr >= SCORE_THRESHOLD:  # If any reasonable matches, guarantee match if story moon
         best_matches = len(ans)
-        if best_matches == 1:
-            print("[{}] {} (score={})  ->  {}".format(prepend, ans[0]["english"].upper(), max_corr, possible))
-        else:
-            print("[{}] {} (score={})  ->  {}".format(prepend, " OR ".join([poss["english"].upper() for poss in ans]), max_corr, possible))
+        if VERBOSE:
+            if best_matches == 1:
+                print("[{}] {} (score={})  ->  {}".format(prepend, ans[0]["english"].upper(), max_corr, possible))
+            else:
+                print("[{}] {} (score={})  ->  {}".format(prepend, " OR ".join([poss["english"].upper() for poss in ans]), max_corr, possible))
         return ans
-    print("\tNo good matches  ->  ".format(possible))
+    if VERBOSE:
+        print("\tNo good matches  ->  ".format(possible))
     return None
 
 
@@ -392,6 +336,92 @@ def update_kingdom(img_arr):
     return None  # Was not able to determine kingdom
 
 
+########################################################################################################################
+# Functions that can be called by the JS GUI via eel
+########################################################################################################################
+
+# Expose the auto-recognized collected moons and clear the list (collected moons only need to be updated once)
+@eel.expose
+def get_collected_moons():
+    global collected_moons
+    newly_collected_moons = collected_moons
+    collected_moons = []
+    return newly_collected_moons
+
+
+# Expose the moons given by talkatoo to the gui
+@eel.expose
+def get_mentioned_moons():
+    return mentioned_moons
+
+
+# Expose the kingdom moons dictionary to the gui
+@eel.expose
+def get_moons_by_kingdom():
+    return moons_by_kingdom
+
+
+# Allow the gui to see possible capture cards and names
+@eel.expose
+def get_video_indices():
+    devices = FilterGraph().get_input_devices()
+    available_cameras = {}
+    for device_index, device_name in enumerate(devices):
+        available_cameras[device_index] = device_name
+    return available_cameras
+
+
+# Allow the gui to overwrite the language to translate from for image recognition
+@eel.expose
+def set_translate_from(translate_from):
+    global TRANSLATE_FROM, TRANSLATE_FROM_OCR, reader
+    TRANSLATE_FROM = translate_from
+    TRANSLATE_FROM_OCR = LANGUAGES[TRANSLATE_FROM][0]
+    reader = easyocr.Reader([TRANSLATE_FROM_OCR], verbose=False)
+    if VERBOSE:
+        print("TRANSLATE_FROM set to {}\n".format(TRANSLATE_FROM))
+
+
+# Allow the gui to overwrite the language to translate to for logging purposes
+@eel.expose
+def set_translate_to(translate_to):
+    global TRANSLATE_TO
+    TRANSLATE_TO = translate_to
+    if VERBOSE:
+        print("TRANSLATE_TO set to {}\n".format(TRANSLATE_TO))
+
+
+# Allow the gui to overwrite the video index
+@eel.expose
+def set_video_index(new_index):
+    global video_index, stream
+    video_index = new_index
+    stream = cv2.VideoCapture(video_index)
+    if VERBOSE:
+        print("video_index set to {}\n".format(video_index))
+    return reset_borders()
+
+
+# Allow the gui to reset the borders of the capture card feed
+@eel.expose
+def reset_borders():
+    global borders
+    img_arr = cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB)
+    borders = determine_borders(img_arr)
+    if VERBOSE:
+        print("Reset capture card borders\n")
+
+    # Save image so it can be displayed in the GUI
+    img_path = "gui/assets/border_reset_img.png"
+    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(img_path)
+    return img_path
+
+
+########################################################################################################################
+# Define variables used for computation
+########################################################################################################################
+
+
 # Read moon translation data
 with open("moon-list.json", encoding="utf8") as moon_file:
     moonlist = "".join([line.strip() for line in moon_file.readlines()])
@@ -443,15 +473,19 @@ story_text_borders = (300, 550, 950, 610)
 talkatoo_borders = (350, 565, 1000, 615)
 text_potential = 0  # So we don't read partial text
 old_time = time.time()
-reader = easyocr.Reader([TRANSLATE_FROM_OCR])
-stream = cv2.VideoCapture(VIDEO_INDEX)  # Set up capture card
+reader = easyocr.Reader([TRANSLATE_FROM_OCR], verbose=False)
+video_index = 0  # Usually capture card is 0, but if you have other video sources it may not be
+stream = cv2.VideoCapture(video_index)  # Set up capture card
 borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))  # Find borders to crop every iteration
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
-print("Setup complete! You may now approach the bird.\n")
+if VERBOSE:
+    print("Setup complete! You may now approach the bird.\n")
 
 
-# Begin main loop where all of the detection happens
+########################################################################################################################
+# Begin main loop, where all of the detection happens
+########################################################################################################################
 while True:
     new_time = time.time()
     frame_time = new_time - old_time
@@ -462,7 +496,7 @@ while True:
     grabbed, frame = stream.read()
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     # Resizing image needed for distortion correction. NEAREST is ~8x faster than default but riskier so still testing
-    image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT), resample=Image.BICUBIC)
+    image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
 
     # Check kingdom every 3s
     if new_time > check_kingdom_at:
@@ -473,7 +507,8 @@ while True:
             if change_kingdom == new_kingdom:  # make sure we get two in a row of the same kingdom
                 current_kingdom = new_kingdom
                 change_kingdom = ""
-                print("Kingdom changed to: ", new_kingdom)
+                if VERBOSE:
+                    print("Kingdom changed to: ", new_kingdom)
             else:
                 change_kingdom = new_kingdom
                 check_kingdom_at = new_time + 1  # Perform the second check in 1s to be sure
@@ -497,7 +532,8 @@ while True:
         if check_story_multi(red_check_im, expected="RED"):
             story_check_im = image.crop(story_borders)
             if check_story_multi(story_check_im, expected="STORY"):
-                print("Got a story moon!", end=" ")
+                if VERBOSE:
+                    print("Got a story moon!", end=" ")
                 story_text = image.rotate(-3.5).crop(story_text_borders)
                 story_text = image_to_bw(story_text, white=240)
                 moon_matches = match_moon_text(story_text, story=True, prepend="Collected")
@@ -506,7 +542,8 @@ while True:
                 continue
             multi_check_im = image.crop(multi_borders)
             if check_story_multi(multi_check_im, expected="MULTI"):
-                print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
+                if VERBOSE:
+                    print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
                 multi_text = image.rotate(-3.5).crop(story_text_borders)
                 multi_text = image_to_bw(multi_text, white=240)
                 moon_matches = match_moon_text(multi_text, multi=True, prepend="Collected")
