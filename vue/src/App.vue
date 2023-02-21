@@ -25,12 +25,8 @@
     globalProperties.$eel
       .get_video_devices()()
       .then((response) => {
-        if (response) {
-          const videoDevices = Object.entries(response).map(([index, deviceName]) => ({
-            index,
-            deviceName,
-          }));
-          settings.setVideoDevice(videoDevices[0]);
+        if (response && response.length > 0) {
+          settings.setVideoDevice(response[0]);
         }
       })
       .catch(() => console.log('error getting video devices'));

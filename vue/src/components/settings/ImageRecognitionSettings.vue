@@ -19,10 +19,9 @@
     .get_video_devices()()
     .then((response) => {
       if (response) {
-        videoDevices.value = Object.entries(response).map(([index, deviceName]) => ({
-          index,
-          deviceName,
-        }));
+        videoDevices.value = response;
+      } else {
+        console.log('empty video devices');
       }
     })
     .catch(() => console.log('error getting video devices'));
@@ -82,7 +81,7 @@
             label="Video device"
             :items="videoDevices"
             item-value="index"
-            item-title="deviceName"
+            item-title="device_name"
             hide-details
             return-object
             class="clickable"></v-autocomplete>
@@ -97,7 +96,7 @@
           @update:model-value="setVideoDevice"
           label="Video device"
           :items="videoDevices"
-          item-title="deviceName"
+          item-title="device_name"
           hide-details
           return-object
           class="clickable"></v-autocomplete>

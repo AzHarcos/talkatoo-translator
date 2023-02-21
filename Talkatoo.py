@@ -430,9 +430,12 @@ def get_moons_by_kingdom():
 @eel.expose
 def get_video_devices():
     devices = FilterGraph().get_input_devices()
-    available_cameras = {}
+    available_cameras = []
     for device_index, device_name in enumerate(devices):
-        available_cameras[device_index] = device_name
+        available_cameras.append({
+            'index': device_index,
+            'device_name': device_name,
+        })
     return available_cameras
 
 
@@ -461,7 +464,7 @@ def set_translate_to(translate_to):
 def set_video_index(new_index):
     global video_index, stream
     stream.release()
-    stream.open(int(new_index))
+    stream.open(new_index)
     updated_borders_image = reset_image_borders()
     
     if not updated_borders_image:
@@ -470,7 +473,7 @@ def set_video_index(new_index):
         stream.open(video_index)
         return None
 
-    video_index = int(new_index)
+    video_index = new_index
     if VERBOSE:
         print("[STATUS] -> video_index set to {}".format(video_index))
     return updated_borders_image
