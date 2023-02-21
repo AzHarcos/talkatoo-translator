@@ -27,6 +27,7 @@
       .then((response) => {
         if (response && response.length > 0) {
           settings.setVideoDevice(response[0]);
+          state.setShowSettings(true);
         }
       })
       .catch(() => console.log('error getting video devices'));

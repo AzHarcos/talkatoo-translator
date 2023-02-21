@@ -30,3 +30,17 @@ export function moonToString(moon) {
 
   return `${moon.id} - ${moon[settings.outputLanguage]} - ${moon[settings.inputLanguage]}`;
 }
+
+export function scrollToTop() {
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.scrollTop = 0;
+  }
+}
+
+export function scrollToBottom() {
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.scrollTop = mainContent.scrollHeight;
+  }
+}

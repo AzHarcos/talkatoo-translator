@@ -539,9 +539,8 @@ score_func = score_logogram if TRANSLATE_FROM in ["chinese_traditional", "chines
 video_index = 0  # Usually capture card is 0, but if you have other video sources it may not be
 stream = cv2.VideoCapture(video_index)  # Set up capture card
 borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))  # Find borders to crop every iteration
-# stream = None  # Declare empty capture card
-# borders = None  # Declare empty borders
-# set_video_index(video_index)  # Initialize capture card and borders
+
+reset_image_borders()
 eel.init('gui')  # Initialize the gui package
 eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
 if VERBOSE:

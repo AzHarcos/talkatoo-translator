@@ -76,16 +76,15 @@ li {
   visibility: visible;
 }
 
-.clickable:hover {
+.clickable:hover,
+.v-switch:hover .v-switch__thumb,
+.v-slide-group__next:hover,
+.v-slide-group__prev:hover {
   color: #03dac6 !important;
 }
 
 .v-switch__thumb {
   color: white;
-}
-
-.v-switch__thumb:hover {
-  color: #03dac6 !important;
 }
 
 .border {
