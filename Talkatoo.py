@@ -460,15 +460,17 @@ def set_translate_to(translate_to):
 @eel.expose
 def set_video_index(new_index):
     global video_index, stream
-    stream = cv2.VideoCapture(new_index)
+    stream.release()
+    stream.open(int(new_index))
     updated_borders_image = reset_image_borders()
     
     if not updated_borders_image:
         print("[STATUS] -> video_index could not be set to {}".format(new_index))
-        stream = cv2.VideoCapture(video_index)
+        stream.release()
+        stream.open(video_index)
         return None
 
-    video_index = new_index
+    video_index = int(new_index)
     if VERBOSE:
         print("[STATUS] -> video_index set to {}".format(video_index))
     return updated_borders_image
