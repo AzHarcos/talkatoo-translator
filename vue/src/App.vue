@@ -7,11 +7,28 @@
   import { computed } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
-  import { isMoonCollected } from '@/composables';
+  import { isMoonCollected, scrollToTop } from '@/composables';
+  import { SETTINGS_PATH } from './consts/filePaths';
 
   const state = useState();
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
+
+  function readSettingsFromFile() {
+    fetch(SETTINGS_PATH)
+      .then((response) => response.json())
+      .then((settingsSnapshot) => {
+        settings.setInputLanguage(settingsSnapshot.inputLanguage);
+        settings.setOutputLanguage(settingsSnapshot.outputLanguage);
+        settings.setActiveKingdoms(settingsSnapshot.activeKingdoms);
+        settings.setIncludePostGame(settingsSnapshot.includePostGame);
+        settings.setWoodedFirst(settingsSnapshot.woodedFirst);
+        settings.setSeasideFirst(settingsSnapshot.seasideFirst);
+        settings.setIsHardcore(settingsSnapshot.isHardcore);
+        settings.setVideoDevice(settingsSnapshot.videoDevice);
+      })
+      .catch(() => {});
+  }
 
   function getMoonsByKingdom() {
     globalProperties.$eel
@@ -25,10 +42,23 @@
     globalProperties.$eel
       .get_video_devices()()
       .then((response) => {
-        if (response && response.length > 0) {
-          settings.setVideoDevice(response[0]);
-          state.setShowSettings(true);
+        if (!response || response.length === 0) {
+          settings.setVideoDevice(undefined);
+          return;
         }
+
+        const hasPreselectedDevice =
+          settings.videoDevice &&
+          response.some(
+            (device) =>
+              device.id === settings.videoDevice.id &&
+              device.device_name === settings.videoDevice.device_name
+          );
+
+        if (!hasPreselectedDevice) {
+          settings.setVideoDevice(response[0]);
+        }
+        state.setShowSettings(true);
       })
       .catch(() => console.log('error getting video devices'));
   }
@@ -70,13 +100,6 @@
     });
   }
 
-  function scrollToTop() {
-    const card = document.querySelector('.card');
-    if (card) {
-      card.scrollTop = 0;
-    }
-  }
-
   function selectKingdom(kingdom) {
     state.setSelectedKingdom(kingdom);
   }
@@ -92,6 +115,7 @@
     };
   });
 
+  readSettingsFromFile();
   getMoonsByKingdom();
   getVideoDevices();
   setInterval(updateMoons, 1000);

@@ -1,10 +1,11 @@
 <script setup>
-  import { ref, nextTick } from 'vue';
+  import { ref } from 'vue';
   import { useDisplay } from 'vuetify';
 
   import { useSettings } from '@/stores/settings';
   import useCurrentInstance from '@/hooks/useCurrentInstance';
   import { scrollToBottom } from '@/composables';
+  import { DEBUG_IMAGE_PATH } from '../../consts/filePaths';
 
   const { lgAndUp } = useDisplay();
 
@@ -14,8 +15,7 @@
   const videoDevices = ref([]);
   const selectedDevice = ref(settings.videoDevice);
   const showImage = ref(false);
-  const DEBUG_IMAGE_URL = 'http://localhost:8083/assets/border_reset_img.png';
-  const debugImageUrl = ref(DEBUG_IMAGE_URL);
+  const debugImageUrl = ref(DEBUG_IMAGE_PATH);
 
   globalProperties.$eel
     .get_video_devices()()
@@ -43,7 +43,7 @@
       .then((response) => {
         if (response) {
           settings.setVideoDevice(device);
-          debugImageUrl.value = DEBUG_IMAGE_URL;
+          debugImageUrl.value = DEBUG_IMAGE_PATH;
         } else {
           selectedDevice.value = settings.videoDevice;
           console.log('error setting video device');
@@ -71,7 +71,7 @@
       .reset_borders()()
       .then((response) => {
         if (response) {
-          debugImageUrl.value = DEBUG_IMAGE_URL;
+          debugImageUrl.value = DEBUG_IMAGE_PATH;
         } else {
           console.log('error resetting borders');
         }

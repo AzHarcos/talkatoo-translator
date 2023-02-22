@@ -69,6 +69,7 @@ STORY_MOON_TIMER = 0.5
 IM_WIDTH = 1280  # This number should not change
 IM_HEIGHT = 720  # This number should not change
 IMG_PATH = "gui/assets/border_reset_img.png"  # used for GUI checking
+SETTINGS_PATH = "gui/assets/settings.json"  # used for persisting settings
 MIN_TEXT_COUNT = 500  # Number of pixels to count as text, don't change unless moon names aren't seen
 VERBOSE = True
 
@@ -488,6 +489,12 @@ def set_video_index(new_index):
 def reset_borders():
     return reset_image_borders()
 
+
+# Allow the gui to save the current settings to a file
+@eel.expose
+def write_settings_to_file(settings_string):
+    with open(SETTINGS_PATH, "w") as settings_file:
+        settings_file.write(settings_string)
 
 ########################################################################################################################
 # Define variables used for computation
