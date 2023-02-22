@@ -14,7 +14,7 @@ import eel  # pip install eel
 import json
 import numpy as np  # pip install numpy
 import os
-from PIL import Image  # pip install pillow
+from PIL import Image, ImageGrab  # pip install pillow
 import platform
 import psutil  # pip install psutil
 from pygrabber.dshow_graph import FilterGraph  # Used for camera inputs
@@ -49,7 +49,7 @@ LANGUAGES = {
                          "Moon_Bounds": (250, 535, 1100, 585), "Talkatoo_Bounds": (350, 590, 1000, 640)}
              }
 
-TRANSLATE_FROM = "chinese_traditional"  # Language to translate from, moon-list.json keys
+TRANSLATE_FROM = "chinese_simplified"  # Language to translate from, moon-list.json keys
 TRANSLATE_TO = "english"  # Language you want to translate to, moon-list.json keys
 
 KINGDOM_CERTAINTY = 0.85  # Classifier certainty to prevent uncertain kingdom switches (must occur 2 times in a row)
@@ -71,6 +71,10 @@ IM_HEIGHT = 720  # This number should not change
 IMG_PATH = "gui/assets/border_reset_img.png"  # used for GUI checking
 MIN_TEXT_COUNT = 500  # Number of pixels to count as text, don't change unless moon names aren't seen
 VERBOSE = True
+
+RUN_FASTER = False
+FULLSCREEN = True  # Fullscreen on Windows
+GUI_SIZE = ImageGrab.grab().size if FULLSCREEN else (1280, 720)
 
 
 # Checks recognized text against moons fromm the current kingdom
@@ -284,6 +288,22 @@ def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
     return None
 
 
+# Reset image borders
+def reset_image_borders():
+    global borders
+    grabbed, next_frame = stream.read()
+    if not grabbed:
+        print("[STATUS] -> Could not reset image borders")
+        return None
+    img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
+    borders = determine_borders(img_arr)
+    if VERBOSE:
+        print("[STATUS] -> Reset image borders")
+    # Save image so it can be displayed in the GUI
+    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
+    return IMG_PATH
+
+
 # Replacement Levenshtein distance cost function, designed for alphabet-based languages
 # Basis is few missing characters
 def score_alphabet(proper_moon, test_moon, low_point, can_fail_out=True):
@@ -374,22 +394,6 @@ def talkatoo_preprocess_better(talk_img, kingd):
     return image_arr.astype(np.uint8), text_count > MIN_TEXT_COUNT
 
 
-# Reset image borders
-def reset_image_borders():
-    global borders
-    grabbed, next_frame = stream.read()
-    if not grabbed:
-        print("[STATUS] -> Could not reset image borders")
-        return None
-    img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
-    borders = determine_borders(img_arr)
-    if VERBOSE:
-        print("[STATUS] -> Reset image borders")
-    # Save image so it can be displayed in the GUI
-    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
-    return IMG_PATH
-
-
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
     img = Image.fromarray(img_arr)
@@ -447,7 +451,7 @@ def set_translate_from(translate_from):
     reader = easyocr.Reader([LANGUAGES[TRANSLATE_FROM]["Language"]], verbose=False)
     score_func = score_logogram if TRANSLATE_FROM in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
     if VERBOSE:
-        print("TRANSLATE_FROM set to {}\n".format(TRANSLATE_FROM))
+        print("[STATUS] -> TRANSLATE_FROM set to {}\n".format(TRANSLATE_FROM))
 
 
 # Allow the gui to overwrite the language to translate to for logging purposes
@@ -456,7 +460,7 @@ def set_translate_to(translate_to):
     global TRANSLATE_TO
     TRANSLATE_TO = translate_to
     if VERBOSE:
-        print("TRANSLATE_TO set to {}\n".format(TRANSLATE_TO))
+        print("[STATUS] -> TRANSLATE_TO set to {}\n".format(TRANSLATE_TO))
 
 
 # Allow the gui to overwrite the video index
@@ -489,12 +493,21 @@ def reset_borders():
 # Define variables used for computation
 ########################################################################################################################
 
+# This is to ensure a more reliable runtime, if you tab out then the program runs slower due to caching,
+# which can cause performance issues (missed moons)
+if RUN_FASTER:
+    this_OS = platform.system()
+    if this_OS == "Windows":
+        p = psutil.Process(os.getpid())
+        p.nice(psutil.REALTIME_PRIORITY_CLASS)  # For Windows, highest priority
+    elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
+        p = psutil.Process(os.getpid())
+        p.nice(-20)  # -20 is top priority
 
 # Read moon translation data
 with open("moon-list.json", encoding="utf8") as moon_file:
     moonlist = "".join([line.strip() for line in moon_file.readlines()])
     moonlist = json.loads(moonlist)  # moonlist now a list of dictionaries, one for each moon
-
 # Dictionary to store all moons by kingdom
 moons_by_kingdom = {}
 special_multi_moons = []  # Ruined/Dark/Darker need to be matched separately
@@ -517,16 +530,6 @@ collected_moons = []  # list of auto-recognized collected moons
 kindom_classifier = torch.jit.load("KingdomModel.zip")  # Pretrained kingdom recognizer, output 0-13 inclusive
 transform = transforms.PILToTensor()  # Needed to transform image
 
-# This is to ensure a more reliable runtime, if you tab out then the program runs slower due to caching,
-# which can cause performance issues (missed moons)
-this_OS = platform.system()
-if this_OS == "Windows":
-    p = psutil.Process(os.getpid())
-    p.nice(psutil.REALTIME_PRIORITY_CLASS)  # For Windows, highest priority
-elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
-    p = psutil.Process(os.getpid())
-    p.nice(15)  # 20 is max
-
 # Final setup variables
 change_kingdom = ""  # Confirmation variable for kingdom changes
 check_kingdom_at = time.time()  # Check right after start
@@ -538,11 +541,11 @@ reader = easyocr.Reader([LANGUAGES[TRANSLATE_FROM]["Language"]], verbose=False)
 score_func = score_logogram if TRANSLATE_FROM in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
 video_index = 0  # Usually capture card is 0, but if you have other video sources it may not be
 stream = cv2.VideoCapture(video_index)  # Set up capture card
-borders = determine_borders(cv2.cvtColor(stream.read()[1], cv2.COLOR_BGR2RGB))  # Find borders to crop every iteration
+borders = None
+reset_image_borders()  # Find borders to crop every iteration
 
-reset_image_borders()
 eel.init('gui')  # Initialize the gui package
-eel.start('index.html', port=8083, size=(1920, 1080), block=False)  # start the GUI
+eel.start('index.html', port=8083, size=GUI_SIZE, block=False)  # start the GUI
 if VERBOSE:
     print("Setup complete! You may now approach the bird.\n")
 
