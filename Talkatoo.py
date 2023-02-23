@@ -118,7 +118,7 @@ def set_translate_from(t_from):
     global translate_from, language_settings, reader, score_func
     translate_from = t_from
     language_settings = LANGUAGES[translate_from]
-    reader = easyocr.Reader([LANGUAGES[translate_from]["Language"]], verbose=False)
+    reader = easyocr.Reader([language_settings["Language"]], verbose=False)
     score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
     if VERBOSE:
         print("[STATUS] -> translate_from set to {}".format(translate_from))
@@ -246,7 +246,7 @@ def match_moon_text(moon_img, moons_to_check, prepend="Unlocked", story_multi=Fa
     if VERBOSE:
         print(ocr_text)
 
-    score_thresh = LANGUAGES[translate_from]["Score"]
+    score_thresh = language_settings["Score"]
     if story_multi:
         max_corr, ans, possible = check_matches_story_multi(ocr_text, score_thresh, moons_to_check)
         for match in range(len(ans)):
@@ -270,7 +270,7 @@ def match_moon_text(moon_img, moons_to_check, prepend="Unlocked", story_multi=Fa
 # Translate scores to percent certainty
 def score_to_pct(poss_moon_dict, force_match=False):
     if not force_match:
-        poss_moon_dict["Uncertain"] = LANGUAGES[translate_from]["Score"]
+        poss_moon_dict["Uncertain"] = language_settings["Score"]
     keys = list(poss_moon_dict.keys())
     percents = torch.softmax(torch.tensor([float(poss_moon_dict[key]) for key in poss_moon_dict]), dim=0)
     return {keys[i]: round(float(percents[i])*100, 2) for i in range(len(keys)) if percents[i] > POSS_MOON_CERTAINTY}
