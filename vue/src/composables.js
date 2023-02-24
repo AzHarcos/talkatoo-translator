@@ -1,9 +1,10 @@
-import { useStore } from './store';
+import { useState } from '@/stores/state';
+import { useSettings } from '@/stores/settings';
 
 export function isMoonCollected(moon) {
-  const store = useStore();
+  const state = useState();
 
-  return store.collectedMoons.some((m) => areMoonsEqual(moon, m));
+  return state.collectedMoons.some((m) => areMoonsEqual(moon, m));
 }
 
 export function areMoonsEqual(first, other) {
@@ -11,13 +12,13 @@ export function areMoonsEqual(first, other) {
 }
 
 export function areMoonsPending(possibleMoons) {
-  const store = useStore();
+  const state = useState();
 
-  const hasCorrectKingdom = possibleMoons[0].kingdom === store.selectedKingdom;
+  const hasCorrectKingdom = possibleMoons[0].kingdom === state.selectedKingdom;
   const hasUncollectedOptions = possibleMoons.some((moon) => !isMoonCollected(moon));
   const correctMoon = possibleMoons.find((moon) => moon.correct);
 
-  const hasNotBeenCollected = !store.collectedMoons.some(
+  const hasNotBeenCollected = !state.collectedMoons.some(
     (moon) => moon.index === possibleMoons[0].index || areMoonsEqual(moon, correctMoon)
   );
 
@@ -25,5 +26,21 @@ export function areMoonsPending(possibleMoons) {
 }
 
 export function moonToString(moon) {
-  return `${moon.id} - ${moon.english} - ${moon.chinese_traditional}`;
+  const settings = useSettings();
+
+  return `${moon.id} - ${moon[settings.outputLanguage]} - ${moon[settings.inputLanguage]}`;
+}
+
+export function scrollToTop() {
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.scrollTop = 0;
+  }
+}
+
+export function scrollToBottom() {
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.scrollTop = mainContent.scrollHeight;
+  }
 }

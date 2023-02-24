@@ -3,25 +3,25 @@
   import CollectedMoonList from './CollectedMoonList.vue';
 
   import { computed } from 'vue';
-  import { useStore } from '../store';
-  import { areMoonsPending } from '../composables';
+  import { useState } from '@/stores/state';
+  import { areMoonsPending } from '@/composables';
 
-  const store = useStore();
+  const state = useState();
 
   const selectedKingdomPendingMoons = computed(() => {
-    return store.mentionedMoons.filter(areMoonsPending);
+    return state.mentionedMoons.filter(areMoonsPending);
   });
 
   const selectedKingdomCollectedMoons = computed(() => {
-    return store.collectedMoons.filter((moon) => moon.kingdom === store.selectedKingdom);
+    return state.collectedMoons.filter((moon) => moon.kingdom === state.selectedKingdom);
   });
 </script>
 
 <template>
-  <div
+  <v-card
     v-if="selectedKingdomPendingMoons.length > 0 || selectedKingdomCollectedMoons.length > 0"
-    class="container">
-    <div class="card">
+    flat>
+    <v-card-text>
       <div class="list-container">
         <PendingMoonList
           v-if="selectedKingdomPendingMoons.length > 0"
@@ -30,6 +30,6 @@
           v-if="selectedKingdomCollectedMoons.length > 0"
           :moons="selectedKingdomCollectedMoons" />
       </div>
-    </div>
-  </div>
+    </v-card-text>
+  </v-card>
 </template>

@@ -1,64 +1,52 @@
 <script setup>
-  import MoonList from './components/MoonList.vue';
+  import MoonList from '@/components/moon-list/MoonList.vue';
+  import Settings from '@/components/settings/Settings.vue';
 
-  import useCurrentInstance from './hooks/useCurrentInstance';
+  import useCurrentInstance from '@/hooks/useCurrentInstance';
 
-  import CascadeImg from './assets/images/Cascade.png';
-  import SandImg from './assets/images/Sand.png';
-  import LakeImg from './assets/images/Lake.png';
-  import WoodedImg from './assets/images/Wooded.png';
-  import LostImg from './assets/images/Lost.png';
-  import MetroImg from './assets/images/Metro.png';
-  import SnowImg from './assets/images/Snow.png';
-  import SeasideImg from './assets/images/Seaside.png';
-  import LuncheonImg from './assets/images/Luncheon.png';
-  import BowsersImg from './assets/images/Bowsers.png';
+  import { computed } from 'vue';
+  import { useState } from '@/stores/state';
+  import { useSettings } from '@/stores/settings';
+  import { isMoonCollected, scrollToTop } from '@/composables';
+  import { SETTINGS_PATH } from './consts/filePaths';
 
-  import { ref } from 'vue';
-  import { useStore } from './store';
-  import { isMoonCollected } from './composables';
-
-  const store = useStore();
-
+  const state = useState();
+  const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
-
-  const kingdoms = ref({
-    Cascade: CascadeImg,
-    Sand: SandImg,
-    Lake: LakeImg,
-    Wooded: WoodedImg,
-    Lost: LostImg,
-    Metro: MetroImg,
-    Snow: SnowImg,
-    Seaside: SeasideImg,
-    Luncheon: LuncheonImg,
-    Bowsers: BowsersImg,
-  });
 
   function getMoonsByKingdom() {
     globalProperties.$eel
       .get_moons_by_kingdom()()
       .then((response) => {
-        store.setMoonsByKingdom(response);
-      });
+        state.setMoonsByKingdom(response);
+      })
+      .catch(() => state.showError('Error fetching moon list.'));
+  }
+
+  function getSettingsFromFile() {
+    globalProperties.$eel.get_settings()((settingsFromFile) => {
+      settings.setSettings(settingsFromFile);
+      state.setShowSettings(true);
+    });
   }
 
   function updateMoons() {
     globalProperties.$eel.get_mentioned_moons()((response) => {
-      if (response.length > store.mentionedMoons.length) {
-        const newlyMentionedMoons = response.slice(store.mentionedMoons.length - response.length);
+      if (response.length > state.mentionedMoons.length) {
+        const newlyMentionedMoons = response.slice(state.mentionedMoons.length - response.length);
 
         newlyMentionedMoons.forEach((possibleMoons) => {
           const moonsWithIndex = possibleMoons.map((moon) => ({
             ...moon,
-            index: store.mentionedMoons.length,
+            index: state.mentionedMoons.length,
             correct: possibleMoons.length === 0,
           }));
-          store.addMentionedMoons(moonsWithIndex);
+          state.addMentionedMoons(moonsWithIndex);
         });
 
         const latestMoon = response[response.length - 1][0];
         selectKingdom(latestMoon.kingdom);
+        state.setShowSettings(false);
 
         setTimeout(scrollToTop, 10);
       }
@@ -73,39 +61,64 @@
 
       const latestMoon = newlyCollectedMoons[newlyCollectedMoons.length - 1];
       selectKingdom(latestMoon.kingdom);
+      state.setShowSettings(false);
 
-      store.addCollectedMoons(newlyCollectedMoons);
+      state.addCollectedMoons(newlyCollectedMoons);
     });
   }
 
-  function scrollToTop() {
-    const card = document.querySelector('.card');
-    if (card) {
-      card.scrollTop = 0;
-    }
-  }
-
   function selectKingdom(kingdom) {
-    store.setSelectedKingdom(kingdom);
+    state.setSelectedKingdom(kingdom);
   }
 
+  function toggleShowSettings() {
+    state.setShowSettings(!state.showSettings);
+  }
+
+  const backgroundImageStyle = computed(() => {
+    const imageUrl = `http://localhost:8083/assets/${state.selectedKingdom}.png`;
+    return {
+      backgroundImage: `url(${imageUrl})`,
+    };
+  });
+
+  getSettingsFromFile();
   getMoonsByKingdom();
   setInterval(updateMoons, 1000);
 </script>
 
 <template>
-  <div
-    class="window"
-    v-bind:style="{ backgroundImage: 'url(' + kingdoms[store.selectedKingdom] + ')' }">
-    <div class="tabs">
-      <div
-        v-for="kingdom in Object.keys(kingdoms)"
-        class="tab"
-        :class="{ selected: kingdom === store.selectedKingdom }"
-        @click="selectKingdom(kingdom)">
-        {{ kingdom }}
-      </div>
-    </div>
-    <MoonList />
-  </div>
+  <v-app>
+    <v-app-bar flat density="compact">
+      <v-tabs v-model="state.selectedKingdom" grow show-arrows color="primary">
+        <v-tab
+          v-for="kingdom in settings.activeKingdoms"
+          :key="kingdom"
+          :value="kingdom"
+          class="clickable">
+          {{ kingdom }}
+        </v-tab>
+      </v-tabs>
+      <v-icon
+        @click="toggleShowSettings"
+        :icon="state.showSettings ? 'mdi-home' : 'mdi-cog'"
+        size="30"
+        class="mx-4 clickable"></v-icon>
+    </v-app-bar>
+    <v-main>
+      <v-container fluid class="image-container pa-8" :style="backgroundImageStyle">
+        <div class="main-content"><Settings v-if="state.showSettings" /> <MoonList v-else /></div>
+      </v-container>
+    </v-main>
+    <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="2000">
+      {{ state.snackbar.text }}
+      <template v-slot:actions>
+        <v-icon
+          @click="() => state.closeSnackbar()"
+          icon="mdi-close"
+          size="small"
+          class="clickable"></v-icon>
+      </template>
+    </v-snackbar>
+  </v-app>
 </template>

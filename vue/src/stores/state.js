@@ -1,16 +1,25 @@
 import { defineStore } from 'pinia';
-import { areMoonsEqual } from './composables';
+import { areMoonsEqual } from '@/composables';
 
-export const useStore = defineStore('store', {
+export const useState = defineStore('state', {
   state: () => {
     return {
+      showSettings: false,
       moonsByKingdom: [],
       mentionedMoons: [],
       collectedMoons: [],
       selectedKingdom: 'Cascade',
+      snackbar: {
+        visible: false,
+        text: '',
+        color: 'black',
+      },
     };
   },
   actions: {
+    setShowSettings(showSettings) {
+      this.showSettings = showSettings;
+    },
     setMoonsByKingdom(moonsByKingdom) {
       this.moonsByKingdom = moonsByKingdom;
     },
@@ -35,6 +44,19 @@ export const useStore = defineStore('store', {
     },
     setSelectedKingdom(kingdom) {
       this.selectedKingdom = kingdom;
+    },
+    showSuccess(text) {
+      this.snackbar.text = text;
+      this.snackbar.color = 'black';
+      this.snackbar.visible = true;
+    },
+    showError(text) {
+      this.snackbar.text = text;
+      this.snackbar.color = 'error';
+      this.snackbar.visible = true;
+    },
+    closeSnackbar() {
+      this.snackbar.visible = false;
     },
   },
 });
