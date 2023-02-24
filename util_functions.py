@@ -35,8 +35,14 @@ def correct_text(string, translate_from):
     if translate_from.startswith("chinese"):  # Designed from
         replacements = {" ": "", "，": "‧", ".": "‧", "!": "！", "『": "！", "|": "１", "]": "１", "１": "１", "鑾": "", "}": "！",
                         "”": "", "ˋ": "", "\"": "", "'": "", "‵": "", "(": "", ")": "", "1": "１", "2": "２", "3": "３"}
-    if translate_from == "korean":
+    elif translate_from == "korean":
         replacements = {"3": "3"}
+    elif translate_from == "japanese":
+        pass
+    elif translate_from == "russian":
+        replacements = {" ": "", "<": "", ">": "", "{": "", "}": ""}
+    else:
+        replacements[" "] = ""
     for i in replacements:
         string = string.replace(i, replacements[i])
     return string
@@ -104,43 +110,30 @@ def image_to_bw(img, white=240):
 # Create bounding box for text -> check black pixel density
 def is_text_naive(img_arr, text_height, text_lower, text_upper, verbose):
     black_arr = img_arr[:, :, 0] == 0  # R, G, and B are the same
-    black_horiz = np.sum(black_arr, axis=1)
     thresh_x, thresh_y = 20, 10
-    top_bound, left_bound, bottom_bound, right_bound = 0, 0, img_arr.shape[0], img_arr.shape[1]
-    for i, row_sum in enumerate(black_horiz):
-        if row_sum > thresh_x:  # found a row with black
-            top_bound = i
-            break
-    if top_bound < 3 or top_bound > 30:
+
+    black_horiz = np.sum(black_arr, axis=1)
+    black_horiz_bool = black_horiz > thresh_x
+    top_bound = np.argmax(black_horiz_bool)
+    if top_bound < 3 or top_bound > 30:  # Not enough whitespace on top
         return False
-    for i in range(bottom_bound-1, 0, -1):
-        if black_horiz[i] > thresh_x:  # found a row with black
-            bottom_bound = i
-            break
-    if bottom_bound >= len(black_horiz) - 3 or bottom_bound - top_bound < text_height:  # not enough whitespace on bottom or too small of a range for text
+    bottom_bound = img_arr.shape[0] - np.argmax(black_horiz_bool[::-1]) - 1
+    if bottom_bound >= len(black_horiz_bool) - 3 or bottom_bound - top_bound < text_height:  # not enough whitespace on bottom or too small of a range for text
         return False
     # If not enough black pixels or too many irrational white lines (allowed some, i.e. the character i has white lines)
-    if np.max(black_horiz[top_bound:bottom_bound]) < 20 or np.sum(black_horiz[top_bound:bottom_bound] == 0) > 3:
+    if np.max(black_horiz[top_bound:bottom_bound]) < 20 or np.sum(black_horiz[top_bound:bottom_bound] == False) > 3:
         return False
 
     black_vert = np.sum(black_arr[top_bound:bottom_bound, :], axis=0)
-    for i, col in enumerate(black_vert):
-        if col > thresh_y:  # found a column with black
-            left_bound = i
-            break
-    if left_bound < 5:
+    black_vert_bool = black_vert > thresh_y
+    left_bound = np.argmax(black_vert_bool)
+    if left_bound < 5:  # Not enough whitespace on left
         return False
-    for i in range(right_bound-1, 0, -1):
-        if black_vert[i] > thresh_y:  # found a column with black
-            right_bound = i
-            break
-    if right_bound >= len(black_vert) - 5 or right_bound - left_bound < 30:  # not enough whitespace on right or too small of a range for text
+    right_bound = img_arr.shape[1] - np.argmax(black_vert_bool[::-1]) - 1
+    if right_bound >= len(black_vert_bool) - 5 or right_bound - left_bound < 30:  # not enough whitespace on right or too small of a range for text
         return False
 
-    black_count = np.sum(black_vert[left_bound:right_bound])
-    total_count = (bottom_bound-top_bound)*(right_bound-left_bound)
-    black_pct = black_count/total_count
-
+    black_pct = np.sum(black_vert[left_bound:right_bound]) / ((bottom_bound-top_bound)*(right_bound-left_bound))
     if text_lower < black_pct < text_upper:
         if verbose:
             print("Going to OCR ({}) -> ".format(black_pct), end="")
@@ -159,6 +152,7 @@ def read_file_to_json(path):
 # Replacement Levenshtein distance cost function, designed for alphabet-based languages
 # Basis is few missing characters
 def score_alphabet(proper_moon, test_moon, low_point, can_fail_out=True):
+    proper_moon = proper_moon.replace(" ", "")
     proper_len = len(proper_moon)
     test_len = len(test_moon)
     len_diff = proper_len - test_len
@@ -173,10 +167,10 @@ def score_alphabet(proper_moon, test_moon, low_point, can_fail_out=True):
         shorter_moon = test_moon
 
     # Loop through, check comparison at each possible index
-    for i in range(len_diff):
+    for i in range(abs(len_diff) + 1):
         this_score = 0
-        for j, c in enumerate(longer_moon):
-            if c == shorter_moon[i+j]:
+        for j, c in enumerate(shorter_moon):
+            if c == longer_moon[i+j]:
                 this_score += 1
             else:
                 this_score -= 1
