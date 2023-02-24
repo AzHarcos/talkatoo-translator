@@ -21,33 +21,47 @@ from util_functions import *
 
 
 # Each language performs best under different thresholds and values
-DEFAULTS = {"Text_Lower": 0.15,
-            "Text_Upper": 0.75,
-            "Text_Height": 20,
-            "Score": -2,
-            "Moon_Bounds": (400, 525, 900, 575),
-            "Talkatoo_Bounds": (350, 565, 1000, 615)
-            }
+ASIAN_MOON_BOUNDS = (400, 525, 900, 575)
+DEFAULT_MOON_BOUNDS = (250, 535, 1100, 585)
+JAPANESE_MOON_BOUNDS = (375, 535, 900, 590)
+
+ASIAN_TALKATOO_BOUNDS = (350, 565, 1000, 615)  # Line 1 of 1
+DEFAULT_TALKATOO_BOUNDS_2 = (350, 590, 1000, 640)  # Line 2 of 2
+DEFAULT_TALKATOO_BOUNDS_3 = (350, 610, 1000, 660)  # Line 3 of 3
+TALKATOO_BOUNDS_FR = (300, 565, 900, 615)  # Line 1 of 1
+TALKATOO_BOUNDS_NL = (350, 560, 1000, 620)  # Line 2 of 3
+TALKATOO_BOUNDS_SPAIN = (350, 565, 1000, 615)  # Line 1 of 1
+
 LANGUAGES = {
-             "english": dict(DEFAULTS, Language="en"),
-             "chinese_traditional": dict(DEFAULTS, Language="ch_tra"),
-             "chinese_simplified": dict(DEFAULTS, Language="ch_sim"),
+             "english": {"Language": "en", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 12, "Score": 0,
+                         "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_2},
+             "chinese_traditional": {"Language": "ch_tra", "Text_Lower": 0.15, "Text_Upper": 0.75, "Text_Height": 20,
+                                     "Score": -2, "Moon_Bounds": ASIAN_MOON_BOUNDS, "Talkatoo_Bounds": ASIAN_TALKATOO_BOUNDS},
+             "chinese_simplified": {"Language": "ch_sim", "Text_Lower": 0.15, "Text_Upper": 0.75, "Text_Height": 20,
+                                    "Score": -2, "Moon_Bounds": ASIAN_MOON_BOUNDS, "Talkatoo_Bounds": ASIAN_TALKATOO_BOUNDS},
              "japanese": {"Language": "ja", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 20, "Score": 2,
-                          "Moon_Bounds": (375, 535, 900, 590), "Talkatoo_Bounds": DEFAULTS["Talkatoo_Bounds"]},
+                          "Moon_Bounds": JAPANESE_MOON_BOUNDS, "Talkatoo_Bounds": ASIAN_TALKATOO_BOUNDS},
              "korean": {"Language": "ko", "Text_Lower": 0.1, "Text_Upper": 0.55, "Text_Height": 20, "Score": 0,
-                        "Moon_Bounds": DEFAULTS["Moon_Bounds"], "Talkatoo_Bounds": DEFAULTS["Talkatoo_Bounds"]},
-             "dutch": dict(DEFAULTS, Language="nl"),
-             "french_canada": dict(DEFAULTS, Language="fr"),
-             "french_france": dict(DEFAULTS, Language="fr"),
-             "german": dict(DEFAULTS, Language="de"),
-             "italian": dict(DEFAULTS, Language="it"),
-             "spanish_spain": dict(DEFAULTS, Language="es"),
-             "spanish_latin_america": dict(DEFAULTS, Language="es"),
-             "russian": {"Language": "ru", "Text_Lower": 0.25, "Text_Upper": 0.75, "Text_Height": 12, "Score": 3,
-                         "Moon_Bounds": (250, 535, 1100, 585), "Talkatoo_Bounds": (350, 590, 1000, 640)}
+                        "Moon_Bounds": ASIAN_MOON_BOUNDS, "Talkatoo_Bounds": ASIAN_TALKATOO_BOUNDS},
+             "dutch": {"Language": "nl", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
+                       "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": TALKATOO_BOUNDS_NL},
+             "french_canada": {"Language": "fr", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
+                               "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": TALKATOO_BOUNDS_FR},
+             "french_france": {"Language": "fr", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
+                               "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": TALKATOO_BOUNDS_FR},
+             "german": {"Language": "de", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12,
+                        "Score": 2, "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_3},
+             "italian": {"Language": "it", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 12, "Score": 0,
+                         "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_2},
+             "spanish_spain": {"Language": "es", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
+                               "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": TALKATOO_BOUNDS_SPAIN},
+             "spanish_latin_america": {"Language": "es", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
+                                       "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_3},
+             "russian": {"Language": "ru", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 12, "Score": 0,
+                         "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_2}
              }
 
-DEFAULT_GAME_LANGUAGE = "chinese_traditional"
+DEFAULT_GAME_LANGUAGE = "chinese_simplified"
 DEFAULT_GUI_LANGUAGE = "english"
 DEFAULT_VIDEO_INDEX = 0
 FULLSCREEN = True  # Fullscreen on Windows
@@ -55,7 +69,7 @@ GUI_SIZE = ImageGrab.grab().size if FULLSCREEN else (1280, 720)  # Take screensh
 IM_WIDTH = 1280  # This number should not change
 IM_HEIGHT = 720  # This number should not change
 IMG_PATH = "gui/assets/border_reset_img.png"  # used for GUI checking
-SETTINGS_PATH = "gui/assets/settings.json"  # used for persisting settings
+SETTINGS_PATH = "settings.json"  # used for persisting settings
 
 # Borders for critical areas, given constant screen size
 KINGDOM_BORDERS = (161, 27, 211, 77)
@@ -182,10 +196,11 @@ def write_settings_to_file(settings_string):
 # Checks recognized text against moons fromm the current kingdom
 def check_matches(poss_moon, score_threshold, moons_to_check):
     max_corr = score_threshold  # so low it will never matter
+    max_low = score_threshold + 4  # Used for shortcutting when scores are blown up
     ans = []  # best matches
     poss_matches = {}  # Loose matches
     for i, m in enumerate(moons_to_check):  # Loop through moons in the current kingdom
-        corr = score_func(m[translate_from], poss_moon, max_corr)  # Determine score for moon being compared
+        corr = score_func(m[translate_from], poss_moon, max_corr if max_corr < max_low else max_low)  # Determine score for moon being compared
         if corr >= score_threshold:
             poss_matches[m[translate_to]] = corr
             if corr > max_corr:  # Best match so far
@@ -193,7 +208,7 @@ def check_matches(poss_moon, score_threshold, moons_to_check):
                 ans = [m]
             elif corr == max_corr:  # Equally good as best match
                 ans.append(m)
-        elif corr >= score_threshold - 3 and VERBOSE:
+        elif corr >= score_threshold - 1 and VERBOSE:
             print("\t-->", m[translate_to], "had score", corr)
     poss_matches = score_to_pct(poss_matches)
     return max_corr, ans, poss_matches
@@ -206,12 +221,12 @@ def check_matches_story_multi(poss_moon, score_threshold, moons_to_check):
     poss_matches = {}  # Loose matches
     for i, m in enumerate(moons_to_check, start=1):  # Loop through moons in the current kingdom
         corr = score_func(m[translate_from], poss_moon, score_threshold, can_fail_out=False)
-        if corr >= max_corr:
-            if corr > max_corr:
-                max_corr = corr
-                ans = [m]
-            elif corr == max_corr:
-                ans.append(m)
+        if corr > max_corr:
+            max_corr = corr
+            ans = [m]
+        elif corr == max_corr:
+            ans.append(m)
+        if corr >= score_threshold - 6:
             poss_matches[m[translate_to]] = corr
     poss_matches = score_to_pct(poss_matches, force_match=True)
     return max_corr if max_corr > score_threshold else score_threshold, ans, poss_matches
@@ -243,6 +258,8 @@ def increase_priority():
 def match_moon_text(moon_img, moons_to_check, prepend="Unlocked", story_multi=False):
     ocr_text = reader.readtext(moon_img)
     ocr_text = correct_text("".join([ocr_text[i][1] for i in range(len(ocr_text))]), translate_from)
+    if len(ocr_text) < 2:
+        return None
     if VERBOSE:
         print(ocr_text)
 
@@ -302,7 +319,7 @@ def update_kingdom(img_arr):
         return kingdom_list[result]
     return None  # Was not able to determine kingdom
 
-
+ 
 ########################################################################################################################
 # Define variables used for computation
 ########################################################################################################################
@@ -384,12 +401,13 @@ while True:
             else:
                 change_kingdom = new_kingdom
                 check_kingdom_at = new_time + 1  # Perform the second check in 1s to be sure
-            continue  # if purple coin logo visible, not getting a moon or talking to talkatoo
+            continue  # if purple coin logo visible, not getting a moon or talking to Talkatoo
+        change_kingdom = ""
 
     # Moon recognition every half second
     if new_time > check_moon_at:
         moon_check_im = image_to_bw(image.crop(language_settings["Moon_Bounds"]), white=230)
-        if is_text_naive(moon_check_im, language_settings["Text_Height"], language_settings["Text_Lower"], language_settings["Text_Upper"], VERBOSE):
+        if is_text_naive(moon_check_im, language_settings["Text_Height"], language_settings["Text_Lower"]+0.1, language_settings["Text_Upper"]+0.1, VERBOSE):
             moon_matches = match_moon_text(moon_check_im, moons_by_kingdom[current_kingdom], prepend="Collected")
             if moon_matches:
                 if not collected_moons or moon_matches != collected_moons[-1]:
