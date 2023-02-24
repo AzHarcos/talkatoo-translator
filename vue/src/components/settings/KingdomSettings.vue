@@ -76,7 +76,7 @@
 
 <template>
   <v-card flat>
-    <v-card-title>Kingdom settings</v-card-title>
+    <v-card-title>Kingdoms</v-card-title>
     <v-card-subtitle
       >Edit which kingdoms should be displayed and in which order you're planning to visit them.
       Post game kingdoms include Cap, Moon and Mushroom.</v-card-subtitle

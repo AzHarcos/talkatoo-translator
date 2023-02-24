@@ -39,5 +39,15 @@ export const useSettings = defineStore('settings', {
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
+    setSettings(settings) {
+      this.setInputLanguage(settings.inputLanguage);
+      this.setOutputLanguage(settings.outputLanguage);
+      this.setActiveKingdoms(settings.activeKingdoms);
+      this.setIncludePostGame(settings.includePostGame);
+      this.setWoodedFirst(settings.woodedFirst);
+      this.setSeasideFirst(settings.seasideFirst);
+      this.setIsHardcore(settings.isHardcore);
+      this.setVideoDevice(settings.videoDevice);
+    },
   },
 });

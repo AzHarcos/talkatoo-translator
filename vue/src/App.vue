@@ -14,53 +14,20 @@
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
 
-  function readSettingsFromFile() {
-    fetch(SETTINGS_PATH)
-      .then((response) => response.json())
-      .then((settingsSnapshot) => {
-        settings.setInputLanguage(settingsSnapshot.inputLanguage);
-        settings.setOutputLanguage(settingsSnapshot.outputLanguage);
-        settings.setActiveKingdoms(settingsSnapshot.activeKingdoms);
-        settings.setIncludePostGame(settingsSnapshot.includePostGame);
-        settings.setWoodedFirst(settingsSnapshot.woodedFirst);
-        settings.setSeasideFirst(settingsSnapshot.seasideFirst);
-        settings.setIsHardcore(settingsSnapshot.isHardcore);
-        settings.setVideoDevice(settingsSnapshot.videoDevice);
-      })
-      .catch(() => {});
-  }
-
   function getMoonsByKingdom() {
     globalProperties.$eel
       .get_moons_by_kingdom()()
       .then((response) => {
         state.setMoonsByKingdom(response);
-      });
+      })
+      .catch(() => state.showError('Error fetching moon list.'));
   }
 
-  function getVideoDevices() {
-    globalProperties.$eel
-      .get_video_devices()()
-      .then((response) => {
-        if (!response || response.length === 0) {
-          settings.setVideoDevice(undefined);
-          return;
-        }
-
-        const hasPreselectedDevice =
-          settings.videoDevice &&
-          response.some(
-            (device) =>
-              device.id === settings.videoDevice.id &&
-              device.device_name === settings.videoDevice.device_name
-          );
-
-        if (!hasPreselectedDevice) {
-          settings.setVideoDevice(response[0]);
-        }
-        state.setShowSettings(true);
-      })
-      .catch(() => console.log('error getting video devices'));
+  function getSettingsFromFile() {
+    globalProperties.$eel.get_settings()((settingsFromFile) => {
+      settings.setSettings(settingsFromFile);
+      state.setShowSettings(true);
+    });
   }
 
   function updateMoons() {
@@ -115,9 +82,8 @@
     };
   });
 
-  readSettingsFromFile();
+  getSettingsFromFile();
   getMoonsByKingdom();
-  getVideoDevices();
   setInterval(updateMoons, 1000);
 </script>
 
@@ -144,5 +110,15 @@
         <div class="main-content"><Settings v-if="state.showSettings" /> <MoonList v-else /></div>
       </v-container>
     </v-main>
+    <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="2000">
+      {{ state.snackbar.text }}
+      <template v-slot:actions>
+        <v-icon
+          @click="() => state.closeSnackbar()"
+          icon="mdi-close"
+          size="small"
+          class="clickable"></v-icon>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>

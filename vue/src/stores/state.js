@@ -9,6 +9,11 @@ export const useState = defineStore('state', {
       mentionedMoons: [],
       collectedMoons: [],
       selectedKingdom: 'Cascade',
+      snackbar: {
+        visible: false,
+        text: '',
+        color: 'black',
+      },
     };
   },
   actions: {
@@ -39,6 +44,19 @@ export const useState = defineStore('state', {
     },
     setSelectedKingdom(kingdom) {
       this.selectedKingdom = kingdom;
+    },
+    showSuccess(text) {
+      this.snackbar.text = text;
+      this.snackbar.color = 'black';
+      this.snackbar.visible = true;
+    },
+    showError(text) {
+      this.snackbar.text = text;
+      this.snackbar.color = 'error';
+      this.snackbar.visible = true;
+    },
+    closeSnackbar() {
+      this.snackbar.visible = false;
     },
   },
 });

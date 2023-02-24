@@ -98,3 +98,7 @@ li {
 .v-card .v-card {
   background-color: transparent;
 }
+
+.v-card-subtitle {
+  white-space: normal;
+}

@@ -1,10 +1,10 @@
 <script setup>
-  import { ref } from 'vue';
+  import { computed } from 'vue';
   import availableLanguages from '../../consts/availableLanguages';
 
   const props = defineProps({
     label: String,
-    preselected: String,
+    selected: String,
     pattern: String,
   });
 
@@ -14,16 +14,20 @@
     ? availableLanguages.filter((language) => language.label.includes(props.pattern))
     : availableLanguages;
 
-  const preselectedLanguage =
-    availableLanguages.find((entry) => entry.id === props.preselected)?.id ?? '';
+  const selectedLanguage = computed(() => {
+    return filteredLanguages.find((entry) => entry.id === props.selected)?.id ?? '';
+  });
 
-  const selectedLanguage = ref(preselectedLanguage);
+  function updateLanguage(language) {
+    emit('input', language);
+    document.activeElement.blur();
+  }
 </script>
 
 <template>
   <v-autocomplete
-    v-model="selectedLanguage"
-    @update:modelValue="(event) => $emit('input', event)"
+    :model-value="selectedLanguage"
+    @update:modelValue="updateLanguage"
     :label="label"
     :items="filteredLanguages"
     item-value="id"

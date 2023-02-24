@@ -2,33 +2,56 @@
   import { ref } from 'vue';
   import { useDisplay } from 'vuetify';
 
+  import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import useCurrentInstance from '@/hooks/useCurrentInstance';
   import { scrollToBottom } from '@/composables';
   import { DEBUG_IMAGE_PATH } from '../../consts/filePaths';
 
   const { lgAndUp } = useDisplay();
-
-  const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
 
+  const state = useState();
+  const settings = useSettings();
+
   const videoDevices = ref([]);
-  const selectedDevice = ref(settings.videoDevice);
+  const selectedDevice = ref(undefined);
   const showImage = ref(false);
   const debugImageUrl = ref(DEBUG_IMAGE_PATH);
 
   globalProperties.$eel
     .get_video_devices()()
     .then((response) => {
-      if (response) {
-        videoDevices.value = response;
-      } else {
-        console.log('empty video devices');
+      if (!response || response.length === 0) {
+        return;
       }
+
+      videoDevices.value = response;
+
+      if (!settings.videoDevice) {
+        selectedDevice.value = response[0];
+        return;
+      }
+
+      const currentDevice = response.find(
+        (device) => device.device_name === settings.videoDevice.device_name
+      );
+
+      if (currentDevice.index === settings.videoDevice.index) {
+        selectedDevice.value = currentDevice;
+        return;
+      }
+
+      settings.setVideoDevice({
+        device_name: currentDevice.device_name,
+        index: currentDevice.index,
+      });
+      selectedDevice.value = settings.videoDevice;
     })
-    .catch(() => console.log('error getting video devices'));
+    .catch(() => state.showError('Error getting video devices.'));
 
   function setVideoDevice(device) {
+    // TODO: improve loading / scroll handling
     if (!showImage.value) {
       showImage.value = true;
       setTimeout(() => (debugImageUrl.value = ''), 100);
@@ -45,19 +68,20 @@
           settings.setVideoDevice(device);
           debugImageUrl.value = DEBUG_IMAGE_PATH;
         } else {
-          selectedDevice.value = settings.videoDevice;
-          console.log('error setting video device');
+          selectedDevice.value = undefined;
+          state.showError('Error setting video device.');
           document.activeElement.blur();
         }
       })
       .catch(() => {
-        selectedDevice.value = settings.videoDevice;
-        console.log('error setting video device');
+        selectedDevice.value = undefined;
+        state.showError('Error setting video device.');
         document.activeElement.blur();
       });
   }
 
   function resetBorders() {
+    // TODO: improve loading / scroll handling
     if (!showImage.value) {
       showImage.value = true;
       setTimeout(scrollToBottom, 400);
@@ -73,19 +97,18 @@
         if (response) {
           debugImageUrl.value = DEBUG_IMAGE_PATH;
         } else {
-          console.log('error resetting borders');
+          state.showError('Error resetting borders.');
         }
       })
-      .catch((err) => {
-        console.log(err);
-        console.log('error resetting borders');
+      .catch(() => {
+        state.showError('Error resetting borders.');
       });
   }
 </script>
 
 <template>
   <v-card flat>
-    <v-card-title> Image recognition settings </v-card-title>
+    <v-card-title> Image recognition </v-card-title>
     <v-card-subtitle>
       Select your capture card as the input video device and test if it's setup properly.
     </v-card-subtitle>
