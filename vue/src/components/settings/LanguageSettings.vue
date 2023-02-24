@@ -1,6 +1,7 @@
 <script setup>
   import LanguagePicker from './LanguagePicker.vue';
 
+  import { ref } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import useCurrentInstance from '@/hooks/useCurrentInstance';
@@ -9,27 +10,38 @@
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
 
+  const inputLanguageLoading = ref(false);
+  const outputLanguageLoading = ref(false);
+
   function setInputLanguage(language) {
+    inputLanguageLoading.value = true;
     globalProperties.$eel
       .set_translate_from(language)()
       .then(() => {
         settings.setInputLanguage(language);
-        state.showSuccess('Updated language.');
+        state.showSuccess('Updated input language.');
       })
       .catch(() => {
-        state.showError('Error setting language.');
+        state.showError('Error setting input language.');
+      })
+      .finally(() => {
+        inputLanguageLoading.value = false;
       });
   }
 
   function setOutputLanguage(language) {
+    outputLanguageLoading.value = true;
     globalProperties.$eel
       .set_translate_to(language)()
       .then(() => {
         settings.setOutputLanguage(language);
-        state.showSuccess('Updated language.');
+        state.showSuccess('Updated output language.');
       })
       .catch(() => {
-        state.showError('Error setting language.');
+        state.showError('Error setting output language.');
+      })
+      .finally(() => {
+        outputLanguageLoading.value = false;
       });
   }
 </script>
@@ -47,13 +59,15 @@
           <LanguagePicker
             @input="setInputLanguage"
             label="Input Language"
-            :selected="settings.inputLanguage" />
+            :selected="settings.inputLanguage"
+            :loading="inputLanguageLoading" />
         </v-col>
         <v-col cols="12" sm="6">
           <LanguagePicker
             @input="setOutputLanguage"
             label="Output Language"
-            :selected="settings.outputLanguage" />
+            :selected="settings.outputLanguage"
+            :loading="outputLanguageLoading" />
         </v-col>
       </v-row>
     </v-card-text>

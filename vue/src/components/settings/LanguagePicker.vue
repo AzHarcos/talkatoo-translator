@@ -6,6 +6,7 @@
     label: String,
     selected: String,
     pattern: String,
+    loading: Boolean,
   });
 
   const emit = defineEmits(['input']);
@@ -30,6 +31,7 @@
     @update:modelValue="updateLanguage"
     :label="label"
     :items="filteredLanguages"
+    :loading="loading"
     item-value="id"
     item-title="label"
     hide-details

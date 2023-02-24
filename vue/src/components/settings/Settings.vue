@@ -4,6 +4,8 @@
   import LanguageSettings from './LanguageSettings.vue';
 
   import useCurrentInstance from '@/hooks/useCurrentInstance';
+
+  import { ref } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
 
@@ -12,16 +14,20 @@
   const state = useState();
   const settings = useSettings();
 
+  const saveSettingsLoading = ref(false);
+
   function closeSettings() {
     state.setShowSettings(false);
   }
 
   function writeSettingsToFile() {
+    saveSettingsLoading.value = true;
     const settingsSnapshot = JSON.stringify(settings.$state);
     globalProperties.$eel
       .write_settings_to_file(settingsSnapshot)()
       .then(() => state.showSuccess('Saved settings to file.'))
-      .catch(() => state.showError('Error saving settings to file'));
+      .catch(() => state.showError('Error saving settings to file'))
+      .finally(() => (saveSettingsLoading.value = false));
   }
 </script>
 
@@ -43,6 +49,7 @@
     <div class="d-flex justify-end">
       <v-btn
         @click="writeSettingsToFile"
+        :loading="saveSettingsLoading"
         class="clickable mr-4 mb-4"
         append-icon="mdi-content-save-cog-outline"
         >Save to file</v-btn
