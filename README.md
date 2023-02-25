@@ -4,8 +4,8 @@ The goal of this project was to create a tool for recognizing and translating th
 
 # Setup Instructions (no programming required)
 To set up, you'll need Python 3 installed. Go to https://www.python.org/downloads/ and download the newest version.
-    - If you use the installer, make sure to check the box that says "install pip", as well as the one that adds Python to your PATH
-    - Otherwise, install pip following these instructions: https://pip.pypa.io/en/stable/installation/
+- If you use the installer, make sure to check the box that says "install pip", as well as the one that adds Python to your PATH
+- Otherwise, install pip following these instructions: https://pip.pypa.io/en/stable/installation/
 
 Make sure to install the libraries listed in requirements.txt
 - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
