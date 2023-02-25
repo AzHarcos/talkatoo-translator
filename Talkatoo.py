@@ -87,6 +87,13 @@ POSS_MOON_CERTAINTY = 0.1  # Show moon percentage if it's at least 10% possible
 RUN_FASTER = False
 VERBOSE = True
 
+MAX_STORY = {"Cap": 0, "Cascade": 2, "Sand": 4, "Lake": 1, "Wooded": 4, "Cloud": 0, "Lost": 0, "Metro": 7,
+             "Snow": 5, "Seaside": 5, "Luncheon": 5, "Ruined": 1, "Bowsers": 4, "Moon": 0, "Mushroom": 38,
+             "Dark Side": 1, "Darker Side": 1}
+MAX_MAINGAME = {"Cap": 0, "Cascade": 25, "Sand": 69, "Lake": 33, "Wooded": 54, "Cloud": 0, "Lost": 25, "Metro": 66,
+                "Snow": 37, "Seaside": 52, "Luncheon": 56, "Ruined": 5, "Bowsers": 45, "Moon": 27, "Mushroom": 0,
+                "Dark Side": 0, "Darker Side": 0}
+
 
 ########################################################################################################################
 # Functions that can be called by the JS GUI via eel
@@ -179,6 +186,12 @@ def reset_borders():
     Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
     return IMG_PATH
 
+# Learn when Postgame switch is toggled
+@eel.expose
+def set_postgame(new_value):
+    global is_postgame
+    is_postgame = new_value
+
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(settings_string):
@@ -255,7 +268,7 @@ def increase_priority():
 
 
 # Recognize, clean, and check moon text
-def match_moon_text(moon_img, moons_to_check, prepend="Unlocked", story_multi=False):
+def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
     ocr_text = reader.readtext(moon_img)
     ocr_text = correct_text("".join([ocr_text[i][1] for i in range(len(ocr_text))]), translate_from)
     if len(ocr_text) < 2:
@@ -264,12 +277,15 @@ def match_moon_text(moon_img, moons_to_check, prepend="Unlocked", story_multi=Fa
         print(ocr_text)
 
     score_thresh = language_settings["Score"]
-    if story_multi:
-        max_corr, ans, possible = check_matches_story_multi(ocr_text, score_thresh, moons_to_check)
-        for match in range(len(ans)):
-            ans[match]["is_story"] = True
+    if story:
+        to_check = story_moons_to_check(multi=False)
+        max_corr, ans, possible = check_matches_story_multi(ocr_text, score_thresh, to_check)
+    elif multi:
+        to_check = story_moons_to_check(multi=True)
+        max_corr, ans, possible = check_matches_story_multi(ocr_text, score_thresh, to_check)
     else:
-        max_corr, ans, possible = check_matches(ocr_text, score_thresh, moons_by_kingdom[current_kingdom])
+        to_check = normal_moons_to_check()
+        max_corr, ans, possible = check_matches(ocr_text, score_thresh, to_check)
 
     if max_corr >= score_thresh:  # If any reasonable matches, guarantee match if story moon
         best_matches = len(ans)
@@ -284,6 +300,33 @@ def match_moon_text(moon_img, moons_to_check, prepend="Unlocked", story_multi=Fa
     return None
 
 
+# Get normal moons
+def normal_moons_to_check():
+    # Note that MAX dicts are 1-indexed as SMO moons are 1-indexed
+    if is_postgame:
+        to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
+        to_check.extend(moons_by_kingdom["Cloud"])
+        to_check.extend(moons_by_kingdom["Ruined"])
+        to_check.extend(moons_by_kingdom["Dark Side"][1:])  # Exclude multi moon
+    else:
+        to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
+    return to_check
+
+
+# Get story moons
+def story_moons_to_check(multi):
+    start_index = 33 if current_kingdom == "Mushroom" else 1  # Moon indices are 1-indexed
+    if multi:
+        moons_to_check = [moons_by_kingdom[current_kingdom][i] for i in range(start_index-1, MAX_STORY[current_kingdom]) if moons_by_kingdom[current_kingdom][i].get("is_multi")]
+        moons_to_check.append(moons_by_kingdom["Ruined"][0])
+        if is_postgame:
+            moons_to_check.append(moons_by_kingdom["Dark Side"][0])
+            moons_to_check.append(moons_by_kingdom["Darker Side"][0])
+    else:
+        moons_to_check = [moons_by_kingdom[current_kingdom][i] for i in range(start_index-1, MAX_STORY[current_kingdom]) if moons_by_kingdom[current_kingdom][i].get("is_story")]
+    return moons_to_check
+
+
 # Translate scores to percent certainty
 def score_to_pct(poss_moon_dict, force_match=False):
     if not force_match:
@@ -291,22 +334,6 @@ def score_to_pct(poss_moon_dict, force_match=False):
     keys = list(poss_moon_dict.keys())
     percents = torch.softmax(torch.tensor([float(poss_moon_dict[key]) for key in poss_moon_dict]), dim=0)
     return {keys[i]: round(float(percents[i])*100, 2) for i in range(len(keys)) if percents[i] > POSS_MOON_CERTAINTY}
-
-
-# Get story moons
-def story_moons_to_check(multi):
-    story_moons = {"Cap": [], "Cascade": [1], "Sand": [1, 2], "Lake": [], "Wooded": [1, 3], "Lost": [],
-                   "Metro": [2, 3, 4, 5, 6], "Snow": [1, 2, 3, 4], "Seaside": [1, 2, 3, 4], "Luncheon": [1, 2, 4],
-                   "Bowsers": [1, 2, 3], "Moon": [], "Mushroom": []}
-    multi_moons = {"Cap": [], "Cascade": [2], "Sand": [3, 4], "Lake": [1], "Wooded": [2, 4], "Lost": [],
-                   "Metro": [1, 7], "Snow": [5], "Seaside": [5], "Luncheon": [3, 5], "Bowsers": [4], "Moon": [],
-                   "Mushroom": [33, 34, 35, 36, 37, 38]}
-    if multi:
-        moons_to_check = [moons_by_kingdom[current_kingdom][i-1] for i in multi_moons[current_kingdom]]
-        moons_to_check.extend(special_multi_moons)
-    else:
-        moons_to_check = [moons_by_kingdom[current_kingdom][i-1] for i in story_moons[current_kingdom]]
-    return moons_to_check
 
 
 # Check kingdom via recognition and update it if needed
@@ -326,7 +353,7 @@ def update_kingdom(img_arr):
 if RUN_FASTER:
     increase_priority()
 
-moons_by_kingdom, special_multi_moons = generate_moon_dict()
+moons_by_kingdom = generate_moon_dict()
 kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
 current_kingdom = "Cap"  # Start in first kingdom (Does not matter what it's initialized to)
@@ -343,10 +370,12 @@ if settings:
     translate_from = settings["inputLanguage"]
     translate_to = settings["outputLanguage"]
     video_index = get_index_for(settings["videoDevice"]["device_name"])
+    is_postgame = settings["includePostGame"]
 else:
     translate_from = DEFAULT_GAME_LANGUAGE
     translate_to = DEFAULT_GUI_LANGUAGE
     video_index = DEFAULT_VIDEO_INDEX
+    is_postgame = True
 language_settings = LANGUAGES[translate_from]
 reader = easyocr.Reader([language_settings["Language"]], verbose=False)
 score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
@@ -408,7 +437,7 @@ while True:
     if new_time > check_moon_at:
         moon_check_im = image_to_bw(image.crop(language_settings["Moon_Bounds"]), white=230)
         if is_text_naive(moon_check_im, language_settings["Text_Height"], language_settings["Text_Lower"]+0.1, language_settings["Text_Upper"]+0.1, VERBOSE):
-            moon_matches = match_moon_text(moon_check_im, moons_by_kingdom[current_kingdom], prepend="Collected")
+            moon_matches = match_moon_text(moon_check_im, prepend="Collected")
             if moon_matches:
                 if not collected_moons or moon_matches != collected_moons[-1]:
                     collected_moons.append(moon_matches)
@@ -426,8 +455,7 @@ while True:
                     print("Got a story moon!", end=" ")
                 story_text = image.rotate(-3.5).crop(STORY_TEXT_BORDERS)
                 story_text = image_to_bw(story_text, white=240)
-                moons_to_check = story_moons_to_check(multi=False)
-                moon_matches = match_moon_text(story_text, moons_to_check, prepend="Collected", story_multi=True)
+                moon_matches = match_moon_text(story_text, prepend="Collected", story=True)
                 collected_moons.append(moon_matches)
                 check_story_at = new_time + 10
                 continue
@@ -438,8 +466,7 @@ while True:
                     print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
                 multi_text = image.rotate(-3.5).crop(STORY_TEXT_BORDERS)
                 multi_text = image_to_bw(multi_text, white=240)
-                moons_to_check = story_moons_to_check(multi=True)
-                moon_matches = match_moon_text(multi_text, moons_to_check, prepend="Collected", story_multi=True)
+                moon_matches = match_moon_text(multi_text, prepend="Collected", multi=True)
                 collected_moons.append(moon_matches)
                 check_story_at = new_time + 10
                 continue
@@ -453,8 +480,7 @@ while True:
         if text_potential * frame_time > 0.19 and text_potential >= 2 and frame_time <= 0.3:  # Not waiting on a match
             text_potential = 0
             if is_text_naive(talkatoo_text, language_settings["Text_Height"], language_settings["Text_Lower"], language_settings["Text_Upper"], VERBOSE):  # Use text classifier to hopefully avoid unnecessary OCR passes
-                moons_to_check = moons_by_kingdom[current_kingdom]
-                moon_matches = match_moon_text(talkatoo_text, moons_to_check, prepend="Unlocked")
+                moon_matches = match_moon_text(talkatoo_text, prepend="Unlocked")
                 if moon_matches:  # Found at least one match
                     if not mentioned_moons or moon_matches != mentioned_moons[-1]:  # Allow nonconsecutive duplicates
                         mentioned_moons.append(moon_matches)
