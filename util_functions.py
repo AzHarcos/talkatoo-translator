@@ -44,7 +44,9 @@ def correct_text(string, translate_from):
     else:
         replacements[" "] = ""
     for i in replacements:
-        string = string.replace(i, replacements[i])
+        if i in string:
+            print("Character correction! ->", i)
+            string = string.replace(i, replacements[i])
     return string
 
 
@@ -83,16 +85,13 @@ def generate_moon_dict():
     moonlist = read_file_to_json("moon-list.json")  # moonlist now a list of dictionaries, one for each moon
     # Dictionary to store all moons by kingdom
     moons_by_kingdom = {}
-    special_multi_moons = []  # Ruined/Dark/Darker need to be matched separately
     for moon in moonlist:
         this_kingdom = moon["kingdom"]
         if this_kingdom in moons_by_kingdom:
             moons_by_kingdom[this_kingdom].append(moon)
         else:
             moons_by_kingdom[this_kingdom] = [moon]
-        if this_kingdom in ["Ruined", "Dark Side", "Darker Side"] and moon["id"] == 1:
-            special_multi_moons.append(moon)
-    return moons_by_kingdom, special_multi_moons
+    return moons_by_kingdom
 
 
 # Make black and white image of purple coin counter and moon text
