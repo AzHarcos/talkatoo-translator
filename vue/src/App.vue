@@ -8,7 +8,6 @@
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonCollected, scrollToTop } from '@/composables';
-  import { SETTINGS_PATH } from './consts/filePaths';
 
   const state = useState();
   const settings = useSettings();

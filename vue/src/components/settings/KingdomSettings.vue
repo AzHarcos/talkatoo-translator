@@ -1,9 +1,11 @@
 <script setup>
   import { ref, computed } from 'vue';
   import { useSettings } from '@/stores/settings';
+  import useCurrentInstance from '@/hooks/useCurrentInstance';
   import { mainGameKingdoms, availableKingdoms } from '../../consts/availableKingdoms';
 
   const settings = useSettings();
+  const { globalProperties } = useCurrentInstance();
 
   const selectedKingdoms = ref([...settings.activeKingdoms]);
 
@@ -12,19 +14,31 @@
       return settings.includePostGame;
     },
     set(value) {
-      settings.setIncludePostGame(value);
+      globalProperties.$eel
+        .write_settings_to_file(
+          JSON.stringify({
+            ...settings.$state,
+            includePostGame: value,
+          })
+        )()
+        .then(() => {
+          settings.setIncludePostGame(value);
 
-      selectedKingdoms.value = value ? [...availableKingdoms] : [...mainGameKingdoms];
+          selectedKingdoms.value = value ? [...availableKingdoms] : [...mainGameKingdoms];
 
-      if (!settings.woodedFirst) {
-        swapKingdoms('Lake', 'Wooded');
-      }
+          if (!settings.woodedFirst) {
+            swapKingdoms('Lake', 'Wooded');
+          }
 
-      if (settings.seasideFirst) {
-        swapKingdoms('Snow', 'Seaside');
-      }
+          if (settings.seasideFirst) {
+            swapKingdoms('Snow', 'Seaside');
+          }
 
-      settings.setActiveKingdoms(selectedKingdoms.value);
+          settings.setActiveKingdoms(selectedKingdoms.value);
+        })
+        .catch(() => {
+          state.showError('Error updating settings.');
+        });
     },
   });
 
@@ -33,7 +47,19 @@
       return settings.isHardcore;
     },
     set(value) {
-      settings.setIsHardcore(value);
+      globalProperties.$eel
+        .write_settings_to_file(
+          JSON.stringify({
+            ...settings.$state,
+            isHardcore: value,
+          })
+        )()
+        .then(() => {
+          settings.setIsHardcore(value);
+        })
+        .catch(() => {
+          state.showError('Error updating settings.');
+        });
     },
   });
 
@@ -42,8 +68,20 @@
       return settings.woodedFirst;
     },
     set(value) {
-      settings.setWoodedFirst(value);
-      swapKingdoms('Lake', 'Wooded');
+      globalProperties.$eel
+        .write_settings_to_file(
+          JSON.stringify({
+            ...settings.$state,
+            isHardcore: value,
+          })
+        )()
+        .then(() => {
+          settings.setWoodedFirst(value);
+          swapKingdoms('Lake', 'Wooded');
+        })
+        .catch(() => {
+          state.showError('Error updating settings.');
+        });
     },
   });
 
@@ -52,8 +90,20 @@
       return settings.seasideFirst;
     },
     set(value) {
-      settings.setSeasideFirst(value);
-      swapKingdoms('Snow', 'Seaside');
+      globalProperties.$eel
+        .write_settings_to_file(
+          JSON.stringify({
+            ...settings.$state,
+            isHardcore: value,
+          })
+        )()
+        .then(() => {
+          settings.setSeasideFirst(value);
+          swapKingdoms('Snow', 'Seaside');
+        })
+        .catch(() => {
+          state.showError('Error updating settings.');
+        });
     },
   });
 

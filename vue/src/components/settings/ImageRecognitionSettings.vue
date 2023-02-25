@@ -62,16 +62,15 @@
     }
 
     globalProperties.$eel
-      .set_video_index(device.index)()
-      .then((response) => {
-        if (response) {
-          settings.setVideoDevice(device);
-          debugImageUrl.value = DEBUG_IMAGE_PATH;
-        } else {
-          selectedDevice.value = undefined;
-          state.showError('Error setting video device.');
-          document.activeElement.blur();
-        }
+      .write_settings_to_file(
+        JSON.stringify({
+          ...settings.$state,
+          videoDevice: device,
+        })
+      )()
+      .then(() => {
+        settings.setVideoDevice(device);
+        debugImageUrl.value = DEBUG_IMAGE_PATH;
       })
       .catch(() => {
         selectedDevice.value = undefined;
