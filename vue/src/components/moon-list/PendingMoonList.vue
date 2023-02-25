@@ -4,6 +4,7 @@
   import { computed } from 'vue';
   import { useState } from '@/stores/state';
   import { areMoonsEqual } from '@/composables';
+  import { padStart } from '../../composables';
 
   const props = defineProps({
     moons: Array,
@@ -34,7 +35,10 @@
 
 <template>
   <div class="list-wrapper">
-    <div class="list-header">Pending Moons:</div>
+    <div class="list-header">
+      <span>Pending Moons:</span>
+      <div><span v-html="padStart(moons.length.toString())"></span>/3</div>
+    </div>
     <ul class="list">
       <li v-for="possibleMoons in filteredMoons" class="list-item">
         <PendingMoonEntry :possible-moons="possibleMoons" />

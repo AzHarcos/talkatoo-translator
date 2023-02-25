@@ -28,7 +28,15 @@ export function areMoonsPending(possibleMoons) {
 export function moonToString(moon) {
   const settings = useSettings();
 
-  return `${moon.id} - ${moon[settings.outputLanguage]} - ${moon[settings.inputLanguage]}`;
+  return `${padStart(moon.id.toString())} - ${moon[settings.outputLanguage]} - ${
+    moon[settings.inputLanguage]
+  }`;
+}
+
+export function padStart(str) {
+  if (str.length === 2) return str;
+
+  return `&nbsp&nbsp${str}`;
 }
 
 export function scrollToTop() {

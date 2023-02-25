@@ -1,17 +1,63 @@
 <script setup>
   import CollectedMoonEntry from './CollectedMoonEntry.vue';
+  import UnmentionedMoonEntry from './UnmentionedMoonEntry.vue';
+
+  import { computed } from 'vue';
+
+  import { useState } from '@/stores/state';
+  import { useSettings } from '@/stores/settings';
+  import { padStart } from '../../composables';
 
   const props = defineProps({
     moons: Array,
+  });
+
+  const state = useState();
+  const settings = useSettings();
+
+  const kingdomToMoonCount = {
+    Cascade: 5,
+    Sand: 16,
+    Lake: 8,
+    Wooded: 16,
+    Lost: 10,
+    Metro: 20,
+    Snow: 10,
+    Seaside: 10,
+    Luncheon: 18,
+    Bowsers: 8,
+  };
+
+  const collectedMoonCount = computed(() => {
+    return props.moons.reduce((sum, moon) => {
+      if (!moon.isMentioned) return sum;
+
+      if (moon.is_multi) return sum + 3;
+
+      return sum + 1;
+    }, 0);
+  });
+
+  const requiredMoonCount = computed(() => {
+    if (settings.includePostGame) return state.moonsByKingdom[state.selectedKingdom].length;
+
+    return kingdomToMoonCount[state.selectedKingdom];
   });
 </script>
 
 <template>
   <div class="list-wrapper">
-    <div class="list-header">Collected Moons:</div>
+    <div class="list-header" :class="{ 'mr-1': !requiredMoonCount }">
+      <span>Collected Moons:</span>
+      <div>
+        <span v-html="padStart(collectedMoonCount.toString())"></span>
+        <span v-if="requiredMoonCount">/{{ requiredMoonCount }} </span>
+      </div>
+    </div>
     <ul class="list">
       <li v-for="moon in moons" class="list-item">
-        <CollectedMoonEntry :moon="moon" />
+        <CollectedMoonEntry v-if="moon.isMentioned" :moon="moon" />
+        <UnmentionedMoonEntry v-else :moon="moon" />
       </li>
     </ul>
   </div>
