@@ -8,28 +8,26 @@ To set up, you'll need Python 3 installed. Go to https://www.python.org/download
     - Otherwise, install pip following these instructions: https://pip.pypa.io/en/stable/installation/
 
 Make sure to install the libraries listed in requirements.txt
-    - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
-    - Run "pip install -r requirements.txt"
-    - Note that if one or more don't work, you'll need to install them separately.
+- Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
+- Run "pip install -r requirements.txt"
+- Note that if one or more don't work, you'll need to install them separately.
 
 To run the program:
-    - Command Line/Terminal:
-        - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
-        - Run "python Talkatoo.py" on Windows, or "python3 Talkatoo.py" on Linux/Mac
-    - IDLE:
-        - IDLE is a free Python interpreter that comes with Python. You can just open Talkatoo.py within IDLE and click "Run"
-    - Or use an interpreter of your choice
+- Command Line/Terminal:
+    - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
+    - Run "python Talkatoo.py" on Windows, or "python3 Talkatoo.py" on Linux/Mac
+- IDLE:
+    - IDLE is a free Python interpreter that comes with Python. You can just open Talkatoo.py within IDLE and click "Run"
+- Or use an interpreter of your choice
 
 
 # Troubleshooting
-"Nothing is working"
-
+- "Nothing is working"
 The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right.
 The final possible issue is that your capture card has highly distorted colors (distorted dimensions also, to a lesser extent). We do not currently have a color correction algorithm in place.
 
 
-"It sometimes works"
-
+- "It sometimes works"
 The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On especially old/slow machines where framerate drops below ~15, this may prove to be a problem, and the best thing to do is ensure that Python is running in the foreground with limited background activity. You can try changing RUN_FASTER to True (towards the top of Talkatoo.py), which ensures that your computer highly prioritizes this program over others. 
 
 
