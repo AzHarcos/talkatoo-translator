@@ -1,0 +1,8 @@
+easyocr
+eel
+numpy
+opencv-python
+pillow
+psutil
+pygrabber
+torch
