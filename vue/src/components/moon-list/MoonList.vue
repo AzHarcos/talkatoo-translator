@@ -16,7 +16,7 @@
 
   const selectedKingdomCollectedMoons = computed(() => {
     const collectedMoons = state.collectedMoons.filter(
-      (moon) => moon.kingdom === state.selectedKingdom
+      (moon) => moon.kingdom === state.selectedKingdom.name
     );
     return collectedMoons.map((moon) => ({
       ...moon,

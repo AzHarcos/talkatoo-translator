@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { areMoonsEqual } from '@/composables';
+import { getDisplayKingdoms } from '../composables';
+import availableKingdoms from '../consts/availableKingdoms';
 
 export const useState = defineStore('state', {
   state: () => {
@@ -8,7 +10,8 @@ export const useState = defineStore('state', {
       moonsByKingdom: [],
       mentionedMoons: [],
       collectedMoons: [],
-      selectedKingdom: 'Cascade',
+      displayedKingdoms: [...availableKingdoms],
+      selectedKingdom: availableKingdoms.find((kingdom) => kingdom.name === 'Cascade'),
       snackbar: {
         visible: false,
         text: '',
@@ -41,6 +44,9 @@ export const useState = defineStore('state', {
     },
     setMoonUncollected(moon) {
       this.collectedMoons = this.collectedMoons.filter((m) => !areMoonsEqual(moon, m));
+    },
+    updateKingdoms() {
+      this.displayedKingdoms = getDisplayKingdoms();
     },
     setSelectedKingdom(kingdom) {
       this.selectedKingdom = kingdom;

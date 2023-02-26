@@ -1,4 +1,4 @@
-const availableLanguages = [
+export default [
   {
     id: 'english',
     label: 'English',
@@ -52,5 +52,3 @@ const availableLanguages = [
     label: 'Spanish (Latin America)',
   },
 ];
-
-export default availableLanguages;

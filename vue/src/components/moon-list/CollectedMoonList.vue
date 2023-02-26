@@ -15,19 +15,6 @@
   const state = useState();
   const settings = useSettings();
 
-  const kingdomToMoonCount = {
-    Cascade: 5,
-    Sand: 16,
-    Lake: 8,
-    Wooded: 16,
-    Lost: 10,
-    Metro: 20,
-    Snow: 10,
-    Seaside: 10,
-    Luncheon: 18,
-    Bowsers: 8,
-  };
-
   const collectedMoonCount = computed(() => {
     return props.moons.reduce((sum, moon) => {
       if (!moon.isMentioned) return sum;
@@ -39,9 +26,9 @@
   });
 
   const requiredMoonCount = computed(() => {
-    if (settings.includePostGame) return state.moonsByKingdom[state.selectedKingdom].length;
+    if (settings.includePostGame) return state.moonsByKingdom[state.selectedKingdom.name].length;
 
-    return kingdomToMoonCount[state.selectedKingdom];
+    return state.selectedKingdom.requiredMoonCount;
   });
 </script>
 

@@ -1,13 +1,14 @@
 <script setup>
-  import { ref, computed } from 'vue';
-  import { useSettings } from '@/stores/settings';
-  import useCurrentInstance from '@/hooks/useCurrentInstance';
-  import { mainGameKingdoms, availableKingdoms } from '../../consts/availableKingdoms';
+  import { computed } from 'vue';
 
+  import useCurrentInstance from '@/hooks/useCurrentInstance';
+
+  import { useState } from '@/stores/state';
+  import { useSettings } from '@/stores/settings';
+
+  const state = useState();
   const settings = useSettings();
   const { globalProperties } = useCurrentInstance();
-
-  const selectedKingdoms = ref([...settings.activeKingdoms]);
 
   const includePostGame = computed({
     get() {
@@ -23,18 +24,29 @@
         )()
         .then(() => {
           settings.setIncludePostGame(value);
+          state.updateKingdoms();
+        })
+        .catch(() => {
+          state.showError('Error updating settings.');
+        });
+    },
+  });
 
-          selectedKingdoms.value = value ? [...availableKingdoms] : [...mainGameKingdoms];
-
-          if (!settings.woodedFirst) {
-            swapKingdoms('Lake', 'Wooded');
-          }
-
-          if (settings.seasideFirst) {
-            swapKingdoms('Snow', 'Seaside');
-          }
-
-          settings.setActiveKingdoms(selectedKingdoms.value);
+  const includeWithoutTalkatoo = computed({
+    get() {
+      return settings.includeWithoutTalkatoo;
+    },
+    set(value) {
+      globalProperties.$eel
+        .write_settings_to_file(
+          JSON.stringify({
+            ...settings.$state,
+            includeWithoutTalkatoo: value,
+          })
+        )()
+        .then(() => {
+          settings.setIncludeWithoutTalkatoo(value);
+          state.updateKingdoms();
         })
         .catch(() => {
           state.showError('Error updating settings.');
@@ -56,6 +68,7 @@
         )()
         .then(() => {
           settings.setIsHardcore(value);
+          state.updateKingdoms();
         })
         .catch(() => {
           state.showError('Error updating settings.');
@@ -77,7 +90,7 @@
         )()
         .then(() => {
           settings.setWoodedFirst(value);
-          swapKingdoms('Lake', 'Wooded');
+          state.updateKingdoms();
         })
         .catch(() => {
           state.showError('Error updating settings.');
@@ -99,43 +112,34 @@
         )()
         .then(() => {
           settings.setSeasideFirst(value);
-          swapKingdoms('Snow', 'Seaside');
+          state.updateKingdoms();
         })
         .catch(() => {
           state.showError('Error updating settings.');
         });
     },
   });
-
-  function swapKingdoms(kingdom1, kingdom2) {
-    const firstIndex = selectedKingdoms.value.findIndex(
-      (kingdom) => kingdom === kingdom1 || kingdom === kingdom2
-    );
-    if (firstIndex === -1) return;
-
-    const secondIndex = firstIndex + 1;
-    const firstKingdom = selectedKingdoms.value[firstIndex];
-    const secondKingdom = selectedKingdoms.value[secondIndex];
-
-    selectedKingdoms.value[firstIndex] = secondKingdom;
-    selectedKingdoms.value[secondIndex] = firstKingdom;
-
-    settings.setActiveKingdoms(selectedKingdoms.value);
-  }
 </script>
 
 <template>
   <v-card flat>
     <v-card-title>Kingdoms</v-card-title>
     <v-card-subtitle
-      >Edit which kingdoms should be displayed and in which order you're planning to visit them.
-      Post game kingdoms include Cap, Moon and Mushroom.</v-card-subtitle
+      >Select which kingdoms should be displayed and in what order. Post game kingdoms include
+      kingdoms where you don't collect moons in Any%. Other kingdoms include kingdoms where Talkatoo
+      is not present.</v-card-subtitle
     >
     <v-card-text>
       <div class="d-flex flex-column flex-lg-row justify-lg-space-between">
         <v-switch
           v-model="includePostGame"
           label="Include post game"
+          hide-details
+          class="slider-width"
+          color="primary"></v-switch>
+        <v-switch
+          v-model="includeWithoutTalkatoo"
+          label="Other kingdoms"
           hide-details
           class="slider-width"
           color="primary"></v-switch>

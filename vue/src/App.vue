@@ -25,6 +25,7 @@
   function getSettingsFromFile() {
     globalProperties.$eel.get_settings()((settingsFromFile) => {
       settings.setSettings(settingsFromFile);
+      state.updateKingdoms();
       state.setShowSettings(true);
     });
   }
@@ -74,13 +75,6 @@
     state.setShowSettings(!state.showSettings);
   }
 
-  const backgroundImageStyle = computed(() => {
-    const imageUrl = `http://localhost:8083/assets/${state.selectedKingdom}.png`;
-    return {
-      backgroundImage: `url(${imageUrl})`,
-    };
-  });
-
   getSettingsFromFile();
   getMoonsByKingdom();
   setInterval(updateMoons, 1000);
@@ -91,11 +85,11 @@
     <v-app-bar flat density="compact">
       <v-tabs v-model="state.selectedKingdom" grow show-arrows color="primary">
         <v-tab
-          v-for="kingdom in settings.activeKingdoms"
-          :key="kingdom"
+          v-for="kingdom in state.displayedKingdoms"
+          :key="kingdom.name"
           :value="kingdom"
           class="clickable">
-          {{ kingdom }}
+          {{ kingdom.name }}
         </v-tab>
       </v-tabs>
       <v-icon
@@ -105,7 +99,10 @@
         class="mx-4 clickable"></v-icon>
     </v-app-bar>
     <v-main>
-      <v-container fluid class="image-container pa-8" :style="backgroundImageStyle">
+      <v-container
+        fluid
+        class="image-container pa-8"
+        :style="{ backgroundImage: `url(${state.selectedKingdom.image})` }">
         <div class="main-content"><Settings v-if="state.showSettings" /> <MoonList v-else /></div>
       </v-container>
     </v-main>

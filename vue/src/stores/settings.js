@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
-import { mainGameKingdoms } from '../consts/availableKingdoms';
 
 export const useSettings = defineStore('settings', {
   state: () => {
     return {
       inputLanguage: 'chinese_simplified',
       outputLanguage: 'english',
-      activeKingdoms: [...mainGameKingdoms],
       includePostGame: false,
+      includeWithoutTalkatoo: false,
       woodedFirst: true,
       seasideFirst: false,
       isHardcore: false,
@@ -21,11 +20,11 @@ export const useSettings = defineStore('settings', {
     setOutputLanguage(outputLanguage) {
       this.outputLanguage = outputLanguage;
     },
-    setActiveKingdoms(activeKingdoms) {
-      this.activeKingdoms = [...activeKingdoms];
-    },
     setIncludePostGame(includePostGame) {
       this.includePostGame = includePostGame;
+    },
+    setIncludeWithoutTalkatoo(includeWithoutTalkatoo) {
+      this.includeWithoutTalkatoo = includeWithoutTalkatoo;
     },
     setWoodedFirst(woodedFirst) {
       this.woodedFirst = woodedFirst;
@@ -42,8 +41,8 @@ export const useSettings = defineStore('settings', {
     setSettings(settings) {
       this.setInputLanguage(settings.inputLanguage);
       this.setOutputLanguage(settings.outputLanguage);
-      this.setActiveKingdoms(settings.activeKingdoms);
       this.setIncludePostGame(settings.includePostGame);
+      this.setIncludeWithoutTalkatoo(settings.includeWithoutTalkatoo);
       this.setWoodedFirst(settings.woodedFirst);
       this.setSeasideFirst(settings.seasideFirst);
       this.setIsHardcore(settings.isHardcore);
