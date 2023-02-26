@@ -7107,7 +7107,7 @@
     "id": 14,
     "kingdom": "Seaside",
     "english": "Merci, Dorrie!",
-    "chinese_traditional": "Merci 海龍王",
+    "chinese_traditional": "谢谢 海龙王",
     "chinese_simplified": "谢谢 海龙王",
     "japanese": "メルシー ドッシー",
     "korean": "메르시, 돗시!",
@@ -10196,6 +10196,8 @@
   {
     "id": 1,
     "kingdom": "Ruined",
+    "is_story": true,
+    "is_multi": true,
     "english": "Battle with the Lord of Lightning!",
     "chinese_traditional": "決鬥！雷王！",
     "chinese_simplified": "决斗！雷王！",
@@ -12814,6 +12816,8 @@
   {
     "id": 1,
     "kingdom": "Dark Side",
+    "is_story": true,
+    "is_multi": true,
     "english": "Arrival at Rabbit Ridge!",
     "chinese_traditional": "做個了結！兔子環形山",
     "chinese_simplified": "了结！兔子环形山",
@@ -13222,6 +13226,8 @@
   {
     "id": 1,
     "kingdom": "Darker Side",
+    "is_story": true,
+    "is_multi": true,
     "english": "Long Journey's End",
     "chinese_traditional": "漫長旅途的終點",
     "chinese_simplified": "漫长旅途的终点",
