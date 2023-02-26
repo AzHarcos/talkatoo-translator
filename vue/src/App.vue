@@ -3,8 +3,8 @@
   import Settings from '@/components/settings/Settings.vue';
 
   import useCurrentInstance from '@/hooks/useCurrentInstance';
+  import availableKingdoms from '@/consts/availableKingdoms';
 
-  import { computed } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonCollected, scrollToTop } from '@/composables';
@@ -67,8 +67,8 @@
     });
   }
 
-  function selectKingdom(kingdom) {
-    state.setSelectedKingdom(kingdom);
+  function selectKingdom(kingdomName) {
+    state.setSelectedKingdom(availableKingdoms.find((kingdom) => kingdom.name === kingdomName));
   }
 
   function toggleShowSettings() {
