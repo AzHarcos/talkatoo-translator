@@ -13,8 +13,8 @@ import RuinedImage from '@/assets/images/Ruined.png';
 import BowsersImage from '@/assets/images/Bowsers.png';
 import MoonImage from '@/assets/images/Moon.png';
 import MushroomImage from '@/assets/images/Mushroom.png';
-import DarkImage from '@/assets/images/Cap.png';
-import DarkerImage from '@/assets/images/Cap.png';
+import DarkImage from '@/assets/images/Dark.png';
+import DarkerImage from '@/assets/images/Darker.png';
 
 export default [
   {
