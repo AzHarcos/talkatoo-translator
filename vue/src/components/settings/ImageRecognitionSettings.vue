@@ -17,7 +17,7 @@
   const videoDevices = ref([]);
   const selectedDevice = ref(undefined);
   const showImage = ref(false);
-  const debugImageUrl = ref(DEBUG_IMAGE_PATH);
+  const debugImageUrl = ref('');
 
   globalProperties.$eel
     .get_video_devices()()
@@ -51,15 +51,9 @@
     .catch(() => state.showError('Error getting video devices.'));
 
   function setVideoDevice(device) {
-    // TODO: improve loading / scroll handling
-    if (!showImage.value) {
-      showImage.value = true;
-      setTimeout(() => (debugImageUrl.value = ''), 100);
-      setTimeout(scrollToBottom, 400);
-    } else {
-      scrollToBottom();
-      debugImageUrl.value = '';
-    }
+    showImage.value = true;
+    setTimeout(scrollToBottom, 100);
+    debugImageUrl.value = '';
 
     globalProperties.$eel
       .write_settings_to_file(
@@ -80,14 +74,8 @@
   }
 
   function resetBorders() {
-    // TODO: improve loading / scroll handling
-    if (!showImage.value) {
-      showImage.value = true;
-      setTimeout(scrollToBottom, 400);
-      return;
-    }
-
-    scrollToBottom();
+    showImage.value = true;
+    setTimeout(scrollToBottom, 100);
     debugImageUrl.value = '';
 
     globalProperties.$eel
@@ -141,7 +129,7 @@
           class="clickable"></v-autocomplete>
         <v-btn @click="resetBorders" class="clickable mt-4">Show preview image</v-btn>
       </div>
-      <v-img v-show="showImage" :src="debugImageUrl" class="border mt-4">
+      <v-img v-if="showImage" :src="debugImageUrl" aspect-ratio="1.7778" class="border mt-4">
         <template v-slot:placeholder>
           <div class="d-flex align-center justify-center fill-height">
             <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
