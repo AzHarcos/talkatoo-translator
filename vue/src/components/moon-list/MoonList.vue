@@ -11,17 +11,19 @@
   const settings = useSettings();
 
   const selectedKingdomPendingMoons = computed(() => {
-    return state.mentionedMoons.filter(areMoonsPending);
+    return state.mentionedMoons.filter(areMoonsPending).reverse();
   });
 
   const selectedKingdomCollectedMoons = computed(() => {
     const collectedMoons = state.collectedMoons.filter(
       (moon) => moon.kingdom === state.selectedKingdom.name
     );
-    return collectedMoons.map((moon) => ({
-      ...moon,
-      isMentioned: isMoonMentioned(moon),
-    }));
+    return collectedMoons
+      .map((moon) => ({
+        ...moon,
+        isMentioned: isMoonMentioned(moon),
+      }))
+      .reverse();
   });
 
   function isMoonMentioned(moon) {
