@@ -13,9 +13,9 @@ import easyocr  # pip install easyocr
 import eel  # pip install eel
 import json
 from PIL import Image, ImageGrab  # pip install pillow
-from pygrabber.dshow_graph import FilterGraph  # Used for camera inputs
+from pygrabber.dshow_graph import FilterGraph  # pip install pygrabber
 import time
-import torch  # pip install pytorch
+import torch  # pip install torch
 import torchvision.transforms as transforms
 from util_functions import *
 
@@ -30,7 +30,7 @@ DEFAULT_TALKATOO_BOUNDS_2 = (350, 590, 1000, 640)  # Line 2 of 2
 DEFAULT_TALKATOO_BOUNDS_3 = (350, 610, 1000, 660)  # Line 3 of 3
 TALKATOO_BOUNDS_FR = (300, 565, 900, 615)  # Line 1 of 1
 TALKATOO_BOUNDS_NL = (350, 560, 1000, 620)  # Line 2 of 3
-TALKATOO_BOUNDS_SPAIN = (350, 565, 1000, 615)  # Line 1 of 1
+TALKATOO_BOUNDS_ES = (350, 565, 1000, 615)  # Line 1 of 1
 
 LANGUAGES = {
              "english": {"Language": "en", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 12, "Score": 0,
@@ -54,7 +54,7 @@ LANGUAGES = {
              "italian": {"Language": "it", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 12, "Score": 0,
                          "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_2},
              "spanish_spain": {"Language": "es", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
-                               "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": TALKATOO_BOUNDS_SPAIN},
+                               "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": TALKATOO_BOUNDS_ES},
              "spanish_latin_america": {"Language": "es", "Text_Lower": 0.15, "Text_Upper": 0.55, "Text_Height": 12, "Score": 2,
                                        "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_3},
              "russian": {"Language": "ru", "Text_Lower": 0.12, "Text_Upper": 0.55, "Text_Height": 12, "Score": 0,
@@ -133,43 +133,6 @@ def get_video_devices():
         })
     return available_cameras
 
-# Allow the gui to overwrite the language to translate from for image recognition
-@eel.expose
-def set_translate_from(t_from):
-    global translate_from, language_settings, reader, score_func
-    translate_from = t_from
-    language_settings = LANGUAGES[translate_from]
-    reader = easyocr.Reader([language_settings["Language"]], verbose=False)
-    score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
-    if VERBOSE:
-        print("[STATUS] -> translate_from set to {}".format(translate_from))
-
-# Allow the gui to overwrite the language to translate to for logging purposes
-@eel.expose
-def set_translate_to(t_to):
-    global translate_to
-    translate_to = t_to
-    if VERBOSE:
-        print("[STATUS] -> translate_to set to {}".format(translate_to))
-
-# Allow the gui to overwrite the video index
-@eel.expose
-def set_video_index(new_index):
-    global video_index, stream
-    stream.release()
-    stream.open(new_index)
-    updated_borders_image = reset_borders()
-    if not updated_borders_image:
-        if VERBOSE:
-            print("[STATUS] -> video_index could not be set to {}".format(new_index))
-        stream.release()
-        stream.open(video_index)
-        return None
-    video_index = new_index
-    if VERBOSE:
-        print("[STATUS] -> video_index set to {}".format(video_index))
-    return updated_borders_image
-
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
 def reset_borders():
@@ -186,21 +149,20 @@ def reset_borders():
     Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
     return IMG_PATH
 
-# Learn when Postgame switch is toggled
-@eel.expose
-def set_postgame(new_value):
-    global is_postgame
-    is_postgame = new_value
-
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(settings_string):
-    global settings
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms
     with open(SETTINGS_PATH, "w") as settings_file:
         settings_file.write(settings_string)
-    settings = json.loads(settings_string)
     if VERBOSE:
         print("[STATUS] -> Saved settings to file!")
+    settings = json.loads(settings_string)
+    is_postgame = settings["includePostGame"]
+    include_extra_kingdoms = settings["includeWithoutTalkatoo"]
+    set_translate_from(settings["inputLanguage"])
+    set_translate_to(settings["outputLanguage"])
+    set_video_index(settings["videoDevice"]["index"])
 
 
 ########################################################################################################################
@@ -336,6 +298,46 @@ def score_to_pct(poss_moon_dict, force_match=False):
     return {keys[i]: round(float(percents[i])*100, 2) for i in range(len(keys)) if percents[i] > POSS_MOON_CERTAINTY}
 
 
+# reset input language
+def set_translate_from(t_from):
+    global translate_from, language_settings, reader, score_func
+    if translate_from != t_from:
+        translate_from = t_from
+        language_settings = LANGUAGES[translate_from]
+        reader = easyocr.Reader([language_settings["Language"]], verbose=False)
+        score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
+        if VERBOSE:
+            print("[STATUS] -> translate_from set to {}".format(translate_from))
+
+
+# reset output language
+def set_translate_to(t_to):
+    global translate_to
+    if translate_to != t_to:
+        translate_to = t_to
+        if VERBOSE:
+            print("[STATUS] -> translate_to set to {}".format(translate_to))
+
+
+# reset video source
+def set_video_index(new_index):
+    global video_index, stream
+    if video_index != new_index:
+        stream.release()
+        stream.open(new_index)
+        reset_success = reset_borders()
+        if reset_success:
+            video_index = new_index
+            if VERBOSE:
+                print("[STATUS] -> video_index set to {}".format(video_index))
+        else:
+            if VERBOSE:
+                print("[STATUS] -> video_index could not be set to {}".format(new_index))
+            stream.release()
+            stream.open(video_index)
+            return None
+
+
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
     img = Image.fromarray(img_arr)
@@ -371,11 +373,13 @@ if settings:
     translate_to = settings["outputLanguage"]
     video_index = get_index_for(settings["videoDevice"]["device_name"])
     is_postgame = settings["includePostGame"]
+    include_extra_kingdoms = settings["includeWithoutTalkatoo"]
 else:
     translate_from = DEFAULT_GAME_LANGUAGE
     translate_to = DEFAULT_GUI_LANGUAGE
     video_index = DEFAULT_VIDEO_INDEX
     is_postgame = True
+    include_extra_kingdoms = True
 language_settings = LANGUAGES[translate_from]
 reader = easyocr.Reader([language_settings["Language"]], verbose=False)
 score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
