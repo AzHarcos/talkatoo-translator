@@ -89,10 +89,10 @@ VERBOSE = True
 
 MAX_STORY = {"Cap": 0, "Cascade": 2, "Sand": 4, "Lake": 1, "Wooded": 4, "Cloud": 0, "Lost": 0, "Metro": 7,
              "Snow": 5, "Seaside": 5, "Luncheon": 5, "Ruined": 1, "Bowsers": 4, "Moon": 0, "Mushroom": 38,
-             "Dark Side": 1, "Darker Side": 1}
+             "Dark": 1, "Darker": 1}
 MAX_MAINGAME = {"Cap": 0, "Cascade": 25, "Sand": 69, "Lake": 33, "Wooded": 54, "Cloud": 0, "Lost": 25, "Metro": 66,
                 "Snow": 37, "Seaside": 52, "Luncheon": 56, "Ruined": 5, "Bowsers": 45, "Moon": 27, "Mushroom": 0,
-                "Dark Side": 0, "Darker Side": 0}
+                "Dark": 0, "Darker": 0}
 
 
 ########################################################################################################################
@@ -115,6 +115,11 @@ def get_mentioned_moons():
 @eel.expose
 def get_moons_by_kingdom():
     return moons_by_kingdom
+
+# Expose the current kingdom to the gui
+@eel.expose
+def get_current_kingdom():
+    return current_kingdom
 
 # Allow the gui to see settings to read from the file
 @eel.expose
@@ -282,8 +287,8 @@ def story_moons_to_check(multi):
         moons_to_check = [moons_by_kingdom[current_kingdom][i] for i in range(start_index-1, MAX_STORY[current_kingdom]) if moons_by_kingdom[current_kingdom][i].get("is_multi")]
         moons_to_check.append(moons_by_kingdom["Ruined"][0])
         if is_postgame:
-            moons_to_check.append(moons_by_kingdom["Dark Side"][0])
-            moons_to_check.append(moons_by_kingdom["Darker Side"][0])
+            moons_to_check.append(moons_by_kingdom["Dark"][0])
+            moons_to_check.append(moons_by_kingdom["Darker"][0])
     else:
         moons_to_check = [moons_by_kingdom[current_kingdom][i] for i in range(start_index-1, MAX_STORY[current_kingdom]) if moons_by_kingdom[current_kingdom][i].get("is_story")]
     return moons_to_check

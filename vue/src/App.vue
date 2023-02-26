@@ -26,11 +26,12 @@
     globalProperties.$eel.get_settings()((settingsFromFile) => {
       settings.setSettings(settingsFromFile);
       state.updateKingdoms();
+      state.setSelectedKingdom(state.displayedKingdoms[0]);
       state.setShowSettings(true);
     });
   }
 
-  function updateMoons() {
+  function updateData() {
     globalProperties.$eel.get_mentioned_moons()((response) => {
       if (response.length > state.mentionedMoons.length) {
         const newlyMentionedMoons = response.slice(state.mentionedMoons.length - response.length);
@@ -65,10 +66,20 @@
 
       state.addCollectedMoons(newlyCollectedMoons);
     });
+    globalProperties.$eel.get_current_kingdom()((response) => {
+      if (response === state.currentKingdomName) return;
+
+      state.setCurrentKingdomName(response);
+      selectKingdom(response);
+    });
   }
 
   function selectKingdom(kingdomName) {
-    state.setSelectedKingdom(availableKingdoms.find((kingdom) => kingdom.name === kingdomName));
+    const selectedKingdom = state.displayedKingdoms.find((kingdom) => kingdom.name === kingdomName);
+
+    if (selectedKingdom) {
+      state.setSelectedKingdom(selectedKingdom);
+    }
   }
 
   function toggleShowSettings() {
@@ -77,7 +88,7 @@
 
   getSettingsFromFile();
   getMoonsByKingdom();
-  setInterval(updateMoons, 1000);
+  setInterval(updateData, 1000);
 </script>
 
 <template>

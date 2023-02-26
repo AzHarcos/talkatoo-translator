@@ -11,6 +11,7 @@ export const useState = defineStore('state', {
       mentionedMoons: [],
       collectedMoons: [],
       displayedKingdoms: [...availableKingdoms],
+      currentKingdomName: undefined,
       selectedKingdom: availableKingdoms.find((kingdom) => kingdom.name === 'Cascade'),
       snackbar: {
         visible: false,
@@ -45,11 +46,14 @@ export const useState = defineStore('state', {
     setMoonUncollected(moon) {
       this.collectedMoons = this.collectedMoons.filter((m) => !areMoonsEqual(moon, m));
     },
-    updateKingdoms() {
-      this.displayedKingdoms = getDisplayKingdoms();
+    setCurrentKingdomName(currentKingdomName) {
+      this.currentKingdomName = currentKingdomName;
     },
     setSelectedKingdom(kingdom) {
       this.selectedKingdom = kingdom;
+    },
+    updateKingdoms() {
+      this.displayedKingdoms = getDisplayKingdoms();
     },
     showSuccess(text) {
       this.snackbar.text = text;

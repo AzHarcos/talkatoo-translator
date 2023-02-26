@@ -39,7 +39,9 @@
   <v-card flat>
     <v-card-text>
       <div class="list-container">
-        <PendingMoonList :moons="selectedKingdomPendingMoons" />
+        <PendingMoonList
+          v-if="state.selectedKingdom.hasTalkatoo"
+          :moons="selectedKingdomPendingMoons" />
         <CollectedMoonList :moons="selectedKingdomCollectedMoons" />
       </div>
     </v-card-text>
