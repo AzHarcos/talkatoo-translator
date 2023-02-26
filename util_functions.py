@@ -31,22 +31,18 @@ def check_story_multi(img, expected="RED"):
 
 # Replace certain known problematic characters to make better matches
 def correct_text(string, translate_from):
-    replacements = {}
     if translate_from.startswith("chinese"):  # Designed from
-        replacements = {" ": "", "，": "‧", ".": "‧", "!": "！", "『": "！", "|": "１", "]": "１", "１": "１", "鑾": "", "}": "！",
-                        "”": "", "ˋ": "", "\"": "", "'": "", "‵": "", "(": "", ")": "", "1": "１", "2": "２", "3": "３"}
+        replacements = {" ": "", "!": "！", "(": "", ";": " ", "@": " ", "1": "１", "2": "２", "3": "３"}
     elif translate_from == "korean":
         replacements = {"3": "3"}
     elif translate_from == "japanese":
-        pass
+        replacements = {}
     elif translate_from == "russian":
         replacements = {" ": "", "<": "", ">": "", "{": "", "}": ""}
     else:
-        replacements[" "] = ""
+        replacements = {" ": ""}
     for i in replacements:
-        if i in string:
-            print("Character correction! ->", i)
-            string = string.replace(i, replacements[i])
+        string = string.replace(i, replacements[i])
     return string
 
 
