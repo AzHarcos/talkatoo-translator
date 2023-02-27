@@ -86,6 +86,15 @@
     state.setShowSettings(!state.showSettings);
   }
 
+  function resetRun() {
+    globalProperties.$eel
+      .reset_run()()
+      .then(() => {
+        state.resetRun();
+      })
+      .catch(() => state.showError('Error resetting the run.'));
+  }
+
   getSettingsFromFile();
   getMoonsByKingdom();
   setInterval(updateData, 1000);
@@ -103,6 +112,7 @@
           {{ kingdom.name }}
         </v-tab>
       </v-tabs>
+      <v-icon @click="resetRun" icon="mdi-sync" size="30" class="ml-4 clickable"></v-icon>
       <v-icon
         @click="toggleShowSettings"
         :icon="state.showSettings ? 'mdi-home' : 'mdi-cog'"

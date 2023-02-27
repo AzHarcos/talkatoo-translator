@@ -154,6 +154,15 @@ def reset_borders():
     Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
     return IMG_PATH
 
+# Allow the gui to reset the run, in this case clearing the mentioned and collected moons
+@eel.expose
+def reset_run():
+    global mentioned_moons, collected_moons
+    mentioned_moons = []
+    collected_moons = []
+    if VERBOSE:
+        print("[STATUS] -> resetted moon lists")
+
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(settings_string):
@@ -274,7 +283,7 @@ def normal_moons_to_check():
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
         to_check.extend(moons_by_kingdom["Cloud"])
         to_check.extend(moons_by_kingdom["Ruined"])
-        to_check.extend(moons_by_kingdom["Dark Side"][1:])  # Exclude multi moon
+        to_check.extend(moons_by_kingdom["Dark"][1:])  # Exclude multi moon
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
     return to_check

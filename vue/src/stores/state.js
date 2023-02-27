@@ -55,6 +55,12 @@ export const useState = defineStore('state', {
     updateKingdoms() {
       this.displayedKingdoms = getDisplayKingdoms();
     },
+    resetRun() {
+      this.mentionedMoons = [];
+      this.collectedMoons = [];
+      this.selectedKingdom = this.displayedKingdoms[0];
+      this.showSuccess('Resetted the run.');
+    },
     showSuccess(text) {
       this.snackbar.text = text;
       this.snackbar.color = 'black';
