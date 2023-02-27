@@ -29,9 +29,11 @@
   function isMoonMentioned(moon) {
     if (moon.is_story) return !settings.isHardcore;
 
-    return state.mentionedMoons.some((possibleMoons) =>
-      possibleMoons.some((m) => areMoonsEqual(moon, m))
-    );
+    return state.mentionedMoons.some((possibleMoons) => {
+      const correctMoonOptional = possibleMoons.find((moon) => moon.correct);
+
+      return correctMoonOptional && areMoonsEqual(moon, correctMoonOptional);
+    });
   }
 </script>
 
