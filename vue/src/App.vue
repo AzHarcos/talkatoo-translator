@@ -9,6 +9,7 @@
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonCollected, scrollToTop } from '@/composables';
+  import { areMoonsEqual } from './composables';
 
   const state = useState();
   const settings = useSettings();
@@ -33,10 +34,19 @@
     });
   }
 
+  function filterMostRecentMention(possibleMoons) {
+    const mostRecentMention = state.mentionedMoons[state.mentionedMoons.length - 1];
+    return (
+      possibleMoons.length !== mostRecentMention?.length ||
+      possibleMoons.some((moon, index) => !areMoonsEqual(moon, mostRecentMention[index]))
+    );
+  }
+
   function updateData() {
     globalProperties.$eel.get_mentioned_moons()((response) => {
-      if (response && response.length > 0) {
-        response.forEach((possibleMoons) => {
+      const newlyMentionedMoons = response.filter(filterMostRecentMention);
+      if (newlyMentionedMoons.length > 0) {
+        newlyMentionedMoons.forEach((possibleMoons) => {
           const moonsWithIndex = possibleMoons.map((moon) => ({
             ...moon,
             index: state.mentionedMoons.length,
@@ -45,7 +55,7 @@
           state.addMentionedMoons(moonsWithIndex);
         });
 
-        const latestMoon = response[response.length - 1][0];
+        const latestMoon = newlyMentionedMoons[newlyMentionedMoons.length - 1][0];
         selectKingdom(latestMoon.kingdom);
         state.setShowSettings(false);
 
