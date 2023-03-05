@@ -144,15 +144,9 @@ def get_video_devices():
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
 def reset_borders():
-    global borders
-    grabbed, next_frame = stream.read()
-    if not grabbed:
-        print("[STATUS] -> Could not reset image borders")
+    new_borders, img_arr = reset_capture_borders()
+    if not new_borders:
         return None
-    img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
-    borders = determine_borders(img_arr)
-    if VERBOSE:
-        print("[STATUS] -> Reset image borders")
     # Save image so it can be displayed in the GUI
     Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
     return IMG_PATH
@@ -342,7 +336,7 @@ def set_video_index(new_index):
     if video_index != new_index:
         stream.release()
         stream.open(new_index)
-        reset_success = reset_borders()
+        reset_success = reset_capture_borders()[0]
         if reset_success:
             video_index = new_index
             if VERBOSE:
@@ -364,6 +358,20 @@ def update_kingdom(img_arr):
     if result != 13 and probs[0][result] > KINGDOM_CERTAINTY:  # 13 is "Other" in my model
         return kingdom_list[result]
     return None  # Was not able to determine kingdom
+
+
+# Reset capture card borders
+def reset_capture_borders():
+    global borders
+    grabbed, next_frame = stream.read()
+    if not grabbed:
+        print("[STATUS] -> Could not reset image borders")
+        return None, None
+    img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
+    borders = determine_borders(img_arr)
+    if VERBOSE:
+        print("[STATUS] -> Reset image borders")
+    return borders, img_arr
 
  
 ########################################################################################################################
@@ -403,8 +411,7 @@ score_func = score_logogram if translate_from in ["chinese_traditional", "chines
 
 # Set up capture card
 stream = cv2.VideoCapture(video_index)  # Set up capture card
-borders = None
-reset_borders()  # Find borders to crop every iteration
+borders = reset_capture_borders()[0]  # Find borders to crop every iteration
 
 # Final setup variables
 change_kingdom = ""  # Confirmation variable for kingdom changes
