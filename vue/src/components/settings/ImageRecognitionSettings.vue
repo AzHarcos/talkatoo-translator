@@ -30,12 +30,15 @@
 
       if (!settings.videoDevice) {
         selectedDevice.value = response[0];
+        setVideoDevice(response[0], true);
         return;
       }
 
       const currentDevice = response.find(
         (device) => device.device_name === settings.videoDevice.device_name
       );
+
+      if (!currentDevice) return;
 
       if (currentDevice.index === settings.videoDevice.index) {
         selectedDevice.value = currentDevice;
@@ -50,10 +53,12 @@
     })
     .catch(() => state.showError('Error getting video devices.'));
 
-  function setVideoDevice(device) {
-    showImage.value = true;
-    setTimeout(scrollToBottom, 100);
-    debugImageUrl.value = '';
+  function setVideoDevice(device, keepImageHidden) {
+    if (!keepImageHidden) {
+      showImage.value = true;
+      setTimeout(scrollToBottom, 100);
+      debugImageUrl.value = '';
+    }
 
     globalProperties.$eel
       .write_settings_to_file(

@@ -85,7 +85,7 @@
         .write_settings_to_file(
           JSON.stringify({
             ...settings.$state,
-            isHardcore: value,
+            woodedFirst: value,
           })
         )()
         .then(() => {
@@ -107,7 +107,7 @@
         .write_settings_to_file(
           JSON.stringify({
             ...settings.$state,
-            isHardcore: value,
+            seasideFirst: value,
           })
         )()
         .then(() => {

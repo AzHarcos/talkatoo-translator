@@ -164,7 +164,7 @@ def reset_run():
 @eel.expose
 def write_settings_to_file(settings_string):
     global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms
-    with open(SETTINGS_PATH, "w") as settings_file:
+    with open(SETTINGS_PATH, "w+") as settings_file:
         settings_file.write(settings_string)
     if VERBOSE:
         print("[STATUS] -> Saved settings to file!")
@@ -336,7 +336,7 @@ def set_video_index(new_index):
     if video_index != new_index:
         stream.release()
         stream.open(new_index)
-        reset_success = reset_capture_borders()[0]
+        reset_success = reset_borders()
         if reset_success:
             video_index = new_index
             if VERBOSE:
