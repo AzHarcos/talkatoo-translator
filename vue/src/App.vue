@@ -27,10 +27,13 @@
 
   function getSettingsFromFile() {
     globalProperties.$eel.get_settings()((settingsFromFile) => {
+      if (!settingsFromFile) {
+        state.setShowSettings(true);
+        return;
+      }
       settings.setSettings(settingsFromFile);
       state.updateKingdoms();
       state.setSelectedKingdom(state.displayedKingdoms[0]);
-      state.setShowSettings(true);
     });
   }
 

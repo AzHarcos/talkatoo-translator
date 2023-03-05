@@ -139,9 +139,12 @@ def is_text_naive(img_arr, text_height, text_lower, text_upper, verbose):
 
 
 def read_file_to_json(path):
-    with open(path, encoding="utf8") as moon_file:
-        json_str = "".join([line.strip() for line in moon_file.readlines()])
-    return json.loads(json_str)
+    try:
+        with open(path, encoding="utf8") as moon_file:
+            json_str = "".join([line.strip() for line in moon_file.readlines()])
+        return json.loads(json_str)
+    except FileNotFoundError:
+        return None
 
 
 # Replacement Levenshtein distance cost function, designed for alphabet-based languages
