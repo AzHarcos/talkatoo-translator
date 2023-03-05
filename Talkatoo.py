@@ -433,6 +433,8 @@ while True:
 
     # Retrieve and resize image
     grabbed, frame = stream.read()
+    if not grabbed:
+        continue
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     # Resizing image needed for distortion correction. NEAREST is ~8x faster than default but riskier so still testing
     image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
