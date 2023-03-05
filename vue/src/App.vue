@@ -1,9 +1,10 @@
 <script setup>
+  import TalkatooMoons from '@/components/talkatoo-moons/TalkatooMoons.vue';
   import MoonList from '@/components/moon-list/MoonList.vue';
   import Settings from '@/components/settings/Settings.vue';
 
   import useCurrentInstance from '@/hooks/useCurrentInstance';
-  import availableKingdoms from '@/consts/availableKingdoms';
+  import { useDisplay } from 'vuetify';
 
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
@@ -11,6 +12,7 @@
 
   const state = useState();
   const settings = useSettings();
+  const { lgAndUp } = useDisplay();
   const { globalProperties } = useCurrentInstance();
 
   function getMoonsByKingdom() {
@@ -33,10 +35,8 @@
 
   function updateData() {
     globalProperties.$eel.get_mentioned_moons()((response) => {
-      if (response.length > state.mentionedMoons.length) {
-        const newlyMentionedMoons = response.slice(state.mentionedMoons.length - response.length);
-
-        newlyMentionedMoons.forEach((possibleMoons) => {
+      if (response && response.length > 0) {
+        response.forEach((possibleMoons) => {
           const moonsWithIndex = possibleMoons.map((moon) => ({
             ...moon,
             index: state.mentionedMoons.length,
@@ -124,7 +124,15 @@
         fluid
         class="image-container pa-8"
         :style="{ backgroundImage: `url(${state.selectedKingdom.image})` }">
-        <div class="main-content"><Settings v-if="state.showSettings" /> <MoonList v-else /></div>
+        <Settings v-if="state.showSettings" class="main-content scrollable mx-auto" />
+        <div v-else-if="lgAndUp" class="d-flex align-start">
+          <TalkatooMoons class="main-content scrollable mx-auto" />
+          <MoonList class="scrollable ml-8 main-content-height" />
+        </div>
+        <div v-else class="main-content-column">
+          <TalkatooMoons class="scrollable min-height" />
+          <MoonList class="scrollable mt-8 min-height" />
+        </div>
       </v-container>
     </v-main>
     <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="2000">

@@ -1,7 +1,7 @@
 <script setup>
   import { computed } from 'vue';
   import { useState } from '@/stores/state';
-  import { moonToString } from '@/composables';
+  import { correctMoonOptional, moonToString } from '@/composables';
 
   const props = defineProps({
     possibleMoons: Array,
@@ -9,8 +9,8 @@
 
   const state = useState();
 
-  const correctMoonOptional = computed(() => {
-    return props.possibleMoons.find((moon) => moon.correct);
+  const correctMoon = computed(() => {
+    return correctMoonOptional(props.possibleMoons);
   });
 </script>
 
@@ -22,13 +22,13 @@
       v-html="moonToString(possibleMoons[0])"></span>
   </div>
   <template v-else>
-    <div v-if="correctMoonOptional" class="list-item-content">
+    <div v-if="correctMoon" class="list-item-content">
       <span
-        @click="() => state.setMoonCollected(correctMoonOptional)"
+        @click="() => state.setMoonCollected(correctMoon)"
         class="clickable"
-        v-html="moonToString(correctMoonOptional)"></span>
+        v-html="moonToString(correctMoon)"></span>
       <v-icon
-        @click="() => state.undoCorrectOption(correctMoonOptional, correctMoonOptional.index)"
+        @click="() => state.undoCorrectOption(correctMoon, correctMoon.index)"
         icon="mdi-restore"
         size="24"
         class="ml-4"></v-icon>

@@ -43,6 +43,10 @@ export function isMoonCollected(moon) {
   return state.collectedMoons.some((m) => areMoonsEqual(moon, m));
 }
 
+export function correctMoonOptional(possibleMoons) {
+  return possibleMoons.length === 1 ? possibleMoons[0] : possibleMoons.find((moon) => moon.correct);
+}
+
 export function areMoonsEqual(first, other) {
   return first && other && first.id === other.id && first.kingdom === other.kingdom;
 }
@@ -52,10 +56,11 @@ export function areMoonsPending(possibleMoons) {
 
   const hasCorrectKingdom = possibleMoons[0].kingdom === state.selectedKingdom.name;
   const hasUncollectedOptions = possibleMoons.some((moon) => !isMoonCollected(moon));
-  const correctMoon = possibleMoons.find((moon) => moon.correct);
+  const correctMoon = correctMoonOptional(possibleMoons);
 
   const hasNotBeenCollected = !state.collectedMoons.some(
-    (moon) => moon.index === possibleMoons[0].index || areMoonsEqual(moon, correctMoon)
+    (moon) =>
+      (moon.index && moon.index === possibleMoons[0].index) || areMoonsEqual(moon, correctMoon)
   );
 
   return hasCorrectKingdom && hasUncollectedOptions && hasNotBeenCollected;

@@ -98,7 +98,7 @@ MAX_MAINGAME = {"Cap": 0, "Cascade": 25, "Sand": 69, "Lake": 33, "Wooded": 54, "
 ########################################################################################################################
 # Functions that can be called by the JS GUI via eel
 ########################################################################################################################
-# Expose the auto-recognized collected moons and clear the list (collected moons only need to be updated once)
+# Expose the auto-recognized collected moons to the gui and clear the list when read
 @eel.expose
 def get_collected_moons():
     global collected_moons
@@ -106,10 +106,13 @@ def get_collected_moons():
     collected_moons = []
     return newly_collected_moons
 
-# Expose the moons given by talkatoo to the gui
+# Expose the moons given by talkatoo to the gui and clear the list when read
 @eel.expose
 def get_mentioned_moons():
-    return mentioned_moons
+    global mentioned_moons
+    newly_mentioned_moons = mentioned_moons
+    mentioned_moons = []
+    return newly_mentioned_moons
 
 # Expose the kingdom moons dictionary to the gui
 @eel.expose
