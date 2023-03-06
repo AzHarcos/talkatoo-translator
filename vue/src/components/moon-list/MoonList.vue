@@ -1,11 +1,14 @@
 <script setup>
   import { computed } from 'vue';
+  import { useDisplay } from 'vuetify';
+
   import { useSettings } from '@/stores/settings';
   import { useState } from '@/stores/state';
-  import { areMoonsEqual, correctMoonOptional } from '../../composables';
+  import { areMoonsEqual, correctMoonOptional, scrollToTop } from '../../composables';
 
   const state = useState();
   const settings = useSettings();
+  const { lgAndUp } = useDisplay();
 
   const moonList = computed(() => {
     return state.moonsByKingdom[state.selectedKingdom.name];
@@ -32,17 +35,16 @@
       state.addCollectedMoon(moon);
     } else {
       state.addMentionedMoon([moon]);
+      setTimeout(scrollToTop, 50);
     }
   }
 </script>
 
 <template>
-  <v-card flat class="moon-list">
-    <v-card-text>
-      <div class="text-center text-h5 mb-4 text-decoration-underline">
-        {{ state.selectedKingdom.name }} Moons
-      </div>
-      <ol class="ml-7">
+  <v-card flat :class="{ 'moon-list-width': lgAndUp }">
+    <v-card-text class="list-container">
+      <div class="text-center text-h5 mb-4 text-decoration-underline">Moon List</div>
+      <ol :class="{ 'ml-4': !lgAndUp }">
         <li v-for="moon in moonList" @click="() => addMoonToMentioned(moon)" class="clickable">
           <span class="ml-1">
             {{ moon[settings.outputLanguage] }} - {{ moon[settings.inputLanguage] }}
@@ -54,7 +56,7 @@
 </template>
 
 <style scoped>
-  .moon-list {
+  .moon-list-width {
     min-width: 550px;
   }
 </style>

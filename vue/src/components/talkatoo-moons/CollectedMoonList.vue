@@ -30,7 +30,7 @@
   });
 
   const requiredMoonCount = computed(() => {
-    if (settings.includePostGame) {
+    if (settings.includePostGame && state.moonsByKingdom[state.selectedKingdom.name]) {
       return getMoonCount(state.moonsByKingdom[state.selectedKingdom.name]);
     }
 

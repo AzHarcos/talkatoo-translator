@@ -67,7 +67,7 @@
     selectKingdom(possibleMoons[0].kingdom);
     state.setShowSettings(false);
 
-    setTimeout(scrollToTop, 10);
+    setTimeout(scrollToTop, 50);
   }
 
   function eelAddCollectedMoon(possibleMoons) {
@@ -133,14 +133,16 @@
         fluid
         class="image-container pa-8"
         :style="{ backgroundImage: `url(${state.selectedKingdom.image})` }">
-        <Settings v-if="state.showSettings" class="main-content scrollable mx-auto" />
+        <Settings
+          v-if="state.showSettings"
+          class="main-content scrollable scroll-container mx-auto" />
         <div v-else-if="lgAndUp" class="d-flex align-start">
-          <TalkatooMoons class="main-content scrollable mx-auto" />
+          <TalkatooMoons class="main-content scrollable scroll-container mx-auto" />
           <MoonList class="scrollable ml-8 main-content-height" />
         </div>
         <div v-else class="main-content-column">
-          <TalkatooMoons class="scrollable min-height" />
-          <MoonList class="scrollable mt-8 min-height" />
+          <TalkatooMoons class="scrollable scroll-container flex-grow min-height" />
+          <MoonList class="scrollable mt-8 flex-shrink min-height" />
         </div>
       </v-container>
     </v-main>

@@ -81,15 +81,15 @@ export function padStart(str) {
 }
 
 export function scrollToTop() {
-  const mainContent = document.querySelector('.main-content');
-  if (mainContent) {
-    mainContent.scrollTop = 0;
+  const scrollContainer = document.querySelector('.scroll-container');
+  if (scrollContainer) {
+    scrollContainer.scrollTop = 0;
   }
 }
 
 export function scrollToBottom() {
-  const mainContent = document.querySelector('.main-content');
-  if (mainContent) {
-    mainContent.scrollTop = mainContent.scrollHeight;
+  const scrollContainer = document.querySelector('.scroll-container');
+  if (scrollContainer) {
+    scrollContainer.scrollTop = scrollContainer.scrollHeight;
   }
 }

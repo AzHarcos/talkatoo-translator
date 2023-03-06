@@ -18,8 +18,18 @@ html {
 .main-content-column {
   display: flex;
   flex-direction: column;
-  max-height: calc((100vh - 112px));
-  overflow: hidden;
+  height: calc((100vh - 112px));
+}
+
+.flex-grow {
+  flex: 1 0 auto;
+  max-height: calc(100% - 232px);
+  min-height: 200px;
+}
+
+.flex-shrink {
+  flex: 0 1 auto;
+  min-height: 200px;
 }
 
 .min-height {
