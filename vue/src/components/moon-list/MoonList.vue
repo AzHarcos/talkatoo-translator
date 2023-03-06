@@ -28,7 +28,7 @@
       return;
     }
 
-    state.addMentionedMoons([moon]);
+    state.addMentionedMoon([moon]);
   }
 </script>
 

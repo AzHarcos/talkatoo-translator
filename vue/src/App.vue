@@ -38,54 +38,55 @@
     });
   }
 
-  function filterMostRecentMention(possibleMoons) {
-    const mostRecentMention = state.mentionedMoons[state.mentionedMoons.length - 1];
-    return (
-      possibleMoons.length !== mostRecentMention?.length ||
-      possibleMoons.some((moon, index) => !areMoonsEqual(moon, mostRecentMention[index]))
-    );
+  function resetRun() {
+    globalProperties.$eel
+      .reset_run()()
+      .then(() => {
+        state.resetRun();
+      })
+      .catch(() => state.showError('Error resetting the run.'));
   }
 
-  function updateData() {
-    globalProperties.$eel.get_mentioned_moons()((response) => {
-      const newlyMentionedMoons = response.filter(filterMostRecentMention);
-      if (newlyMentionedMoons.length > 0) {
-        newlyMentionedMoons.forEach((possibleMoons) => {
-          const moonsWithIndex = possibleMoons.map((moon) => ({
-            ...moon,
-            index: state.mentionedMoons.length,
-            correct: possibleMoons.length === 0,
-          }));
-          state.addMentionedMoons(moonsWithIndex);
-        });
+  function eelAddMentionedMoon(possibleMoons) {
+    if (!possibleMoons || possibleMoons.length === 0) return;
 
-        const latestMoon = newlyMentionedMoons[newlyMentionedMoons.length - 1][0];
-        selectKingdom(latestMoon.kingdom);
-        state.setShowSettings(false);
+    const mostRecentMention = state.mentionedMoons[state.mentionedMoons.length - 1];
+    const isEqualToMostRecent =
+      possibleMoons.length === mostRecentMention?.length &&
+      possibleMoons.every((moon, index) => areMoonsEqual(moon, mostRecentMention[index]));
 
-        setTimeout(scrollToTop, 10);
-      }
-    });
-    globalProperties.$eel.get_collected_moons()((response) => {
-      const definiteCollectedMoons = response
-        .filter((possibleMoons) => possibleMoons.length === 1)
-        .map((possibleMoons) => possibleMoons[0]);
-      const newlyCollectedMoons = definiteCollectedMoons.filter((moon) => !isMoonCollected(moon));
+    if (isEqualToMostRecent) return;
 
-      if (newlyCollectedMoons.length === 0) return;
+    const possibleMoonsWithIndex = possibleMoons.map((moon) => ({
+      ...moon,
+      index: state.mentionedMoons.length,
+      correct: possibleMoons.length === 1,
+    }));
 
-      const latestMoon = newlyCollectedMoons[newlyCollectedMoons.length - 1];
-      selectKingdom(latestMoon.kingdom);
-      state.setShowSettings(false);
+    state.addMentionedMoon(possibleMoonsWithIndex);
+    selectKingdom(possibleMoons[0].kingdom);
+    state.setShowSettings(false);
 
-      state.addCollectedMoons(newlyCollectedMoons);
-    });
-    globalProperties.$eel.get_current_kingdom()((response) => {
-      if (response === state.currentKingdomName) return;
+    setTimeout(scrollToTop, 10);
+  }
 
-      state.setCurrentKingdomName(response);
-      selectKingdom(response);
-    });
+  function eelAddCollectedMoon(possibleMoons) {
+    if (!possibleMoons || possibleMoons.length !== 1) return;
+
+    const collectedMoon = possibleMoons[0];
+
+    if (isMoonCollected(collectedMoon)) return;
+
+    state.addCollectedMoon(collectedMoon);
+    selectKingdom(collectedMoon.kingdom);
+    state.setShowSettings(false);
+  }
+
+  function eelSetCurrentKingdom(currentKingdom) {
+    if (!currentKingdom || currentKingdom === state.currentKingdomName) return;
+
+    state.setCurrentKingdomName(currentKingdom);
+    selectKingdom(currentKingdom);
   }
 
   function selectKingdom(kingdomName) {
@@ -100,18 +101,12 @@
     state.setShowSettings(!state.showSettings);
   }
 
-  function resetRun() {
-    globalProperties.$eel
-      .reset_run()()
-      .then(() => {
-        state.resetRun();
-      })
-      .catch(() => state.showError('Error resetting the run.'));
-  }
+  globalProperties.$eel.expose(eelAddMentionedMoon, 'add_mentioned_moon');
+  globalProperties.$eel.expose(eelAddCollectedMoon, 'add_collected_moon');
+  globalProperties.$eel.expose(eelSetCurrentKingdom, 'set_current_kingdom');
 
   getSettingsFromFile();
   getMoonsByKingdom();
-  setInterval(updateData, 1000);
 </script>
 
 <template>

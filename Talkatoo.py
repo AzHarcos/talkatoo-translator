@@ -98,31 +98,11 @@ MAX_MAINGAME = {"Cap": 0, "Cascade": 25, "Sand": 69, "Lake": 33, "Wooded": 54, "
 ########################################################################################################################
 # Functions that can be called by the JS GUI via eel
 ########################################################################################################################
-# Expose the auto-recognized collected moons to the gui and clear the list when read
-@eel.expose
-def get_collected_moons():
-    global collected_moons
-    newly_collected_moons = collected_moons
-    collected_moons = []
-    return newly_collected_moons
-
-# Expose the moons given by talkatoo to the gui and clear the list when read
-@eel.expose
-def get_mentioned_moons():
-    global mentioned_moons
-    newly_mentioned_moons = mentioned_moons
-    mentioned_moons = []
-    return newly_mentioned_moons
 
 # Expose the kingdom moons dictionary to the gui
 @eel.expose
 def get_moons_by_kingdom():
     return moons_by_kingdom
-
-# Expose the current kingdom to the gui
-@eel.expose
-def get_current_kingdom():
-    return current_kingdom
 
 # Allow the gui to see settings to read from the file
 @eel.expose
@@ -454,6 +434,7 @@ while True:
         if new_kingdom and new_kingdom != current_kingdom:  # strong match for new
             if change_kingdom == new_kingdom:  # make sure we get two in a row of the same kingdom
                 current_kingdom = new_kingdom
+                eel.set_current_kingdom(current_kingdom)
                 change_kingdom = ""
                 if VERBOSE:
                     print("Kingdom changed to: ", new_kingdom)
@@ -471,6 +452,7 @@ while True:
             if moon_matches:
                 if not collected_moons or moon_matches != collected_moons[-1]:
                     collected_moons.append(moon_matches)
+                    eel.add_collected_moon(moon_matches)
                     check_moon_at = new_time + 6  # 5s tends to be too short so wait 6s
                     continue
         check_moon_at = new_time + MOON_TIMER  # Reset timer
@@ -487,6 +469,7 @@ while True:
                 story_text = image_to_bw(story_text, white=240)
                 moon_matches = match_moon_text(story_text, prepend="Collected", story=True)
                 collected_moons.append(moon_matches)
+                eel.add_collected_moon(moon_matches)
                 check_story_at = new_time + 10
                 continue
 
@@ -498,6 +481,7 @@ while True:
                 multi_text = image_to_bw(multi_text, white=240)
                 moon_matches = match_moon_text(multi_text, prepend="Collected", multi=True)
                 collected_moons.append(moon_matches)
+                eel.add_collected_moon(moon_matches)
                 check_story_at = new_time + 10
                 continue
 
@@ -514,5 +498,6 @@ while True:
                 if moon_matches:  # Found at least one match
                     if not mentioned_moons or moon_matches != mentioned_moons[-1]:  # Allow nonconsecutive duplicates
                         mentioned_moons.append(moon_matches)
+                        eel.add_mentioned_moon(moon_matches)
     else:
         text_potential = 0

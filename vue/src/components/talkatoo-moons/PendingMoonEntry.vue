@@ -17,14 +17,14 @@
 <template>
   <div v-if="possibleMoons.length === 1">
     <span
-      @click="() => state.setMoonCollected(possibleMoons[0])"
+      @click="() => state.addCollectedMoon(possibleMoons[0])"
       class="clickable"
       v-html="moonToString(possibleMoons[0])"></span>
   </div>
   <template v-else>
     <div v-if="correctMoon" class="list-item-content">
       <span
-        @click="() => state.setMoonCollected(correctMoon)"
+        @click="() => state.addCollectedMoon(correctMoon)"
         class="clickable"
         v-html="moonToString(correctMoon)"></span>
       <v-icon

@@ -27,7 +27,7 @@ export const useState = defineStore('state', {
     setMoonsByKingdom(moonsByKingdom) {
       this.moonsByKingdom = moonsByKingdom;
     },
-    addMentionedMoons(possibleMoons) {
+    addMentionedMoon(possibleMoons) {
       this.mentionedMoons.push(possibleMoons);
     },
     markCorrectOption(index, optionIndex) {
@@ -37,10 +37,7 @@ export const useState = defineStore('state', {
       this.setMoonUncollected(moon);
       this.mentionedMoons[index] = this.mentionedMoons[index].map(({ correct, ...val }) => val);
     },
-    addCollectedMoons(moons) {
-      this.collectedMoons.push(...moons);
-    },
-    setMoonCollected(moon) {
+    addCollectedMoon(moon) {
       this.collectedMoons.push(moon);
     },
     setMoonUncollected(moon) {
