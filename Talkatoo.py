@@ -11,7 +11,7 @@ This Python script takes the broad approach:
 import cv2  # pip install opencv-python
 import easyocr  # pip install easyocr
 import eel  # pip install eel
-import json
+from json import dumps
 from PIL import Image, ImageGrab  # pip install pillow
 from pygrabber.dshow_graph import FilterGraph  # pip install pygrabber
 import time
@@ -142,18 +142,23 @@ def reset_run():
 
 # Allow the gui to save the current settings to a file
 @eel.expose
-def write_settings_to_file(settings_string):
+def write_settings_to_file(updated_settings):
     global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms
+
+    success = set_video_index(updated_settings["videoDevice"]["index"])
+    if not success:
+        return False
+
+    is_postgame = updated_settings["includePostGame"]
+    include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
+    set_translate_from(updated_settings["inputLanguage"])
+    set_translate_to(updated_settings["outputLanguage"])
+
     with open(SETTINGS_PATH, "w+") as settings_file:
-        settings_file.write(settings_string)
+        settings_file.write(dumps(updated_settings))
     if VERBOSE:
         print("[STATUS] -> Saved settings to file!")
-    settings = json.loads(settings_string)
-    is_postgame = settings["includePostGame"]
-    include_extra_kingdoms = settings["includeWithoutTalkatoo"]
-    set_translate_from(settings["inputLanguage"])
-    set_translate_to(settings["outputLanguage"])
-    set_video_index(settings["videoDevice"]["index"])
+    return True
 
 
 ########################################################################################################################
@@ -313,20 +318,24 @@ def set_translate_to(t_to):
 # reset video source
 def set_video_index(new_index):
     global video_index, stream
-    if video_index != new_index:
+
+    if video_index == new_index:
+        return True
+
+    stream.release()
+    stream.open(new_index)
+    reset_success = reset_borders()
+    if reset_success:
+        video_index = new_index
+        if VERBOSE:
+            print("[STATUS] -> video_index set to {}".format(video_index))
+        return True
+    else:
+        if VERBOSE:
+            print("[STATUS] -> video_index could not be set to {}".format(new_index))
         stream.release()
-        stream.open(new_index)
-        reset_success = reset_borders()
-        if reset_success:
-            video_index = new_index
-            if VERBOSE:
-                print("[STATUS] -> video_index set to {}".format(video_index))
-        else:
-            if VERBOSE:
-                print("[STATUS] -> video_index could not be set to {}".format(new_index))
-            stream.release()
-            stream.open(video_index)
-            return None
+        stream.open(video_index)
+        return False
 
 
 # Check kingdom via recognition and update it if needed

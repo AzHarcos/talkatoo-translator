@@ -16,12 +16,10 @@
     },
     set(value) {
       globalProperties.$eel
-        .write_settings_to_file(
-          JSON.stringify({
-            ...settings.$state,
-            includePostGame: value,
-          })
-        )()
+        .write_settings_to_file({
+          ...settings.$state,
+          includePostGame: value,
+        })()
         .then(() => {
           settings.setIncludePostGame(value);
           state.updateKingdoms();
@@ -38,12 +36,10 @@
     },
     set(value) {
       globalProperties.$eel
-        .write_settings_to_file(
-          JSON.stringify({
-            ...settings.$state,
-            includeWithoutTalkatoo: value,
-          })
-        )()
+        .write_settings_to_file({
+          ...settings.$state,
+          includeWithoutTalkatoo: value,
+        })()
         .then(() => {
           settings.setIncludeWithoutTalkatoo(value);
           state.updateKingdoms();
@@ -60,12 +56,10 @@
     },
     set(value) {
       globalProperties.$eel
-        .write_settings_to_file(
-          JSON.stringify({
-            ...settings.$state,
-            isHardcore: value,
-          })
-        )()
+        .write_settings_to_file({
+          ...settings.$state,
+          isHardcore: value,
+        })()
         .then(() => {
           settings.setIsHardcore(value);
           state.updateKingdoms();
@@ -82,12 +76,10 @@
     },
     set(value) {
       globalProperties.$eel
-        .write_settings_to_file(
-          JSON.stringify({
-            ...settings.$state,
-            woodedFirst: value,
-          })
-        )()
+        .write_settings_to_file({
+          ...settings.$state,
+          woodedFirst: value,
+        })()
         .then(() => {
           settings.setWoodedFirst(value);
           state.updateKingdoms();
@@ -104,12 +96,10 @@
     },
     set(value) {
       globalProperties.$eel
-        .write_settings_to_file(
-          JSON.stringify({
-            ...settings.$state,
-            seasideFirst: value,
-          })
-        )()
+        .write_settings_to_file({
+          ...settings.$state,
+          seasideFirst: value,
+        })()
         .then(() => {
           settings.setSeasideFirst(value);
           state.updateKingdoms();

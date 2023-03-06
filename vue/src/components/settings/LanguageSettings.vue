@@ -16,12 +16,10 @@
   function setInputLanguage(language) {
     inputLanguageLoading.value = true;
     globalProperties.$eel
-      .write_settings_to_file(
-        JSON.stringify({
-          ...settings.$state,
-          inputLanguage: language,
-        })
-      )()
+      .write_settings_to_file({
+        ...settings.$state,
+        inputLanguage: language,
+      })()
       .then(() => {
         settings.setInputLanguage(language);
         state.showSuccess('Updated input language.');
@@ -37,12 +35,10 @@
   function setOutputLanguage(language) {
     outputLanguageLoading.value = true;
     globalProperties.$eel
-      .write_settings_to_file(
-        JSON.stringify({
-          ...settings.$state,
-          outputLanguage: language,
-        })
-      )()
+      .write_settings_to_file({
+        ...settings.$state,
+        outputLanguage: language,
+      })()
       .then(() => {
         settings.setOutputLanguage(language);
         state.showSuccess('Updated output language.');
