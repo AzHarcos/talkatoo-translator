@@ -27,6 +27,8 @@
   });
 
   function isMoonMentioned(moon) {
+    if (!state.selectedKingdom.hasTalkatoo) return true;
+
     if (moon.is_story) return !settings.isHardcore;
 
     return state.mentionedMoons.some((possibleMoons) => {

@@ -28,7 +28,11 @@
       return;
     }
 
-    state.addMentionedMoon([moon]);
+    if (moon.is_story || !state.selectedKingdom.hasTalkatoo) {
+      state.addCollectedMoon(moon);
+    } else {
+      state.addMentionedMoon([moon]);
+    }
   }
 </script>
 
@@ -51,6 +55,6 @@
 
 <style scoped>
   .moon-list {
-    min-width: 510px;
+    min-width: 550px;
   }
 </style>

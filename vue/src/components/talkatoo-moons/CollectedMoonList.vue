@@ -15,18 +15,24 @@
   const state = useState();
   const settings = useSettings();
 
-  const collectedMoonCount = computed(() => {
-    return props.moons.reduce((sum, moon) => {
-      if (!moon.isMentioned) return sum;
+  function getMoonCount(moons) {
+    return moons.reduce((sum, moon) => {
+      if (moon.isMentioned === false) return sum;
 
       if (moon.is_multi) return sum + 3;
 
       return sum + 1;
     }, 0);
+  }
+
+  const collectedMoonCount = computed(() => {
+    return getMoonCount(props.moons);
   });
 
   const requiredMoonCount = computed(() => {
-    if (settings.includePostGame) return state.moonsByKingdom[state.selectedKingdom.name].length;
+    if (settings.includePostGame) {
+      return getMoonCount(state.moonsByKingdom[state.selectedKingdom.name]);
+    }
 
     return state.selectedKingdom.requiredMoonCount;
   });
