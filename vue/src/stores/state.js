@@ -9,6 +9,7 @@ export const useState = defineStore('state', {
       showSettings: false,
       moonsByKingdom: [],
       mentionedMoons: [],
+      mentionedMoonCount: 0,
       collectedMoons: [],
       displayedKingdoms: [...availableKingdoms],
       currentKingdomName: undefined,
@@ -30,9 +31,10 @@ export const useState = defineStore('state', {
     addMentionedMoon(possibleMoons) {
       const possibleMoonsWithIndex = possibleMoons.map((moon) => ({
         ...moon,
-        index: this.mentionedMoons.length,
+        index: this.mentionedMoonCount,
       }));
       this.mentionedMoons.push(possibleMoonsWithIndex);
+      this.mentionedMoonCount++;
     },
     markCorrectOption(index, optionIndex) {
       this.mentionedMoons[index][optionIndex].correct = true;
