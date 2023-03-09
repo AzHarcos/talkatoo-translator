@@ -28,7 +28,11 @@ export const useState = defineStore('state', {
       this.moonsByKingdom = moonsByKingdom;
     },
     addMentionedMoon(possibleMoons) {
-      this.mentionedMoons.push(possibleMoons);
+      const possibleMoonsWithIndex = possibleMoons.map((moon) => ({
+        ...moon,
+        index: this.mentionedMoons.length,
+      }));
+      this.mentionedMoons.push(possibleMoonsWithIndex);
     },
     markCorrectOption(index, optionIndex) {
       this.mentionedMoons[index][optionIndex].correct = true;
@@ -42,6 +46,13 @@ export const useState = defineStore('state', {
     },
     setMoonUncollected(moon) {
       this.collectedMoons = this.collectedMoons.filter((m) => !areMoonsEqual(moon, m));
+    },
+    deleteMoon(moon) {
+      console.log(moon);
+      this.setMoonUncollected(moon);
+      this.mentionedMoons = this.mentionedMoons.filter(
+        (possibleMoons) => possibleMoons[0].index !== moon.index
+      );
     },
     setCurrentKingdomName(currentKingdomName) {
       this.currentKingdomName = currentKingdomName;

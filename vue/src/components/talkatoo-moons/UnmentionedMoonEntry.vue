@@ -2,6 +2,7 @@
   import { computed } from 'vue';
   import { useState } from '../../stores/state';
   import { moonToString } from '../../composables';
+  import MoonEntry from './MoonEntry.vue';
 
   const props = defineProps({
     moon: Object,
@@ -17,11 +18,16 @@
 </script>
 
 <template>
-  <div class="list-item-content">
-    <span v-html="moonToString(moon)"></span>
-    <span class="tooltip ml-4">
-      <v-icon icon="mdi-alert-circle-outline" size="24"></v-icon>
-      <span class="tooltip-text">{{ tooltipText }}</span>
-    </span>
-  </div>
+  <MoonEntry :moon="moon">
+    <div class="list-item-content">
+      <span v-html="moonToString(moon)"></span>
+    </div>
+    <template v-slot:tooltip>
+      <v-tooltip :text="tooltipText" location="bottom">
+        <template v-slot:activator="{ props }">
+          <v-icon v-bind="props" class="ml-auto" icon="mdi-alert-circle-outline" size="20"></v-icon>
+        </template>
+      </v-tooltip>
+    </template>
+  </MoonEntry>
 </template>

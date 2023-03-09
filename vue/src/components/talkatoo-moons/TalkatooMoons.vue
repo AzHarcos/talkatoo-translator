@@ -42,7 +42,7 @@
 <template>
   <v-card flat>
     <v-card-text>
-      <div class="list-container">
+      <div class="list-container talkatoo-moon-list">
         <div class="text-center text-h5 mb-2 text-decoration-underline">Talkatoo Moons</div>
         <PendingMoonList
           v-if="state.selectedKingdom.hasTalkatoo"

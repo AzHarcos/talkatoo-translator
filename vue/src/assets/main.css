@@ -62,6 +62,10 @@ li {
   margin: auto;
 }
 
+.talkatoo-moon-list {
+  min-width: calc(min(600px, 100%));
+}
+
 .list-wrapper {
   margin: 2em 0;
 }

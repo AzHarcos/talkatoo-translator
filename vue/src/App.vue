@@ -57,13 +57,7 @@
 
     if (isEqualToMostRecent) return;
 
-    const possibleMoonsWithIndex = possibleMoons.map((moon) => ({
-      ...moon,
-      index: state.mentionedMoons.length,
-      correct: possibleMoons.length === 1,
-    }));
-
-    state.addMentionedMoon(possibleMoonsWithIndex);
+    state.addMentionedMoon(possibleMoons);
     selectKingdom(possibleMoons[0].kingdom);
     state.setShowSettings(false);
 
