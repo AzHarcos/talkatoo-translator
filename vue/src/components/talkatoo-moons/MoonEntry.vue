@@ -16,7 +16,7 @@
   <v-hover>
     <template v-slot:default="{ isHovering, props }">
       <div class="d-flex">
-        <div v-bind="props" class="d-flex">
+        <div v-bind="props" class="d-flex flex-grow-1">
           <slot></slot>
           <v-icon
             v-if="isHovering"
