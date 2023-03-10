@@ -23,7 +23,7 @@
       v-html="moonToString(possibleMoons[0])"></span>
   </MoonEntry>
   <template v-else>
-    <MoonEntry v-if="correctMoon" :moon="correctMoon">
+    <template v-if="correctMoon">
       <div class="list-item-content">
         <span
           @click="() => state.addCollectedMoon(correctMoon)"
@@ -33,11 +33,13 @@
           @click="() => state.undoCorrectOption(correctMoon, correctMoon.index)"
           icon="mdi-restore"
           size="20"
-          class="ml-4"></v-icon>
+          class="clickable ml-4"></v-icon>
       </div>
-    </MoonEntry>
+    </template>
     <template v-else>
-      <div>{{ possibleMoons.length }} possible options:</div>
+      <MoonEntry :moon="possibleMoons[0]">
+        <div>{{ possibleMoons.length }} possible options:</div>
+      </MoonEntry>
       <ul>
         <li v-for="(moon, optionIndex) in possibleMoons" class="moon-option">
           <div class="list-item-content">
@@ -46,7 +48,7 @@
               @click="() => state.markCorrectOption(moon.index, optionIndex)"
               icon="mdi-check"
               size="20"
-              class="ml-4"></v-icon>
+              class="clickable ml-4"></v-icon>
           </div>
         </li>
       </ul>

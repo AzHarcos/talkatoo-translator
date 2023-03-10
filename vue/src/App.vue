@@ -115,7 +115,7 @@
           {{ kingdom.name }}
         </v-tab>
       </v-tabs>
-      <v-icon @click="resetRun" icon="mdi-sync" size="30" class="ml-4 clickable"></v-icon>
+      <v-icon @click="resetRun" icon="mdi-history" size="30" class="ml-4 clickable"></v-icon>
       <v-icon
         @click="toggleShowSettings"
         :icon="state.showSettings ? 'mdi-home' : 'mdi-cog'"

@@ -37,11 +37,23 @@ export const useState = defineStore('state', {
       this.mentionedMoonCount++;
     },
     markCorrectOption(index, optionIndex) {
-      this.mentionedMoons[index][optionIndex].correct = true;
+      const actualIndex = this.mentionedMoons.findIndex(
+        (possibleMoons) => possibleMoons[0].index === index
+      );
+      if (actualIndex >= 0) {
+        this.mentionedMoons[actualIndex][optionIndex].correct = true;
+      }
     },
     undoCorrectOption(moon, index) {
-      this.setMoonUncollected(moon);
-      this.mentionedMoons[index] = this.mentionedMoons[index].map(({ correct, ...val }) => val);
+      const actualIndex = this.mentionedMoons.findIndex(
+        (possibleMoons) => possibleMoons[0].index === index
+      );
+      if (actualIndex >= 0) {
+        this.setMoonUncollected(moon);
+        this.mentionedMoons[actualIndex] = this.mentionedMoons[actualIndex].map(
+          ({ correct, ...val }) => val
+        );
+      }
     },
     addCollectedMoon(moon) {
       this.collectedMoons.push(moon);
@@ -50,7 +62,6 @@ export const useState = defineStore('state', {
       this.collectedMoons = this.collectedMoons.filter((m) => !areMoonsEqual(moon, m));
     },
     deleteMoon(moon) {
-      console.log(moon);
       this.setMoonUncollected(moon);
       this.mentionedMoons = this.mentionedMoons.filter(
         (possibleMoons) => possibleMoons[0].index !== moon.index
