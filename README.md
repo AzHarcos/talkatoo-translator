@@ -32,7 +32,6 @@ Important settings:
 - To doublecheck specific moons you can use the total moon list that is being displayed per kingdom
 - You can use this list to manually add moons by clicking on their name in case a moon does not get recognized by the tool at all
 - If there are multiple possibilities for a moon received from Talkatoo you can select the correct option in the GUI
-- The choice of a correct option out of multiple possibilities for a mentioned moon can be undone at any point
 - If you collect a pending moon and it does not get recognized simply click on its name to manually mark it as collected
 - If a moon was mentioned by Talkatoo before it was set to collected you can move it back to pending at any point by clicking on its name
 - When hovering on pending or collected moons a delete button will be shown so wrong matches can be completely removed from both lists

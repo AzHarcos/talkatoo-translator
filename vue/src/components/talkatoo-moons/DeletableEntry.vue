@@ -3,12 +3,13 @@
 
   const props = defineProps({
     moon: Object,
+    isCollected: Boolean
   });
 
   const state = useState();
 
   function deleteMoon() {
-    state.deleteMoon(props.moon);
+    state.deleteMoon(props.moon, props.isCollected);
   }
 </script>
 

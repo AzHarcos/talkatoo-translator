@@ -5,13 +5,13 @@
   import { computed } from 'vue';
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
-  import { correctMoonOptional, areMoonsEqual, areMoonsPending } from '@/composables';
+  import { isMoonMentioned, isMoonCollected } from '@/composables';
 
   const state = useState();
   const settings = useSettings();
 
   const selectedKingdomPendingMoons = computed(() => {
-    return state.mentionedMoons.filter(areMoonsPending).reverse();
+    return state.mentionedMoons.filter(possibleMoons => possibleMoons[0].kingdom === state.selectedKingdom.name && possibleMoons.every((moon) => !isMoonCollected(moon))).reverse();
   });
 
   const selectedKingdomCollectedMoons = computed(() => {
@@ -21,21 +21,17 @@
     return collectedMoons
       .map((moon) => ({
         ...moon,
-        isMentioned: isMoonMentioned(moon),
+        isMentioned: showMoonAsMentioned(moon),
       }))
       .reverse();
   });
 
-  function isMoonMentioned(moon) {
+  function showMoonAsMentioned(moon) {
     if (!state.selectedKingdom.hasTalkatoo) return true;
 
     if (moon.is_story) return !settings.isHardcore;
 
-    return state.mentionedMoons.some((possibleMoons) => {
-      const correctMoon = correctMoonOptional(possibleMoons);
-
-      return correctMoon && areMoonsEqual(moon, correctMoon);
-    });
+    return isMoonMentioned(moon);
   }
 </script>
 

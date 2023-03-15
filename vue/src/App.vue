@@ -8,8 +8,7 @@
 
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
-  import { isMoonCollected, scrollToTop } from '@/composables';
-  import { areMoonsEqual } from './composables';
+  import { isMoonMentioned, isMoonCollected, scrollToTop, areMoonsEqual } from '@/composables';
 
   const state = useState();
   const settings = useSettings();
@@ -57,8 +56,12 @@
 
     if (isEqualToMostRecent) return;
 
-    state.addMentionedMoon(possibleMoons);
-    selectKingdom(possibleMoons[0].kingdom);
+    const filteredOptions = possibleMoons.filter(moon => !isMoonMentioned(moon) && !isMoonCollected(moon));
+
+    if (filteredOptions.length === 0) return;
+
+    state.addMentionedMoon(filteredOptions);
+    selectKingdom(filteredOptions[0].kingdom);
     state.setShowSettings(false);
 
     setTimeout(scrollToTop, 50);

@@ -1,45 +1,26 @@
 <script setup>
-  import { computed } from 'vue';
   import { useState } from '@/stores/state';
-  import { correctMoonOptional, moonToString } from '@/composables';
-  import MoonEntry from './MoonEntry.vue';
+  import { moonToString } from '@/composables';
+  import DeletableEntry from './DeletableEntry.vue';
 
   const props = defineProps({
     possibleMoons: Array,
   });
 
   const state = useState();
-
-  const correctMoon = computed(() => {
-    return correctMoonOptional(props.possibleMoons);
-  });
 </script>
 
 <template>
-  <MoonEntry v-if="possibleMoons.length === 1" :moon="possibleMoons[0]">
+  <DeletableEntry v-if="possibleMoons.length === 1" :moon="possibleMoons[0]">
     <span
       @click="() => state.addCollectedMoon(possibleMoons[0])"
       class="clickable"
       v-html="moonToString(possibleMoons[0])"></span>
-  </MoonEntry>
+  </DeletableEntry>
   <template v-else>
-    <template v-if="correctMoon">
-      <div class="list-item-content">
-        <span
-          @click="() => state.addCollectedMoon(correctMoon)"
-          class="clickable"
-          v-html="moonToString(correctMoon)"></span>
-        <v-icon
-          @click="() => state.undoCorrectOption(correctMoon, correctMoon.index)"
-          icon="mdi-restore"
-          size="20"
-          class="clickable ml-4"></v-icon>
-      </div>
-    </template>
-    <template v-else>
-      <MoonEntry :moon="possibleMoons[0]">
+    <DeletableEntry :moon="possibleMoons[0]">
         <div>{{ possibleMoons.length }} possible options:</div>
-      </MoonEntry>
+      </DeletableEntry>
       <ul>
         <li v-for="(moon, optionIndex) in possibleMoons" class="moon-option">
           <div class="list-item-content">
@@ -52,6 +33,5 @@
           </div>
         </li>
       </ul>
-    </template>
   </template>
 </template>

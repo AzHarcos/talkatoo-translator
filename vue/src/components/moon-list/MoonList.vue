@@ -4,7 +4,7 @@
 
   import { useSettings } from '@/stores/settings';
   import { useState } from '@/stores/state';
-  import { areMoonsEqual, correctMoonOptional, scrollToTop } from '../../composables';
+  import { isMoonCollected, isMoonMentioned, scrollToTop } from '../../composables';
 
   const state = useState();
   const settings = useSettings();
@@ -15,18 +15,12 @@
   });
 
   function addMoonToMentioned(moon) {
-    const moonHasBeenCollected = state.collectedMoons.some((m) => areMoonsEqual(moon, m));
-
-    if (moonHasBeenCollected) {
+    if (isMoonCollected(moon)) {
       state.showError('Moon has already been collected.');
       return;
     }
 
-    const moonHasBeenMentioned = state.mentionedMoons.some((possibleMoons) =>
-      areMoonsEqual(moon, correctMoonOptional(possibleMoons))
-    );
-
-    if (moonHasBeenMentioned) {
+    if (isMoonMentioned(moon)) {
       state.showError('Moon has already been mentioned by Talkatoo.');
       return;
     }

@@ -3,7 +3,7 @@ import CascadeImage from '@/assets/images/Cascade.png';
 import SandImage from '@/assets/images/Sand.png';
 import LakeImage from '@/assets/images/Lake.png';
 import WoodedImage from '@/assets/images/Wooded.png';
-import CloudImage from '@/assets/images/Cap.png';
+import CloudImage from '@/assets/images/Cloud.png';
 import LostImage from '@/assets/images/Lost.png';
 import MetroImage from '@/assets/images/Metro.png';
 import SnowImage from '@/assets/images/Snow.png';

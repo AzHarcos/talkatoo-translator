@@ -2,7 +2,7 @@
   import { computed } from 'vue';
   import { useState } from '../../stores/state';
   import { moonToString } from '../../composables';
-  import MoonEntry from './MoonEntry.vue';
+  import DeletableEntry from './DeletableEntry.vue';
 
   const props = defineProps({
     moon: Object,
@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <MoonEntry :moon="moon">
+  <DeletableEntry :moon="moon" is-collected>
     <div class="list-item-content">
       <span v-html="moonToString(moon)"></span>
     </div>
@@ -29,5 +29,5 @@
         </template>
       </v-tooltip>
     </template>
-  </MoonEntry>
+  </DeletableEntry>
 </template>
