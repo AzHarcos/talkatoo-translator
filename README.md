@@ -3,7 +3,7 @@
 The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey, which would allow you to do runs of Talkatoo% in any language you want, and could be a significant timesave over English. Currently, Simplified Chinese, Traditional Chinese, and Korean have been proven successful. All other languages are mostly usable but not fully tested/optimized.
 
 # Setup Instructions (no programming required)
-To set up, you'll need Python 3 installed. Go to https://www.python.org/downloads/ and download the newest version.
+To set up, you'll need Python 3 installed. While newer versions should also work, testing was done on version 3.10.10: https://www.python.org/downloads/release/python-31010/
 - If you use the installer, make sure to check the box that says "install pip", as well as the one that adds Python to your PATH
 - Otherwise, install pip following these instructions: https://pip.pypa.io/en/stable/installation/
 
