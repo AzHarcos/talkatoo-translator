@@ -3,7 +3,9 @@
 The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey, which would allow you to do runs of Talkatoo% in any language you want, and could be a significant timesave over English. Currently, Simplified Chinese, Traditional Chinese, and Korean have been proven successful. All other languages are mostly usable but not fully tested/optimized.
 
 # Setup Instructions (no programming required)
-To set up, you'll need Python 3 installed. While newer versions should also work, testing was done on version 3.10.10: https://www.python.org/downloads/release/python-31010/
+Go ahead and download the talkatoo-translator.zip of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases
+
+To run the application, you'll need Python 3 installed. While newer versions should also work, testing was done on version 3.10.10: https://www.python.org/downloads/release/python-31010/
 - If you use the installer, make sure to check the box that says "install pip", as well as the one that adds Python to your PATH
 - Otherwise, install pip following these instructions: https://pip.pypa.io/en/stable/installation/
 
@@ -29,12 +31,12 @@ Important settings:
 
 - Kingdom transitions, receiving moons from Talkatoo and marking moons as collected should all work automatically
 - In case the recognition does not work perfectly, you can also make changes to pending and collected moons in the GUI yourself
-- To doublecheck specific moons you can use the total moon list that is being displayed per kingdom
-- You can use this list to manually add moons by clicking on their name in case a moon does not get recognized by the tool at all
-- If there are multiple possibilities for a moon received from Talkatoo you can select the correct option in the GUI
-- If you collect a pending moon and it does not get recognized simply click on its name to manually mark it as collected
-- If a moon was mentioned by Talkatoo before it was set to collected you can move it back to pending at any point by clicking on its name
-- When hovering on pending or collected moons a delete button will be shown so wrong matches can be completely removed from both lists
+- To doublecheck specific moons you can use the total moon list that is being displayed on the right for each kingdom
+- You can also use this list to manually add moons by clicking on their name in case a moon does not get recognized by the tool at all
+- If there are multiple possibilities for a moon received from Talkatoo, you can select the correct option in the GUI
+- If you collect a pending moon and it does not get recognized, click on its name to manually mark it as collected
+- If a moon was mentioned by Talkatoo before it was set to collected, you can move it back to pending at any point by clicking on its name
+- When hovering on pending or collected moons, a delete button will be shown so wrong matches can be completely removed from both lists
 
 
 # Troubleshooting
@@ -63,9 +65,6 @@ In addition:
 - Recognize moon names as they come (similar to Talkatoo processing) and automatically mark on the GUI
 - Recognize story/multi moon names as they come (similar to Talkatoo processing) and automatically mark on the GUI
 - The GUI was build using the Vue Framework and communicates with the Python script using Eel (https://github.com/python-eel/Eel)
-- Eel starts a local Bottle server on localhost:8083 when the Python script is run and allows bidirectional communication between Python and JS via websockets
+- Eel starts a local Bottle server on localhost:8083 when the Python script is run and allows bidirectional communication between Python and JS via websocket
 - The source code of the gui can be found in the /vue directory but to run the tool only the bundled contents (generated with Vite) in /gui are necessary
 - The GUI maintains its own state for pending and collected moons and can therefore add and remove moons from both lists without affecting the lists in Python
-
-
-
