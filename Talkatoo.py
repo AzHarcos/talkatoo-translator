@@ -84,7 +84,6 @@ STORY_MOON_TIMER = 0.5
 
 KINGDOM_CERTAINTY = 0.85  # Classifier certainty to prevent uncertain kingdom switches (must occur 2 times in a row)
 POSS_MOON_CERTAINTY = 0.1  # Show moon percentage if it's at least 10% possible
-RUN_FASTER = False
 VERBOSE = True
 
 MAX_STORY = {"Cap": 0, "Cascade": 2, "Sand": 4, "Lake": 1, "Wooded": 4, "Cloud": 0, "Lost": 0, "Metro": 7,
@@ -209,20 +208,6 @@ def get_index_for(device_name):
         if device["device_name"] == device_name:
             return device["index"]
     return DEFAULT_VIDEO_INDEX
-
-
-# Increase priority if run speed is an issue
-def increase_priority():
-    from os import getpid
-    from platform import system
-    import psutil  # pip install psutil
-    this_OS = system()
-    if this_OS == "Windows":
-        p = psutil.Process(getpid())
-        p.nice(psutil.REALTIME_PRIORITY_CLASS)  # For Windows, highest priority
-    elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
-        p = psutil.Process(getpid())
-        p.nice(-20)  # -20 is top priority
 
 
 # Recognize, clean, and check moon text
@@ -366,9 +351,6 @@ def reset_capture_borders():
 ########################################################################################################################
 # Define variables used for computation
 ########################################################################################################################
-if RUN_FASTER:
-    increase_priority()
-
 moons_by_kingdom = generate_moon_dict()
 kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
