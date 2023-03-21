@@ -1,34 +1,37 @@
 # Talkatoo Translator
 
-The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey, which would allow you to do runs of Talkatoo% in any language you want, and could be a significant timesave over English. Currently, Simplified Chinese, Traditional Chinese, and Korean have been proven successful. All other languages are mostly usable but not fully tested/optimized.
+The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey. The completed project allows the user to do runs of Talkatoo% in any language SMO supports, and could be a significant timesave over English, as there is less text to scroll through in other languages. Currently, Simplified Chinese, Traditional Chinese, and Korean have been proven successful. All other languages are mostly usable but not fully tested/optimized.
 
 # Setup Instructions (no programming required)
-Go ahead and download the talkatoo-translator.zip of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases
+1. Download the zip or tar file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases
+2. Find the ZIP file in your file system and unzip it in a location you can find. Here we'll use the example that you unzip to the folder C:/Users/biakko/Downloads/talkatoo, replace your path along the way as needed.
 
-To run the application, you'll need Python 3 installed. While newer versions should also work, testing was done on version 3.10.10: https://www.python.org/downloads/release/python-31010/
-- If you use the installer, make sure to check the box that says "install pip", as well as the one that adds Python to your PATH
-- Otherwise, install pip following these instructions: https://pip.pypa.io/en/stable/installation/
+3. To run the application, you'll need Python 3 installed. While newer and some older versions will also work, testing was done on version 3.10.10, so this is the recommended version. You can find it here: https://www.python.org/downloads/release/python-31010/. If you're on Windows or Mac, the installer is likely easiest. If you're on Linux, you can use the tarball.
+- If you use the installer, be sure to check the box that says "add python.exe to PATH" on the first screen, and then you can install the default packages. Should you wish to customize your installation, just make sure that the "pip" box is checked.
+- Otherwise, you'll need to add Python to your PATH (https://realpython.com/add-python-to-path/) and install pip (https://pip.pypa.io/en/stable/installation/)
 
-Make sure to install the libraries listed in requirements.txt
-- Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
-- Run "pip install -r requirements.txt"
-- Note that if one or more don't work, you'll need to install them separately.
+4. Open your terminal. If you're on Mac or Linux, it's an app called "Terminal", if you're on Windows then use the Command Prompt.
+5. Run the command "python" by typing it out and pressing enter. On Mac and Linux you might need to use "python3" instead. If it gives an error, Python was not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/.
+6. Install the necessary dependencies
+   - Run the command "cd talkatoo_path" in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory. For example, "cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing"
+   - Run "pip install -r requirements.txt" to install the necessary packages
+   - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/
+   - If one or more installations don't work, you'll need to install the proper versions of the packages individually using "pip install package_name==version". An example, "pip install pillow==9.4.0".
 
+# Run the program
 To run the program:
-- Command Line/Terminal:
-    - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is the full file path to your talkatoo directory
+- If you prefer to use your command line/terminal:
+    - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory (in this example, "C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing")
     - Run "python Talkatoo.py" on Windows, or "python3 Talkatoo.py" on Linux/Mac
+    - The program should now be running.
+    - If you encounter errors, most likely you do not have the packages properly installed. For each one, run "pip show package_name" (ex. "pip show easyocr"). You'll see the version listed. If it does not match with the one in requirements.txt, then install the proper version according to the instructions in Setup step 5.
 - IDLE:
-    - IDLE is a free Python interpreter that comes with Python. You can just open Talkatoo.py within IDLE and click "Run"
-- Or use an interpreter of your choice
-
-
-Important settings:
-- When first starting the application the settings will open so you can make sure your capture card is selected and working
-- Also make sure you select the correct game language in the settings because this language will be used for the moon recognition process
+    - IDLE is a free Python interpreter that comes with Python (unless you chose to exclude it in the custom installation). You can just open Talkatoo.py within the IDLE application and click "Run".
+- Or use an interpreter of your choice (PyCharm, Spyder, Visual Studio Code, Geany, etc.)
 
 # How to use
-
+- In the settings menu, ensure that the video source is your capture card by clicking the "Preview Image" button.
+- Ensure that the languages and toggles are set to your preferences.
 - Kingdom transitions, receiving moons from Talkatoo and marking moons as collected should all work automatically
 - In case the recognition does not work perfectly, you can also make changes to pending and collected moons in the GUI yourself
 - To doublecheck specific moons you can use the total moon list that is being displayed on the right for each kingdom
