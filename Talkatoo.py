@@ -139,6 +139,35 @@ def reset_run():
     if VERBOSE:
         print("[STATUS] -> resetted moon lists")
 
+
+# Increase priority if run speed is an issue
+@eel.expose
+def increase_priority():
+    from os import getpid
+    from platform import system
+    import psutil  # pip install psutil
+    this_OS = system()
+    if this_OS == "Windows":
+        p = psutil.Process(getpid())
+        p.nice(psutil.REALTIME_PRIORITY_CLASS)  # For Windows, highest priority
+    elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
+        p = psutil.Process(getpid())
+        p.nice(-20)  # -20 is top priority
+
+# Increase priority if run speed is an issue
+@eel.expose
+def decrease_priority():
+    from os import getpid
+    from platform import system
+    import psutil  # pip install psutil
+    this_OS = system()
+    if this_OS == "Windows":
+        p = psutil.Process(getpid())
+        p.nice(psutil.NORMAL_PRIORITY_CLASS)  # For Windows, normal priority
+    elif this_OS == "Linux" or this_OS == "Darwin":  # Darwin signifies Mac
+        p = psutil.Process(getpid())
+        p.nice(0)  # 0 is top priority
+
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
