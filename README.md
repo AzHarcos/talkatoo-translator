@@ -1,6 +1,6 @@
 # Talkatoo Translator
 
-The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey. The completed project allows the user to do runs of Talkatoo% in any language SMO supports, and could be a significant timesave over English, as there is less text to scroll through in other languages. Currently, Simplified Chinese and Traditional Chinese are the most optimized, Korean has typically been successful, and all other languages are mostly usable but not fully tested/optimized.
+The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey. The completed project allows the user to do runs of Talkatoo% in any language SMO supports, and could be a significant timesave over English, as there is less text to scroll through in some other languages. It may also serve as a project of interest for those users looking to learn the moon names in other languages. Currently, Simplified Chinese and Traditional Chinese are the most optimized, Korean has typically been successful, and all other languages are mostly usable but not fully tested/optimized.
 
 ![image](https://user-images.githubusercontent.com/58895947/226770639-0f0ed7f8-4fac-45f6-9819-86bdd14fc301.png)
 
@@ -18,18 +18,18 @@ The goal of this project was to create a tool for recognizing and translating th
    - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing```.
    - Run ```pip install -r requirements.txt``` to install the necessary packages
    - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
-   - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, "pip install pillow==9.4.0".
+   - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, ```pip install pillow==9.4.0```.
 
 # Run the program
 To run the program:
 - If you prefer to use your command line/terminal:
     - Run ```cd talkatoo_path``` in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is ```cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing```.
-    - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac
+    - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac.
     - The program should now be running (it may take several seconds to boot up).
-    - If you encounter errors, most likely you do not have the packages properly installed. For each one, run ```pip show package_name``` (ex. ```pip show easyocr```). You'll see the version listed. If it does not match with the one in requirements.txt, then install the proper version according to the instructions in Setup step 5.
+    - If you encounter errors, most likely you do not have the packages properly installed. For each one, run ```pip show package_name``` (ex. ```pip show easyocr```). You'll see the version listed. If it does not match with the one in requirements.txt, then install the proper version according to step 5 of the Setup Instructions.
 - IDLE:
     - IDLE is a free Python interpreter that comes with Python (unless you chose to exclude it in the custom installation). You can just open Talkatoo.py within the IDLE application and click "Run".
-- Or use an interpreter of your choice (PyCharm, Spyder, Visual Studio Code, Geany, etc.)
+- Or use an interpreter of your choice (PyCharm, Spyder, Visual Studio Code, Geany, etc.).
 
 # How to use
 - In the settings menu, ensure that the video source is your capture card by clicking the "Preview Image" button.
@@ -51,6 +51,9 @@ To run the program:
     - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, you'll want this plugin: https://obsproject.com/forum/resources/obs-virtualcam.539/updates#resource-update-1936. You can install it directly to your OBS folder. Then, open your capture card in OBS. Go to Tools on the top menu and click "VirtualCam", and then "Start". You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that you are not blocking the three marked areas:
 ![Mario](https://user-images.githubusercontent.com/58895947/226769903-31fa2320-4461-4032-88c2-25e4676ccf13.jpg)
 
+
+- The program sometimes recognizes the wrong moon!
+    - Unfortunately, this is an external tool and we do not have perfect game information. We have done our best to make it as robust as possible, but have not been able to test it fully. Sometimes, only partial words will be read, at others the characters will be incorrectly recognized or dropped, and in exceedingly rare cases some extraneous text or white pixels may count as Talkatoo text or a moon. You are welcome to check the output logs in the Python console and report failures for future improvement to biakko#9890 on Discord.
 
 - The program sometimes misses moons from Talkatoo!
     - The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity.
@@ -80,3 +83,8 @@ GUI information:
 - The GUI was build using the Vue Framework and communicates with the Python script using Eel (https://github.com/python-eel/Eel)
 - Eel starts a local Bottle server on localhost:8083 when the Python script is run and allows bidirectional communication between Python and JS via websocket
 - The source code of the gui can be found in the /vue directory but to run the tool only the bundled contents (generated with Vite) in /gui are necessary
+
+
+# Credits
+AzHarcos - User Interface, Graphics
+Biakko - Moon Recognition
