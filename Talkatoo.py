@@ -157,6 +157,7 @@ def write_settings_to_file(updated_settings):
         settings_file.write(dumps(updated_settings))
     if VERBOSE:
         print("[STATUS] -> Saved settings to file!")
+    settings = read_file_to_json(SETTINGS_PATH)
     return True
 
 
