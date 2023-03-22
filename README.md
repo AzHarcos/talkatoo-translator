@@ -5,8 +5,8 @@ The goal of this project was to create a tool for recognizing and translating th
 ![image](https://user-images.githubusercontent.com/58895947/226770639-0f0ed7f8-4fac-45f6-9819-86bdd14fc301.png)
 
 # Setup Instructions (no programming required)
-1. Download the zip or tar file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases
-2. Find the downloaded zip or tar file in your file system and unzip/untar it in a location you can find. Here we'll use the example that you unzip to the folder C:/Users/biakko/Downloads/talkatoo, replace your path along the way as needed.
+1. Download the talkatoo-translator.zip file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases
+2. Find the downloaded zip file in your file system and unzip it in a location you can find. Here we'll use the example that you unzip to the folder ```C:/Users/biakko/Downloads/talkatoo-translator```, replace your path along the way as needed.
 
 3. To run the application, you'll need Python 3 installed. While newer and some older versions will also work, testing was done on version 3.10.10, so this is the recommended version. You can find it here: https://www.python.org/downloads/release/python-31010/. If you're on Windows or Mac, the installer is likely easiest. If you're on Linux, you can use the tarball.
     - If you use the installer, be sure to check the box that says "add python.exe to PATH" on the first screen, and then you can use the default installation. Should you wish to customize your installation, be sure that the "pip" box is checked.
@@ -15,7 +15,7 @@ The goal of this project was to create a tool for recognizing and translating th
 4. Open your terminal. If you're on Mac or Linux, it's an app called "Terminal", if you're on Windows then use the Command Prompt. (If you're not sure how to find it, use the search bar).
 5. Run the command ```python --version``` by typing it out and pressing the Enter key. On Mac and Linux you might need to use ```python3 --version``` instead. If it gives an error, Python was not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/. If it tells you that the version is 3.10.10, then it has been set up correctly.
 6. Install the necessary dependencies (external Python code used within our project).
-   - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing```.
+   - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo-translator```.
    - Run ```pip install -r requirements.txt``` to install the necessary packages
    - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
    - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, ```pip install pillow==9.4.0```.
@@ -23,7 +23,7 @@ The goal of this project was to create a tool for recognizing and translating th
 # Run the program
 To run the program:
 - If you prefer to use your command line/terminal:
-    - Run ```cd talkatoo_path``` in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is ```cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing```.
+    - Run ```cd talkatoo_path``` in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is ```cd C:/Users/biakko/Downloads/talkatoo-translator```.
     - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac.
     - The program should now be running (it may take several seconds to boot up).
     - If you encounter errors, most likely you do not have the packages properly installed. For each one, run ```pip show package_name``` (ex. ```pip show easyocr```). You'll see the version listed. If it does not match with the one in requirements.txt, then install the proper version according to step 5 of the Setup Instructions.
@@ -54,6 +54,7 @@ To run the program:
 
 - The program sometimes recognizes the wrong moon!
     - Unfortunately, this is an external tool and we do not have perfect game information. We have done our best to make it as robust as possible, but have not been able to test it fully. Sometimes, only partial words will be read, at others the characters will be incorrectly recognized or dropped, and in exceedingly rare cases some extraneous text or white pixels may count as Talkatoo text or a moon. You are welcome to check the output logs in the Python console and report failures for future improvement to biakko#9890 on Discord.
+
 
 - The program sometimes misses moons from Talkatoo!
     - The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity.
