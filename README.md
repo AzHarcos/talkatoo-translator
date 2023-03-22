@@ -86,5 +86,5 @@ GUI information:
 
 
 # Credits
-AzHarcos - User Interface, Graphics
-Biakko - Moon Recognition
+- AzHarcos - User Interface, Graphics
+- Biakko - Moon Recognition
