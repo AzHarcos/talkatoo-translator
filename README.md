@@ -18,7 +18,7 @@ The goal of this project was to create a tool for recognizing and translating th
    - Run the command "cd talkatoo_path" in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, "cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing".
    - Run "pip install -r requirements.txt" to install the necessary packages
    - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
-   - If one or more installations don't work, you'll need to install the proper versions of the packages individually using "pip install package_name==version". An example, "pip install pillow==9.4.0".
+   - If one or more installations don't work, you can try to install the proper versions of the packages individually using "pip install package_name==version". An example, "pip install pillow==9.4.0".
 
 # Run the program
 To run the program:
@@ -38,12 +38,12 @@ To run the program:
 - To double-check specific moons you can use the complete moon list that is being displayed on the right side of the screen for each kingdom.
 
 - In case the recognition does not work perfectly or you want to make changes, you can do so with the buttons in the GUI.
-- You can use the kingdom list to manually add moons to the Pending list by clicking on the name.
-- If you collect a pending moon and it does not get recognized, click on its name to manually mark it as collected.
-- If the program erroneously marks a moon as collected, you can move it back to the Pending list by clicking on it. If it was not mentioned by Talkatoo, it will be removed from all lists.
-- If there are multiple recognized possibilities for a moon received from Talkatoo, you can select the correct option in the GUI.
-- If multiple options are recognized for a collected moon, nothing will happen to ensure the wrong moon will not be not marked.
-- When hovering on pending or collected moons, a delete button will be shown so wrong matches can be completely removed from both lists.
+    - You can use the kingdom list to manually add moons to the Pending list by clicking on the name.
+    - If you collect a pending moon and it does not get recognized, click on its name to manually mark it as collected.
+    - If the program erroneously marks a moon as collected, you can move it back to the Pending list by clicking on it. If it was not mentioned by Talkatoo, it will be removed from all lists.
+    - If there are multiple recognized possibilities for a moon received from Talkatoo, you can select the correct option in the GUI.
+    - If multiple options are recognized for a collected moon, nothing will happen to ensure the wrong moon will not be not marked.
+    - When hovering on pending or collected moons, a delete button will be shown so wrong matches can be completely removed from both lists.
 
 
 # Troubleshooting
