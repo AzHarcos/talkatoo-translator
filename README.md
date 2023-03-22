@@ -13,20 +13,20 @@ The goal of this project was to create a tool for recognizing and translating th
     - Otherwise, you'll need to add Python to your PATH (https://realpython.com/add-python-to-path/) and install pip (https://pip.pypa.io/en/stable/installation/).
 
 4. Open your terminal. If you're on Mac or Linux, it's an app called "Terminal", if you're on Windows then use the Command Prompt. (If you're not sure how to find it, use the search bar).
-5. Run the command "python --version" (not including the quotation marks) by typing it out and pressing the Enter key. On Mac and Linux you might need to use "python3" instead. If it gives an error, Python was not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/. If it tells you that the version is 3.10.10, then it has been set up correctly.
+5. Run the command ```python --version``` by typing it out and pressing the Enter key. On Mac and Linux you might need to use ```python3 --version``` instead. If it gives an error, Python was not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/. If it tells you that the version is 3.10.10, then it has been set up correctly.
 6. Install the necessary dependencies (external Python code used within our project).
-   - Run the command "cd talkatoo_path" in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, "cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing".
-   - Run "pip install -r requirements.txt" to install the necessary packages
+   - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing```.
+   - Run ```pip install -r requirements.txt``` to install the necessary packages
    - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
-   - If one or more installations don't work, you can try to install the proper versions of the packages individually using "pip install package_name==version". An example, "pip install pillow==9.4.0".
+   - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, "pip install pillow==9.4.0".
 
 # Run the program
 To run the program:
 - If you prefer to use your command line/terminal:
-    - Run "cd talkatoo_path" in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is "cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing".
-    - Run "python Talkatoo.py" on Windows, or "python3 Talkatoo.py" on Linux/Mac
+    - Run ```cd talkatoo_path``` in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is ```cd C:/Users/biakko/Downloads/talkatoo/talkatoo-translator-1.0.0-testing```.
+    - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac
     - The program should now be running (it may take several seconds to boot up).
-    - If you encounter errors, most likely you do not have the packages properly installed. For each one, run "pip show package_name" (ex. "pip show easyocr"). You'll see the version listed. If it does not match with the one in requirements.txt, then install the proper version according to the instructions in Setup step 5.
+    - If you encounter errors, most likely you do not have the packages properly installed. For each one, run ```pip show package_name``` (ex. ```pip show easyocr```). You'll see the version listed. If it does not match with the one in requirements.txt, then install the proper version according to the instructions in Setup step 5.
 - IDLE:
     - IDLE is a free Python interpreter that comes with Python (unless you chose to exclude it in the custom installation). You can just open Talkatoo.py within the IDLE application and click "Run".
 - Or use an interpreter of your choice (PyCharm, Spyder, Visual Studio Code, Geany, etc.)
