@@ -48,16 +48,16 @@ To run the program:
 
 # Troubleshooting
 - My capture card isn't showing up!
-    Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, you'll want this plugin: https://obsproject.com/forum/resources/obs-virtualcam.539/updates#resource-update-1936. You can install it directly to your OBS folder. Then, open your capture card in OBS. Go to Tools on the top menu and click "VirtualCam", and then "Start". You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that you are not blocking the three marked areas:
+    - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, you'll want this plugin: https://obsproject.com/forum/resources/obs-virtualcam.539/updates#resource-update-1936. You can install it directly to your OBS folder. Then, open your capture card in OBS. Go to Tools on the top menu and click "VirtualCam", and then "Start". You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that you are not blocking the three marked areas:
 ![Mario](https://user-images.githubusercontent.com/58895947/226769903-31fa2320-4461-4032-88c2-25e4676ccf13.jpg)
 
 
 - The program sometimes misses moons from Talkatoo!
-    The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity.
+    - The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity.
 
 
 - Nothing is working!
-    The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right.
+    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right.
 A rarer but possible issue is that your capture card has highly distorted colors or image output dimensions. We do not currently have correction algorithms in place. The best fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
 
 
