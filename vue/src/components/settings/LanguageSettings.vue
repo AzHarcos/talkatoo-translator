@@ -22,10 +22,10 @@
       })()
       .then(() => {
         settings.setInputLanguage(language);
-        state.showSuccess('Updated input language.');
+        state.showSuccess('Updated game language.');
       })
       .catch(() => {
-        state.showError('Error setting input language.');
+        state.showError('Error setting game language.');
       })
       .finally(() => {
         inputLanguageLoading.value = false;
@@ -64,7 +64,7 @@
         <v-col cols="12" sm="6">
           <LanguagePicker
             @input="setInputLanguage"
-            label="Input Language"
+            label="Game Language"
             :selected="settings.inputLanguage"
             :loading="inputLanguageLoading" />
         </v-col>

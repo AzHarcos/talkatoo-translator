@@ -89,7 +89,7 @@ export const useState = defineStore('state', {
       this.collectedMoons = [];
       this.selectedKingdom = this.displayedKingdoms[0];
       this.mentionedMoonCount = 0;
-      this.showSuccess('Resetted the run.');
+      this.showSuccess('The run has been reset.');
     },
     showSuccess(text) {
       this.snackbar.text = text;

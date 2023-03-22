@@ -27,6 +27,9 @@
       <KingdomsPicker class="border mb-4" />
       <ImageRecognitionSettings class="border" />
     </v-card-text>
+    <v-card-actions class="pa-4 pt-0">
+      <v-btn @click="closeSettings" class="ml-auto clickable" variant="outlined"> Close </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
