@@ -11,7 +11,13 @@
   const settings = useSettings();
 
   const selectedKingdomPendingMoons = computed(() => {
-    return state.mentionedMoons.filter(possibleMoons => possibleMoons[0].kingdom === state.selectedKingdom.name && possibleMoons.every((moon) => !isMoonCollected(moon))).reverse();
+    return state.mentionedMoons
+      .filter(
+        (possibleMoons) =>
+          possibleMoons[0].kingdom === state.selectedKingdom.name &&
+          possibleMoons.every((moon) => !isMoonCollected(moon))
+      )
+      .reverse();
   });
 
   const selectedKingdomCollectedMoons = computed(() => {

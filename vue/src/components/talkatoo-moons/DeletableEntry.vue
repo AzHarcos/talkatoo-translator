@@ -3,7 +3,7 @@
 
   const props = defineProps({
     moon: Object,
-    isCollected: Boolean
+    isCollected: Boolean,
   });
 
   const state = useState();

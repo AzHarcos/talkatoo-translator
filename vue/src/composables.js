@@ -41,8 +41,8 @@ export function isMoonMentioned(moon) {
   const state = useState();
 
   return state.mentionedMoons.some((possibleMoons) =>
-  areMoonsEqual(moon, correctMoonOptional(possibleMoons))
-);
+    areMoonsEqual(moon, correctMoonOptional(possibleMoons))
+  );
 }
 
 export function isMoonCollected(moon) {

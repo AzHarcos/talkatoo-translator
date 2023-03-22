@@ -56,7 +56,9 @@
 
     if (isEqualToMostRecent) return;
 
-    const filteredOptions = possibleMoons.filter(moon => !isMoonMentioned(moon) && !isMoonCollected(moon));
+    const filteredOptions = possibleMoons.filter(
+      (moon) => !isMoonMentioned(moon) && !isMoonCollected(moon)
+    );
 
     if (filteredOptions.length === 0) return;
 

@@ -28,8 +28,13 @@ export const useState = defineStore('state', {
       this.moonsByKingdom = moonsByKingdom;
     },
     removeMoonOptions(moon) {
-      this.mentionedMoons = this.mentionedMoons.map(possibleMoons => possibleMoons.length === 1 ? possibleMoons : possibleMoons.filter(m => !areMoonsEqual(moon, m)))
-      .filter(possibleMoons => possibleMoons.length > 0);
+      this.mentionedMoons = this.mentionedMoons
+        .map((possibleMoons) =>
+          possibleMoons.length === 1
+            ? possibleMoons
+            : possibleMoons.filter((m) => !areMoonsEqual(moon, m))
+        )
+        .filter((possibleMoons) => possibleMoons.length > 0);
     },
     addMentionedMoon(possibleMoons) {
       const possibleMoonsWithIndex = possibleMoons.map((moon) => ({
@@ -56,7 +61,10 @@ export const useState = defineStore('state', {
     addCollectedMoon(moon) {
       this.collectedMoons.push(moon);
 
-      const firstOptionsIndex = this.mentionedMoons.findLastIndex(possibleMoons => possibleMoons.length > 1 && possibleMoons.some(m => areMoonsEqual(moon, m)));
+      const firstOptionsIndex = this.mentionedMoons.findLastIndex(
+        (possibleMoons) =>
+          possibleMoons.length > 1 && possibleMoons.some((m) => areMoonsEqual(moon, m))
+      );
 
       if (firstOptionsIndex >= 0) {
         this.mentionedMoons[firstOptionsIndex] = [moon];
