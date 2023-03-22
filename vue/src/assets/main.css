@@ -105,6 +105,10 @@ li {
   visibility: visible;
 }
 
+.close-icon:hover {
+  cursor: pointer;
+}
+
 .clickable:hover,
 .v-switch:hover .v-switch__thumb,
 .v-slide-group__next:hover,

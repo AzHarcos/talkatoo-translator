@@ -132,12 +132,17 @@ def reset_borders():
 
 # Allow the gui to reset the run, in this case clearing the mentioned and collected moons
 @eel.expose
-def reset_run():
+def reset_run(skip_reset_confirmation):
     global mentioned_moons, collected_moons
     mentioned_moons = []
     collected_moons = []
     if VERBOSE:
-        print("[STATUS] -> resetted moon lists")
+        print("[STATUS] -> reset moon lists")
+    if skip_reset_confirmation:
+        updated_settings = settings
+        updated_settings["skipResetConfirmation"] = True
+        return write_settings_to_file(updated_settings)
+    return True
 
 # Allow the gui to save the current settings to a file
 @eel.expose

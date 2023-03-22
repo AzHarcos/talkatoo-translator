@@ -10,6 +10,7 @@ export const useSettings = defineStore('settings', {
       woodedFirst: true,
       seasideFirst: false,
       isHardcore: false,
+      skipResetConfirmation: false,
       videoDevice: undefined,
     };
   },
@@ -38,6 +39,9 @@ export const useSettings = defineStore('settings', {
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
+    setSkipResetConfirmation(skipResetConfirmation) {
+      this.skipResetConfirmation = skipResetConfirmation;
+    },
     setSettings(settings) {
       this.setInputLanguage(settings.inputLanguage);
       this.setOutputLanguage(settings.outputLanguage);
@@ -47,6 +51,7 @@ export const useSettings = defineStore('settings', {
       this.setSeasideFirst(settings.seasideFirst);
       this.setIsHardcore(settings.isHardcore);
       this.setVideoDevice(settings.videoDevice);
+      this.setSkipResetConfirmation(settings.skipResetConfirmation);
     },
   },
 });

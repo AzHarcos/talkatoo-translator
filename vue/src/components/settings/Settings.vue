@@ -32,9 +32,3 @@
     </v-card-actions>
   </v-card>
 </template>
-
-<style scoped>
-  .close-icon:hover {
-    cursor: pointer;
-  }
-</style>
