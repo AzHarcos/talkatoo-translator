@@ -60,8 +60,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
 
 
 - Nothing is working!
-    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly
-A rarer but possible issue is that your capture card has highly distorted colors or image output dimensions. We do not currently have correction algorithms in place. The best fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
+    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly. A rarer but possible issue is that your capture card has highly distorted colors or image output dimensions. We do not currently have correction algorithms in place. The best fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
 
 
 # Process
