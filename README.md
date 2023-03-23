@@ -48,7 +48,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
 
 # Troubleshooting
 - My capture card isn't showing up!
-    - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, you'll want this plugin: https://obsproject.com/forum/resources/obs-virtualcam.539/updates#resource-update-1936. You can install it directly to your OBS folder. Then, open your capture card in OBS. Go to Tools on the top menu and click "VirtualCam", and then "Start". You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that you are not blocking the marked areas, as these are used for various parts of the model.
+    - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, you'll want this plugin: https://obsproject.com/forum/resources/obs-virtualcam.539/updates#resource-update-1936. You can install it directly to your OBS folder. Then, open your capture card in OBS. Go to Tools on the top menu and click "VirtualCam", and then "Start". You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that the game takes up the full screen, and that you are not blocking the marked areas, as these are used for various parts of the model.
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
 
 - The program sometimes recognizes the wrong moon!
@@ -85,8 +85,8 @@ GUI information:
 
 
 # Reporting Issues
-To report any GUI bugs or improvement suggestions, message AzHarcos#8767 on Discord.
-To report failures in moon/text recognition, try to find the part of the output logs if applicable, (in the Python console) and send that and a description of what went wrong to biakko#9890 on Discord. Note that this program is very good but far from perfect, and that any changes will typically require a large amount of reworking and testing.
+- To report any GUI bugs or improvement suggestions, message AzHarcos#8767 on Discord.
+- To report failures in moon/text recognition, try to find the problematic part of the output logs in the Python console (if applicable) and send that and a description of what went wrong to biakko#9890 on Discord. Note that this program is very good but far from perfect, and that any changes will typically require a large amount of reworking and testing.
 
 
 # Credits
