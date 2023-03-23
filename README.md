@@ -52,7 +52,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
 
 - The program sometimes recognizes the wrong moon!
-    - Unfortunately, this is an external tool and we do not have perfect game information. We have done our best to make it as robust as possible, but have not been able to test it fully. Sometimes, only partial words will be read, at others the characters will be incorrectly recognized or dropped, and in exceedingly rare cases some extraneous text or white pixels may count as Talkatoo text or a moon. You are welcome to check the output logs in the Python console and report failures to us for future improvement.
+    - Unfortunately, this is an external tool and we do not have perfect game information. We have done our best to make it as robust as possible, but it is not perfect. Sometimes, only partial words will be read, at others the characters will be incorrectly recognized or dropped, and in exceedingly rare cases some extraneous text or white pixels may count as Talkatoo text or a moon. You are welcome to check the output logs in the Python console and report failures to us for future improvement.
 
 
 - The program sometimes misses moons from Talkatoo!
