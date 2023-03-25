@@ -266,7 +266,6 @@ def normal_moons_to_check():
         to_check.extend(moons_by_kingdom["Cloud"])
         to_check.extend(moons_by_kingdom["Ruined"])
         to_check.extend(moons_by_kingdom["Dark"][1:])  # Exclude multi moon
-        print("\n".join([i["english"] for i in to_check]))
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
     return to_check
