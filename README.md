@@ -48,19 +48,23 @@ If you encounter errors, you do not have the packages properly installed. You ca
 
 # Troubleshooting
 - My capture card isn't showing up!
-    - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, you'll want this plugin: https://obsproject.com/forum/resources/obs-virtualcam.539/updates#resource-update-1936. You can install it directly to your OBS folder. Then, open your capture card in OBS. Go to Tools on the top menu and click "VirtualCam", and then "Start". You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that the game takes up the full screen, and that you are not blocking the marked areas, as these are used for various parts of the model.
+    - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, there are a few options. For all of these, try to ensure your resolution is at least 1280x720.
+        - The first will only be helpful for some people, called Elgato StreamLink. You can find out about it here: https://help.elgato.com/hc/en-us/articles/360028241631.
+        - For lower-end PCs and capture cards, the best current option is the OBS Virtual Camera. To use it, you'll want this plugin: https://github.com/Avasam/obs-virtual-cam/releases. You can follow the instructions on the main page to install it: https://github.com/Avasam/obs-virtual-cam. You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that the game takes up the full screen, and that you are not blocking the areas marked on the below image, as these are used for various parts of the model. Unfortunately, the resolution tends to be very low, and the program will likely suffer for it.
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
-
-- The program sometimes recognizes the wrong moon!
-    - Unfortunately, this is an external tool and we do not have perfect game information. We have done our best to make it as robust as possible, but it is not perfect. Sometimes, only partial words will be read, at others the characters will be incorrectly recognized or dropped, and in exceedingly rare cases some extraneous text or white pixels may count as Talkatoo text or a moon. You are welcome to check the output logs in the Python console and report failures to us for future improvement.
+        - We are currently working on better solutions to this issue.
+        
+        
+- Nothing is working!
+    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly. A rarer but possible issue is that your capture card has highly distorted colors or image output dimensions. We do not currently have correction algorithms in place. The best current fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
 
 
 - The program sometimes misses moons from Talkatoo!
-    - The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity.
-
-
-- Nothing is working!
-    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly. A rarer but possible issue is that your capture card has highly distorted colors or image output dimensions. We do not currently have correction algorithms in place. The best fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
+    - The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity. Other issues might involve capture card color/dimension distortion or resolutions issues.
+    
+    
+- The program sometimes recognizes the wrong moon!
+    - Unfortunately, this is an external tool and we do not have perfect game information. We have done our best to make it as robust as possible, but it is not perfect. Sometimes, only partial words will be read, at others the characters will be incorrectly recognized or dropped, and in exceedingly rare cases some extraneous text or white pixels may count as Talkatoo text or a moon. You are welcome to check the output logs in the Python console and report failures to us for future improvement.
 
 
 # Process
@@ -85,7 +89,7 @@ GUI information:
 
 
 # Reporting Issues
-- To report any GUI bugs or improvement suggestions, message AzHarcos#8767 on Discord.
+- To report any GUI bugs or display suggestions, message AzHarcos#8767 on Discord.
 - To report failures in moon/text recognition, try to find the problematic part of the output logs in the Python console (if applicable) and send that and a description of what went wrong to biakko#9890 on Discord. Note that this program is very good but far from perfect, and that any changes will typically require a large amount of reworking and testing.
 
 
