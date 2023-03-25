@@ -274,6 +274,7 @@
   {
     "id": 17,
     "kingdom": "Cap",
+    "collection_kingdom": "Moon",
     "english": "Found with Cap Kingdom Art",
     "chinese_traditional": "找到在帽子國看到的相片寶物",
     "chinese_simplified": "在帽子国看到的照片里的宝物",
@@ -2273,6 +2274,7 @@
     "id": 63,
     "kingdom": "Sand",
     "english": "Found with Sand Kingdom Art",
+    "collection_kingdom": "Bowsers",
     "chinese_traditional": "找到在沙之國看到的相片寶物",
     "chinese_simplified": "在沙之国看到的照片里的宝物",
     "japanese": "砂の国で見つけた お宝写真",
@@ -3570,6 +3572,7 @@
   {
     "id": 50,
     "kingdom": "Wooded",
+    "collection_kingdom": "Sand",
     "english": "Found with Wooded Kingdom Art",
     "chinese_traditional": "找到在森之國看到的相片寶物",
     "chinese_simplified": "在森之国看到的照片里的宝物",
@@ -4473,6 +4476,7 @@
   {
     "id": 27,
     "kingdom": "Lake",
+    "collection_kingdom": "Cascade",
     "english": "Found with Lake Kingdom Art",
     "chinese_traditional": "找到在湖之國看到的相片寶物",
     "chinese_simplified": "在湖之国看到的照片里的宝物",
@@ -6386,6 +6390,7 @@
   {
     "id": 53,
     "kingdom": "Metro",
+    "collection_kingdom": "Lake",
     "english": "Found with Metro Kingdom Art",
     "chinese_traditional": "找到在都市國看到的相片寶物",
     "chinese_simplified": "在都市国看到的照片里的宝物",
@@ -7718,6 +7723,7 @@
   {
     "id": 50,
     "kingdom": "Seaside",
+    "collection_kingdom": "Metro",
     "english": "Found with Seaside Kingdom Art",
     "chinese_traditional": "找到在海之國看到的相片寶物",
     "chinese_simplified": "在海之国看到的照片里的宝物",
@@ -8659,6 +8665,7 @@
   {
     "id": 34,
     "kingdom": "Snow",
+    "collection_kingdom": "Lost",
     "english": "Found with Snow Kingdom Art",
     "chinese_traditional": "找到在雪之國看到的相片寶物",
     "chinese_simplified": "在雪之国看到的照片里的宝物",
@@ -9856,6 +9863,7 @@
   {
     "id": 49,
     "kingdom": "Luncheon",
+    "collection_kingdom": "Seaside",
     "english": "Found with Luncheon Kingdom Art",
     "chinese_traditional": "找到在料理國看到的相片寶物",
     "chinese_simplified": "在料理国看到的照片里的宝物",
@@ -11121,6 +11129,7 @@
   {
     "id": 45,
     "kingdom": "Bowsers",
+    "collection_kingdom": "Sand",
     "english": "Found with Bowser's Kingdom Art",
     "chinese_traditional": "找到在庫巴國看到的相片寶物",
     "chinese_simplified": "在酷霸王之国看到的照片里的宝物",
@@ -11869,6 +11878,7 @@
   {
     "id": 27,
     "kingdom": "Moon",
+    "collection_kingdom": "Wooded",
     "english": "Found with Moon Kingdom Art",
     "chinese_traditional": "找到在月之國看到的相片寶物",
     "chinese_simplified": "在月之国看到的照片里的宝物",
@@ -12765,6 +12775,7 @@
   {
     "id": 41,
     "kingdom": "Mushroom",
+    "collection_kingdom": "Cap",
     "english": "Found with Mushroom Kingdom Art",
     "chinese_traditional": "找到在蘑菇王國看到的相片寶物",
     "chinese_simplified": "在蘑菇王国看到的照片里的宝物",
@@ -14093,6 +14104,7 @@
   {
     "id": 15,
     "kingdom": "Dark",
+    "collection_kingdom": "Cascade",
     "english": "Found with Dark Side Art 1",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物１",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物１",
@@ -14110,6 +14122,7 @@
   {
     "id": 16,
     "kingdom": "Dark",
+    "collection_kingdom": "Metro",
     "english": "Found with Dark Side Art 2",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物２",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物２",
@@ -14127,6 +14140,7 @@
   {
     "id": 17,
     "kingdom": "Dark",
+    "collection_kingdom": "Mushroom",
     "english": "Found with Dark Side Art 3",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物３",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物３",
@@ -14144,6 +14158,7 @@
   {
     "id": 18,
     "kingdom": "Dark",
+    "collection_kingdom": "Cloud",
     "english": "Found with Dark Side Art 4",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物４",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物４",
@@ -14161,6 +14176,7 @@
   {
     "id": 19,
     "kingdom": "Dark",
+    "collection_kingdom": "Snow",
     "english": "Found with Dark Side Art 5",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物５",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物５",
@@ -14178,6 +14194,7 @@
   {
     "id": 20,
     "kingdom": "Dark",
+    "collection_kingdom": "Seaside",
     "english": "Found with Dark Side Art 6",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物６",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物６",
@@ -14195,6 +14212,7 @@
   {
     "id": 21,
     "kingdom": "Dark",
+    "collection_kingdom": "Lost",
     "english": "Found with Dark Side Art 7",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物７",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物７",
@@ -14212,6 +14230,7 @@
   {
     "id": 22,
     "kingdom": "Dark",
+    "collection_kingdom": "Luncheon",
     "english": "Found with Dark Side Art 8",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物８",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物８",
@@ -14229,6 +14248,7 @@
   {
     "id": 23,
     "kingdom": "Dark",
+    "collection_kingdom": "Lake",
     "english": "Found with Dark Side Art 9",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物９",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物９",
@@ -14246,6 +14266,7 @@
   {
     "id": 24,
     "kingdom": "Dark",
+    "collection_kingdom": "Ruined",
     "english": "Found with Dark Side Art 10",
     "chinese_traditional": "找到在月之國 背面看到的相片寶物１０",
     "chinese_simplified": "在月之国 后面看到的照片里的宝物１０",
