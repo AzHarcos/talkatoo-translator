@@ -32,7 +32,8 @@ def check_story_multi(img, expected="RED"):
 # Replace certain known problematic characters to make better matches
 def correct_text(string, translate_from):
     if translate_from.startswith("chinese"):  # Designed from
-        replacements = {" ": "", "!": "！", "(": "", ";": " ", "@": " ", "1": "１", "2": "２", "3": "３"}
+        replacements = {" ": "", "!": "！", "(": "", ";": " ", "@": " ", "1": "１", "2": "２", "3": "３",
+                        "4": "４", "5": "５", "6": "６", "7": "７", "8": "８", "9": "９", "0": "０"}
     elif translate_from == "korean":
         replacements = {"3": "3"}
     elif translate_from == "japanese":
@@ -81,20 +82,21 @@ def generate_moon_dict():
     moonlist = read_file_to_json("moon-list.json")  # moonlist now a list of dictionaries, one for each moon
     # Dictionary to store all moons by kingdom
     moons_by_kingdom = {}
+    hint_arts = {}
     for moon in moonlist:
         ha_kingdom = moon.get("collection_kingdom")
         if ha_kingdom:
-            if ha_kingdom in moons_by_kingdom:
-                moons_by_kingdom[ha_kingdom].append(moon)
+            if ha_kingdom in hint_arts:
+                hint_arts[ha_kingdom].append(moon)
             else:
-                moons_by_kingdom[ha_kingdom] = [moon]
+                hint_arts[ha_kingdom] = [moon]
                 
         this_kingdom = moon["kingdom"]
         if this_kingdom in moons_by_kingdom:
             moons_by_kingdom[this_kingdom].append(moon)
         else:
             moons_by_kingdom[this_kingdom] = [moon]
-    return moons_by_kingdom
+    return moons_by_kingdom, hint_arts
 
 
 # Make black and white image of purple coin counter and moon text
