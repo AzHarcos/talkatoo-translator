@@ -82,7 +82,9 @@ def generate_moon_dict():
     # Dictionary to store all moons by kingdom
     moons_by_kingdom = {}
     for moon in moonlist:
-        this_kingdom = moon["kingdom"]
+        this_kingdom = moon.get("collection_kingdom")
+        if this_kingdom is None:
+            this_kingdom = moon["kingdom"]
         if this_kingdom in moons_by_kingdom:
             moons_by_kingdom[this_kingdom].append(moon)
         else:
