@@ -84,7 +84,15 @@
     if (isMoonCollected(collectedMoon)) return;
 
     state.addCollectedMoon(collectedMoon);
-    selectKingdom(collectedMoon.kingdom);
+
+    if (!collectedMoon.collection_kingdom) {
+      selectKingdom(collectedMoon.kingdom);
+    } else if (collectedMoon.kingdom !== state.selectedKingdom.name) {
+      state.showSuccess(
+        `Collected ${collectedMoon.id} - ${collectedMoon[settings.outputLanguage]}`
+      );
+    }
+
     state.setShowSettings(false);
   }
 
