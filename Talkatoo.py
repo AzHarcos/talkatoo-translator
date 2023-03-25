@@ -268,6 +268,7 @@ def normal_moons_to_check():
         to_check.extend(moons_by_kingdom["Dark"][1:])  # Exclude multi moon
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
+    to_check.extend(hint_arts[current_kingdom])
     return to_check
 
 
@@ -366,7 +367,7 @@ def reset_capture_borders():
 ########################################################################################################################
 # Define variables used for computation
 ########################################################################################################################
-moons_by_kingdom = generate_moon_dict()
+moons_by_kingdom, hint_arts = generate_moon_dict()
 kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                 "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
 current_kingdom = "Cap"  # Start in first kingdom (Does not matter what it's initialized to)
