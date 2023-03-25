@@ -32,38 +32,35 @@ To run the program:
 If you encounter errors, you do not have the packages properly installed. You can check installation status and version using ```pip show package_name``` in your command line/terminal(ex. ```pip show easyocr```). If it does not match with the one in requirements.txt, then install the proper version according to step 5 of the Setup Instructions.
 
 # How to use
-- In the settings menu, ensure that the video source is your capture card by clicking the "Preview Image" button.
-- Ensure that the languages and toggles are set to your preferences.
+- Select your personal preferences in the settings menu
+    - Select your capture card as the video source and verify it's working by clicking "SHOW PREVIEW IMAGE".
+    - Select your game language and other preferences.
 - Kingdom transitions, receiving moons from Talkatoo and marking moons as collected will all work automatically.
-- To double-check specific moons you can use the complete moon list that is being displayed on the right side of the screen for each kingdom.
-
-
-- If you wish to display the list of pending moons in OBS you can do so using the generated file ```pending-moons.txt``` in the talkatoo directory.
-- It will contain the pending moons of the kingdom that's currently selected in the GUI, ignoring entries with multiple possible moon options.
-- To display the list in OBS simply add a new text source, check "Read from file" and select the file path to ```pending-moons.txt``` on your system
-- If done successfully it might look like this:
-
-                                  [insert image]
-
+- To double-check specific moons, you can use the complete moon list that is being displayed on the right side of the screen for each kingdom.
 - In case the recognition does not work perfectly or you want to make changes, you can do so with the buttons in the GUI.
-    - You can use the kingdom list to manually add moons to the Pending list by clicking on the name.
+    - You can use the kingdom list to manually add moons to the pending list by clicking on the name.
     - If you collect a pending moon and it does not get recognized, click on its name to manually mark it as collected.
-    - If the program erroneously marks a moon as collected, you can move it back to the Pending list by clicking on it if it was previously mentioned by Talkatoo
+    - If the program erroneously marks a moon as collected, you can move it back to the pending list by clicking on it if it was previously mentioned by Talkatoo.
     - If there are multiple recognized possibilities for a moon received from Talkatoo, you can select the correct option in the GUI.
     - If multiple options are recognized for a collected moon, nothing will happen to ensure the wrong moon will not be not marked.
     - When hovering on pending or collected moons, a delete button will be shown so wrong matches can be completely removed from both lists.
+- If you wish to display the list of pending moons in OBS, you can do so using the generated file ```pending-moons.txt``` in the talkatoo directory.
+    - It will contain the pending moons of the currently selected kingdom in the GUI, ignoring entries with multiple possible moon options.
+    - To display the list in OBS, add a new text source, check "Read from file" and select the file path to ```pending-moons.txt```.
+    - If done successfully it might look like this:
 
+![image](https://user-images.githubusercontent.com/59027253/227715367-f81cd632-0592-4beb-87d9-0bfe32b61bcd.png)
 
 # Troubleshooting
 - My capture card isn't showing up!
     - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, there are a few options. For all of these, try to ensure your resolution is at least 1280x720.
         - The first will only be helpful for some people, called Elgato StreamLink. You can find out about it here: https://help.elgato.com/hc/en-us/articles/360028241631.
-        - For lower-end PCs and capture cards, the best current option is the OBS Virtual Camera. To use it, you'll want this plugin: https://github.com/Avasam/obs-virtual-cam/releases. You can follow the instructions on the main page to install it: https://github.com/Avasam/obs-virtual-cam. You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that the game takes up the full screen, and that you are not blocking the areas marked on the below image, as these are used for various parts of the model. Unfortunately, the resolution tends to be very low, and the program will likely suffer for it. We are currently working on better solutions to this issue.
+        - For lower-end PCs and capture cards, the best current option is the OBS Virtual Camera. To use it, you'll want this plugin: https://github.com/Avasam/obs-virtual-cam/releases. You can follow the instructions on the main page to install it: https://github.com/Avasam/obs-virtual-cam. You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that the game takes up the full screen, and that you are not blocking the areas marked on the below image, as these are used for various parts of the model.
       
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
 
-        
-        
+Unfortunately, the resolution of the OBS virtual cam output tends to be very low, and the program will likely suffer for it. We are currently looking into better solutions to this issue, so please let us know if you find a solution that works well for you.
+
 - Nothing is working!
     - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly.
     - A rarer but possible issue is that your capture card has highly distorted colors or image output dimensions. We do not currently have correction algorithms in place. The best current fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
