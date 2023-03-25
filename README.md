@@ -92,7 +92,7 @@ GUI information:
 
 # Reporting Issues
 - To report any GUI bugs or display suggestions, message AzHarcos#8767 on Discord.
-- To report failures in moon/text recognition, try to find the problematic part of the output logs in the Python console (if applicable) and send that and a description of what went wrong to biakko#9890 on Discord. Note that this program is very good but far from perfect, and that any changes will typically require a large amount of reworking and testing.
+- To report failures in moon/text recognition, try to find the problematic part of the output logs in the Python console (if applicable) and send that and a description of what went wrong to biakko#9890 on Discord. Note that this program is very consistent but not perfect, and that any changes will typically require a large amount of reworking and testing.
 
 
 # Credits
