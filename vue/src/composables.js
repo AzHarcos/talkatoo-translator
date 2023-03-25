@@ -68,9 +68,11 @@ export function moonToString(moon) {
 }
 
 export function padStart(str) {
-  if (str.length === 2) return str;
+  if (str.length === 3) return str;
 
-  return `&nbsp&nbsp${str}`;
+  if (str.length === 2) return `&nbsp&nbsp${str}`;
+
+  return `&nbsp&nbsp&nbsp&nbsp${str}`;
 }
 
 export function scrollToTop() {

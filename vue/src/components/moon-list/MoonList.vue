@@ -39,7 +39,7 @@
     <v-card-text class="list-container">
       <div class="text-center text-h5 mb-4 text-decoration-underline">Moon List</div>
       <ol :class="{ 'ml-4': !lgAndUp }">
-        <li v-for="moon in moonList" @click="() => addMoonToMentioned(moon)" class="clickable">
+        <li v-for="moon in moonList" @click="() => addMoonToMentioned(moon)" class="clickable ml-4">
           <span class="ml-1">
             {{ moon[settings.outputLanguage] }} - {{ moon[settings.inputLanguage] }}
           </span>
