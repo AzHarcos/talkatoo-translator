@@ -59,7 +59,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
       
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
 
-Unfortunately, the resolution of the OBS virtual cam output tends to be very low, and the program will likely suffer for it. We are currently looking into better solutions to this issue, so please let us know if you find a solution that works well for you.
+Unfortunately, the resolution of the OBS Virtual Camera output tends to be very low, and the program will likely suffer for it. We are currently looking into better solutions to this issue, so please let us know if you find a solution that works well for you.
 
 - Nothing is working!
     - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly.
