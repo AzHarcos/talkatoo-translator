@@ -259,7 +259,10 @@ def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
 def normal_moons_to_check():
     # Note that MAX dicts are 1-indexed as SMO moons are 1-indexed
     if is_postgame:
-        to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
+        if current_kingdom == "Mushroom":
+            to_check = moons_by_kingdom["Mushroom"][:32] + moons_by_kingdom["Mushroom"][38:]
+        else:
+            to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
         to_check.extend(moons_by_kingdom["Cloud"])
         to_check.extend(moons_by_kingdom["Ruined"])
         to_check.extend(moons_by_kingdom["Dark"][1:])  # Exclude multi moon
