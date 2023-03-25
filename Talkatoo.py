@@ -265,7 +265,7 @@ def normal_moons_to_check():
             to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
         to_check.extend(moons_by_kingdom["Cloud"])
         to_check.extend(moons_by_kingdom["Ruined"])
-        to_check.extend(moons_by_kingdom["Dark"][1:])  # Exclude multi moon
+        to_check.extend(moons_by_kingdom["Dark"][1:14])  # Exclude multi moon, hint arts already included
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
     to_check.extend(hint_arts[current_kingdom])
