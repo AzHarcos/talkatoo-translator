@@ -35,6 +35,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
 - In the settings menu, ensure that the video source is your capture card by clicking the "Preview Image" button.
 - Ensure that the languages and toggles are set to your preferences.
 - Kingdom transitions, receiving moons from Talkatoo and marking moons as collected will all work automatically.
+- If you wish to display the list of pending moons in OBS you can do so using the generated file ```pending-moons.txt``` in the talkatoo directory.It will contain the pending moons of the kingdom that's currently selected in the GUI, ignoring entries with multiple possible moon options
 - To double-check specific moons you can use the complete moon list that is being displayed on the right side of the screen for each kingdom.
 
 - In case the recognition does not work perfectly or you want to make changes, you can do so with the buttons in the GUI.

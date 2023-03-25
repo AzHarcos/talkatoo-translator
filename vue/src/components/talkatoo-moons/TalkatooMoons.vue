@@ -6,19 +6,31 @@
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import { isMoonMentioned, isMoonCollected } from '@/composables';
+  import useCurrentInstance from '@/hooks/useCurrentInstance';
 
   const state = useState();
   const settings = useSettings();
+  const { globalProperties } = useCurrentInstance();
 
   const selectedKingdomPendingMoons = computed(() => {
-    return state.mentionedMoons
-      .filter(
-        (possibleMoons) =>
-          possibleMoons[0].kingdom === state.selectedKingdom.name &&
-          possibleMoons.every((moon) => !isMoonCollected(moon))
-      )
-      .reverse();
+    const pendingMoons = state.mentionedMoons.filter(
+      (possibleMoons) =>
+        possibleMoons[0].kingdom === state.selectedKingdom.name &&
+        possibleMoons.every((moon) => !isMoonCollected(moon))
+    );
+    logPendingMoons(pendingMoons);
+    return pendingMoons.reverse();
   });
+
+  function logPendingMoons(pendingMoons) {
+    const stringifiedMoons = pendingMoons
+      .filter((possibleMoons) => possibleMoons.length === 1)
+      .map(
+        (possibleMoons) => `${possibleMoons[0].id} - ${possibleMoons[0][settings.outputLanguage]}`
+      )
+      .join('\n');
+    globalProperties.$eel.log_pending_moons(stringifiedMoons);
+  }
 
   const selectedKingdomCollectedMoons = computed(() => {
     const collectedMoons = state.collectedMoons.filter(

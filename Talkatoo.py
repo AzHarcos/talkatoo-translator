@@ -70,6 +70,7 @@ IM_WIDTH = 1280  # This number should not change
 IM_HEIGHT = 720  # This number should not change
 IMG_PATH = "gui/assets/border_reset_img.png"  # used for GUI checking
 SETTINGS_PATH = "settings.json"  # used for persisting settings
+PENDING_MOONS_PATH = "pending-moons.txt" # can be used to display pending moons in OBS
 
 # Borders for critical areas, given constant screen size
 KINGDOM_BORDERS = (161, 27, 211, 77)
@@ -165,6 +166,11 @@ def write_settings_to_file(updated_settings):
     settings = read_file_to_json(SETTINGS_PATH)
     return True
 
+# Allow the gui to write the pending moons of the selected kingdom to a file
+@eel.expose
+def log_pending_moons(pending_moons):
+    with open(PENDING_MOONS_PATH, "w+") as pending_moons_log_file:
+        pending_moons_log_file.write(pending_moons)
 
 ########################################################################################################################
 # Define Python-only functions
