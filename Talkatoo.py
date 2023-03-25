@@ -21,7 +21,7 @@ from util_functions import *
 
 
 # Each language performs best under different thresholds and values
-ASIAN_MOON_BOUNDS = (400, 525, 900, 575)
+ASIAN_MOON_BOUNDS = (300, 525, 950, 575)
 DEFAULT_MOON_BOUNDS = (250, 535, 1100, 585)
 JAPANESE_MOON_BOUNDS = (375, 535, 900, 590)
 
@@ -266,6 +266,7 @@ def normal_moons_to_check():
         to_check.extend(moons_by_kingdom["Cloud"])
         to_check.extend(moons_by_kingdom["Ruined"])
         to_check.extend(moons_by_kingdom["Dark"][1:])  # Exclude multi moon
+        print("\n".join([i["english"] for i in to_check]))
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
     return to_check
