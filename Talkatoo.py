@@ -158,8 +158,9 @@ def reset_run(skip_reset_confirmation):
 def write_settings_to_file(updated_settings):
     global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture
 
-    if not set_video_index(updated_settings["videoDevice"]["index"]):
-        return False
+    if updated_settings["videoDevice"] is not None:
+        if not set_video_index(updated_settings["videoDevice"]["index"]):
+            return False
 
     if not set_window_capture(updated_settings["windowCaptureName"]):
         return False
