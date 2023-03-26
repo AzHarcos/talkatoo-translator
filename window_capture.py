@@ -3,19 +3,19 @@ import win32gui, win32ui, win32con # pip install pywin32
 import ctypes
 
 user32 = ctypes.windll.user32
-def list_window_names():
-    window_names = []
+def list_open_windows():
+    open_windows = []
     def winEnumHandler(hwnd, _):
         if win32gui.IsWindowVisible(hwnd):
-            window_names.append({"hwnd": hwnd, "name": win32gui.GetWindowText(hwnd)})
+            open_windows.append({"hwnd": hwnd, "name": win32gui.GetWindowText(hwnd)})
 
     win32gui.EnumWindows(winEnumHandler, None)
-    return window_names
+    return open_windows
 class WindowCapture:
 
     # properties
-    w = 0
-    h = 0
+    width = 0
+    height = 0
     hwnd = None
     cropped_x = 0
     cropped_y = 0
@@ -31,47 +31,46 @@ class WindowCapture:
 
         # get the window size
         window_rect = win32gui.GetWindowRect(self.hwnd)
-        self.w = window_rect[2] - window_rect[0]
-        self.h = window_rect[3] - window_rect[1]
+        [left, top, right, bottom] = window_rect
+        self.width = right - left
+        self.height = bottom - top
 
         # account for the window border and titlebar and cut them off
         border_pixels = 8
         titlebar_pixels = 30
-        self.w = self.w - (border_pixels * 2)
-        self.h = self.h - titlebar_pixels - border_pixels
         self.cropped_x = border_pixels
         self.cropped_y = titlebar_pixels
+        self.width = self.width - (self.cropped_x * 2)
+        self.height = self.height - self.cropped_y - self.cropped_x
 
-        # set the cropped coordinates offset so we can translate screenshot
-        # images into actual screen positions
-        self.offset_x = window_rect[0] + self.cropped_x
-        self.offset_y = window_rect[1] + self.cropped_y
+        # set the cropped coordinates offset so we can translate screenshot images into actual screen positions
+        self.offset_x = left + self.cropped_x
+        self.offset_y = top + self.cropped_y
 
     def get_screenshot(self):
 
         # get the window image data
-        wDC = win32gui.GetWindowDC(self.hwnd)
-        dcObj = win32ui.CreateDCFromHandle(wDC)
+        window_dc = win32gui.GetWindowDC(self.hwnd)
+        dc_object = win32ui.CreateDCFromHandle(window_dc)
+        compatible_dc = dc_object.CreateCompatibleDC()
+        data_bitmap = win32ui.CreateBitmap()
+        data_bitmap.CreateCompatibleBitmap(dc_object, self.width, self.height)
+        compatible_dc.SelectObject(data_bitmap)
+        compatible_dc.BitBlt((0, 0), (self.width, self.height), dc_object, (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
 
-        user32.PrintWindow(self.hwnd, dcObj.GetSafeHdc(), 0x00000002)
-
-        cDC = dcObj.CreateCompatibleDC()
-        dataBitMap = win32ui.CreateBitmap()
-        dataBitMap.CreateCompatibleBitmap(dcObj, self.w, self.h)
-        cDC.SelectObject(dataBitMap)
-        cDC.BitBlt((0, 0), (self.w, self.h), dcObj, (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
+        # allow recording hardware accelerated windows
+        print_window_flag = 0x00000002
+        user32.PrintWindow(self.hwnd, dc_object.GetSafeHdc(), print_window_flag)
 
         # convert the raw data into a format opencv can read
-        #dataBitMap.SaveBitmapFile(cDC, 'debug.bmp')
-        signedIntsArray = dataBitMap.GetBitmapBits(True)
-        img = np.fromstring(signedIntsArray, dtype='uint8')
-        img.shape = (self.h, self.w, 4)
+        img = np.fromstring(data_bitmap.GetBitmapBits(True), dtype='uint8')
+        img.shape = (self.height, self.width, 4)
 
         # free resources
-        dcObj.DeleteDC()
-        cDC.DeleteDC()
-        win32gui.ReleaseDC(self.hwnd, wDC)
-        win32gui.DeleteObject(dataBitMap.GetHandle())
+        dc_object.DeleteDC()
+        compatible_dc.DeleteDC()
+        win32gui.ReleaseDC(self.hwnd, window_dc)
+        win32gui.DeleteObject(data_bitmap.GetHandle())
 
         # drop the alpha channel, or cv.matchTemplate() will throw an error like:
         #   error: (-215:Assertion failed) (depth == CV_8U || depth == CV_32F) && type == _templ.type()
