@@ -507,9 +507,7 @@ def mainloop():
 
 
 if __name__ == "__main__":
-    ########################################################################################################################
     # Define variables used for computation
-    ########################################################################################################################
     moons_by_kingdom, hint_arts = generate_moon_dict()
     kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
                     "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
@@ -549,16 +547,15 @@ if __name__ == "__main__":
         print("Setup complete! You may now approach the bird.\n")
 
 
-    # creating thread
-    audio_stream = threading.Thread(target=play_audio)
+    # Start audio, video, recognition
     video_stream = threading.Thread(target=show_video, args=(stream,))
-    rec_loop = threading.Thread(target=mainloop, args=())
+    audio_stream = threading.Thread(target=play_audio)
+    rec_loop = threading.Thread(target=mainloop)
 
     video_stream.start()
     audio_stream.start()
     rec_loop.start()
 
-    # wait until thread 1 is completely executed
     video_stream.join()
-    # wait until thread 2 is completely executed
+    audio_stream.join()
     rec_loop.join()
