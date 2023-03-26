@@ -1,17 +1,16 @@
 import cv2
 from time import time
-from window_capture import WindowCapture
+from window_capture import *
 import pyautogui # pip install pyautogui
 
-obs_window_title = next(title for title in pyautogui.getAllTitles() if "OBS" in title)
-print(obs_window_title)
-window_capture = WindowCapture(obs_window_title)
-print(window_capture)
+windows = list_window_names()
+projector_window = next(window for window in windows if "Projector" in window["name"])
 
 loop_time = time()
 while True:
 
     # get an updated image
+    window_capture = WindowCapture(projector_window["hwnd"])
     screenshot = window_capture.get_screenshot()
 
     cv2.imshow('Computer Vision', screenshot)

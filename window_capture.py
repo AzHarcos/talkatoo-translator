@@ -1,7 +1,16 @@
 import numpy as np
 import win32gui, win32ui, win32con # pip install pywin32
+import ctypes
 
+user32 = ctypes.windll.user32
+def list_window_names():
+    window_names = []
+    def winEnumHandler(hwnd, _):
+        if win32gui.IsWindowVisible(hwnd):
+            window_names.append({"hwnd": hwnd, "name": win32gui.GetWindowText(hwnd)})
 
+    win32gui.EnumWindows(winEnumHandler, None)
+    return window_names
 class WindowCapture:
 
     # properties
@@ -14,11 +23,11 @@ class WindowCapture:
     offset_y = 0
 
     # constructor
-    def __init__(self, window_name):
-        # find the handle for the window we want to capture
-        self.hwnd = win32gui.FindWindow(None, window_name)
-        if not self.hwnd:
-            raise Exception('Window not found: {}'.format(window_name))
+    def __init__(self, hwnd):
+        if hwnd is None:
+            self.hwnd = win32gui.GetDesktopWindow()
+        else:
+            self.hwnd = hwnd
 
         # get the window size
         window_rect = win32gui.GetWindowRect(self.hwnd)
@@ -43,6 +52,9 @@ class WindowCapture:
         # get the window image data
         wDC = win32gui.GetWindowDC(self.hwnd)
         dcObj = win32ui.CreateDCFromHandle(wDC)
+
+        user32.PrintWindow(self.hwnd, dcObj.GetSafeHdc(), 0x00000002)
+
         cDC = dcObj.CreateCompatibleDC()
         dataBitMap = win32ui.CreateBitmap()
         dataBitMap.CreateCompatibleBitmap(dcObj, self.w, self.h)
