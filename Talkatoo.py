@@ -17,7 +17,10 @@ from pygrabber.dshow_graph import FilterGraph  # pip install pygrabber
 import time
 import torch  # pip install torch
 import torchvision.transforms as transforms
+
+import window_capture
 from util_functions import *
+from window_capture import *
 
 
 # Each language performs best under different thresholds and values
@@ -121,6 +124,11 @@ def get_video_devices():
         })
     return available_cameras
 
+# Allow the gui to request the list of currently open windows
+@eel.expose
+def get_open_windows():
+    return list_open_windows()
+
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
 def reset_borders():
@@ -148,12 +156,15 @@ def reset_run(skip_reset_confirmation):
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture
 
-    success = set_video_index(updated_settings["videoDevice"]["index"])
-    if not success:
+    if not set_video_index(updated_settings["videoDevice"]["index"]):
         return False
 
+    if not set_window_capture(updated_settings["windowCaptureName"]):
+        return False
+
+    use_window_capture = updated_settings["useWindowCapture"]
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
     set_translate_from(updated_settings["inputLanguage"])
@@ -338,6 +349,11 @@ def set_video_index(new_index):
         stream.open(video_index)
         return False
 
+# reset window capture
+def set_window_capture(window_name):
+    # TODO: Implement
+    return True
+
 
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
@@ -383,6 +399,8 @@ settings = read_file_to_json(SETTINGS_PATH)
 if settings:
     translate_from = settings["inputLanguage"]
     translate_to = settings["outputLanguage"]
+    use_window_capture= settings["useWindowCapture"]
+    window_capture_name = settings["windowCaptureName"]
     video_index = get_index_for(settings["videoDevice"]["device_name"])
     is_postgame = settings["includePostGame"]
     include_extra_kingdoms = settings["includeWithoutTalkatoo"]
@@ -390,15 +408,19 @@ else:
     translate_from = DEFAULT_GAME_LANGUAGE
     translate_to = DEFAULT_GUI_LANGUAGE
     video_index = DEFAULT_VIDEO_INDEX
+    window_capture_name = None
+    use_window_capture = False
     is_postgame = True
     include_extra_kingdoms = True
 language_settings = LANGUAGES[translate_from]
 reader = easyocr.Reader([language_settings["Language"]], verbose=False)
 score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
 
+# TODO: Set up capture card only if use_window_capture=False, otherwise set up window capture
 # Set up capture card
 stream = cv2.VideoCapture(video_index)  # Set up capture card
 borders = reset_capture_borders()[0]  # Find borders to crop every iteration
+
 
 # Final setup variables
 change_kingdom = ""  # Confirmation variable for kingdom changes
