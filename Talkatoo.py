@@ -13,7 +13,9 @@ import easyocr  # pip install easyocr
 import eel  # pip install eel
 from json import dumps
 from PIL import Image, ImageGrab  # pip install pillow
+import pyaudio
 from pygrabber.dshow_graph import FilterGraph  # pip install pygrabber
+import threading
 import time
 import torch  # pip install torch
 import torchvision.transforms as transforms
@@ -171,6 +173,7 @@ def write_settings_to_file(updated_settings):
 def log_pending_moons(pending_moons):
     with open(PENDING_MOONS_PATH, "w+") as pending_moons_log_file:
         pending_moons_log_file.write(pending_moons)
+
 
 ########################################################################################################################
 # Define Python-only functions
@@ -363,148 +366,199 @@ def reset_capture_borders():
         print("[STATUS] -> Reset image borders")
     return borders, img_arr
 
- 
-########################################################################################################################
-# Define variables used for computation
-########################################################################################################################
-moons_by_kingdom, hint_arts = generate_moon_dict()
-kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
-                "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
-current_kingdom = "Cap"  # Start in first kingdom (Does not matter what it's initialized to)
-mentioned_moons = []  # list of moons mentioned by Talkatoo
-collected_moons = []  # list of auto-recognized collected moons
 
-# Load kingdom recognizer
-kindom_classifier = torch.jit.load("KingdomModel.zip")  # Pretrained kingdom recognizer, output 0-13 inclusive
-transform = transforms.PILToTensor()  # Needed to transform image
+def play_audio():
+    chunk_size = 1024
+    width = 2
+    channels = 2
+    sample_rate = 44100
 
-# Language setup
-settings = read_file_to_json(SETTINGS_PATH)
-if settings:
-    translate_from = settings["inputLanguage"]
-    translate_to = settings["outputLanguage"]
-    video_index = get_index_for(settings["videoDevice"]["device_name"])
-    is_postgame = settings["includePostGame"]
-    include_extra_kingdoms = settings["includeWithoutTalkatoo"]
-else:
-    translate_from = DEFAULT_GAME_LANGUAGE
-    translate_to = DEFAULT_GUI_LANGUAGE
-    video_index = DEFAULT_VIDEO_INDEX
-    is_postgame = True
-    include_extra_kingdoms = True
-language_settings = LANGUAGES[translate_from]
-reader = easyocr.Reader([language_settings["Language"]], verbose=False)
-score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese", "korean"] else score_alphabet
+    p = pyaudio.PyAudio()
+    audio_stream = p.open(format=p.get_format_from_width(width),
+                    channels=channels,
+                    rate=sample_rate,
+                    input=True,
+                    output=True,
+                    frames_per_buffer=chunk_size)
 
-# Set up capture card
-stream = cv2.VideoCapture(video_index)  # Set up capture card
-borders = reset_capture_borders()[0]  # Find borders to crop every iteration
-
-# Final setup variables
-change_kingdom = ""  # Confirmation variable for kingdom changes
-check_kingdom_at = time.time()  # Check right after start
-check_moon_at = time.time()  # Check right after start
-check_story_at = time.time()  # Check right after start
-old_time = time.time()  # start time for loop
-text_potential = 0  # So we don't read partial text
-
-# Set up Eel
-eel.init('gui')  # Initialize the gui package
-eel.start('index.html', port=8083, size=GUI_SIZE, block=False)  # start the GUI
-
-if VERBOSE:
-    print("Setup complete! You may now approach the bird.\n")
+    while True:
+        data = audio_stream.read(chunk_size)  # read audio stream
+        audio_stream.write(data, chunk_size)  # play back audio stream
+    audio_stream.stop_stream()
+    audio_stream.close()
+    p.terminate()
 
 
-########################################################################################################################
-# Begin main loop, where all of the detection happens
-########################################################################################################################
-while True:
-    new_time = time.time()
-    frame_time = new_time - old_time
-    old_time = new_time
-    eel.sleep(0.001)  # sleep of ~0.001 is the minimum allowed, still works
+def show_video(video_device):
+    global frame
+    while video_device.isOpened():
+        ret, frame = video_device.read()
+        if ret:
+            cv2.imshow('frame', frame)
+        else:
+            continue
+        if cv2.waitKey(1) & 0xFF == 256:  # never
+            break
 
-    # Retrieve and resize image
-    grabbed, frame = stream.read()
-    if not grabbed:
-        continue
-    image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    # Resizing image needed for distortion correction. NEAREST is ~8x faster than default but riskier so still testing
-    image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
 
-    # Check kingdom every 3s
-    if new_time > check_kingdom_at:
-        check_kingdom_at = new_time + KINGDOM_TIMER  # Reset timer
-        kingdom_check_im = image_to_bw(image.crop(KINGDOM_BORDERS))  # Must be 50x50 to work in model
-        new_kingdom = update_kingdom(kingdom_check_im)
-        if new_kingdom and new_kingdom != current_kingdom:  # strong match for new
-            if change_kingdom == new_kingdom:  # make sure we get two in a row of the same kingdom
-                current_kingdom = new_kingdom
-                eel.set_current_kingdom(current_kingdom)
-                change_kingdom = ""
-                if VERBOSE:
-                    print("Kingdom changed to: ", new_kingdom)
-            else:
-                change_kingdom = new_kingdom
-                check_kingdom_at = new_time + 1  # Perform the second check in 1s to be sure
-            continue  # if purple coin logo visible, not getting a moon or talking to Talkatoo
-        change_kingdom = ""
+def mainloop():
+    global current_kingdom, frame
 
-    # Moon recognition every half second
-    if new_time > check_moon_at:
-        moon_check_im = image_to_bw(image.crop(language_settings["Moon_Bounds"]), white=230)
-        if is_text_naive(moon_check_im, language_settings["Text_Height"], language_settings["Text_Lower"]+0.1, language_settings["Text_Upper"]+0.1, VERBOSE):
-            moon_matches = match_moon_text(moon_check_im, prepend="Collected")
-            if moon_matches:
-                if not collected_moons or moon_matches != collected_moons[-1]:
+    # Set up Eel
+    eel.init('gui')  # Initialize the gui package
+    eel.start('index.html', port=8083, size=GUI_SIZE, block=False)  # start the GUI
+
+    # Final setup variables
+    change_kingdom = ""  # Confirmation variable for kingdom changes
+    check_kingdom_at = time.time()  # Check right after start
+    check_moon_at = time.time()  # Check right after start
+    check_story_at = time.time()  # Check right after start
+    old_time = time.time()  # start time for loop
+    text_potential = 0  # So we don't read partial text
+
+    ########################################################################################################################
+    # Begin main loop, where all of the detection happens
+    ########################################################################################################################
+    while True:
+        new_time = time.time()
+        frame_time = new_time - old_time
+        old_time = new_time
+        eel.sleep(0.001)  # sleep of ~0.001 is the minimum allowed, still works
+
+        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Resizing image needed for distortion correction. NEAREST is ~8x faster than default but riskier so still testing
+        image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
+
+        # Check kingdom every 3s
+        if new_time > check_kingdom_at:
+            check_kingdom_at = new_time + KINGDOM_TIMER  # Reset timer
+            kingdom_check_im = image_to_bw(image.crop(KINGDOM_BORDERS))  # Must be 50x50 to work in model
+            new_kingdom = update_kingdom(kingdom_check_im)
+            if new_kingdom and new_kingdom != current_kingdom:  # strong match for new
+                if change_kingdom == new_kingdom:  # make sure we get two in a row of the same kingdom
+                    current_kingdom = new_kingdom
+                    eel.set_current_kingdom(current_kingdom)
+                    change_kingdom = ""
+                    if VERBOSE:
+                        print("Kingdom changed to: ", new_kingdom)
+                else:
+                    change_kingdom = new_kingdom
+                    check_kingdom_at = new_time + 1  # Perform the second check in 1s to be sure
+                continue  # if purple coin logo visible, not getting a moon or talking to Talkatoo
+            change_kingdom = ""
+
+        # Moon recognition every half second
+        if new_time > check_moon_at:
+            moon_check_im = image_to_bw(image.crop(language_settings["Moon_Bounds"]), white=230)
+            if is_text_naive(moon_check_im, language_settings["Text_Height"], language_settings["Text_Lower"]+0.1, language_settings["Text_Upper"]+0.1, VERBOSE):
+                moon_matches = match_moon_text(moon_check_im, prepend="Collected")
+                if moon_matches:
+                    if not collected_moons or moon_matches != collected_moons[-1]:
+                        collected_moons.append(moon_matches)
+                        eel.add_collected_moon(moon_matches)
+                        check_moon_at = new_time + 6  # 5s tends to be too short so wait 6s
+                        continue
+            check_moon_at = new_time + MOON_TIMER  # Reset timer
+
+        # Story moon recognition every half second
+        if new_time > check_story_at:
+            red_check_im = image.crop(RED_BORDERS)
+            if check_story_multi(red_check_im, expected="RED"):
+                story_check_im = image.crop(STORY_BORDERS)
+                if check_story_multi(story_check_im, expected="STORY"):
+                    if VERBOSE:
+                        print("Got a story moon!", end=" ")
+                    story_text = image.rotate(-3.5).crop(STORY_TEXT_BORDERS)
+                    story_text = image_to_bw(story_text, white=240)
+                    moon_matches = match_moon_text(story_text, prepend="Collected", story=True)
                     collected_moons.append(moon_matches)
                     eel.add_collected_moon(moon_matches)
-                    check_moon_at = new_time + 6  # 5s tends to be too short so wait 6s
+                    check_story_at = new_time + 10
                     continue
-        check_moon_at = new_time + MOON_TIMER  # Reset timer
 
-    # Story moon recognition every half second
-    if new_time > check_story_at:
-        red_check_im = image.crop(RED_BORDERS)
-        if check_story_multi(red_check_im, expected="RED"):
-            story_check_im = image.crop(STORY_BORDERS)
-            if check_story_multi(story_check_im, expected="STORY"):
-                if VERBOSE:
-                    print("Got a story moon!", end=" ")
-                story_text = image.rotate(-3.5).crop(STORY_TEXT_BORDERS)
-                story_text = image_to_bw(story_text, white=240)
-                moon_matches = match_moon_text(story_text, prepend="Collected", story=True)
-                collected_moons.append(moon_matches)
-                eel.add_collected_moon(moon_matches)
-                check_story_at = new_time + 10
-                continue
+                multi_check_im = image.crop(MULTI_BORDERS)
+                if check_story_multi(multi_check_im, expected="MULTI"):
+                    if VERBOSE:
+                        print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
+                    multi_text = image.rotate(-3.5).crop(STORY_TEXT_BORDERS)
+                    multi_text = image_to_bw(multi_text, white=240)
+                    moon_matches = match_moon_text(multi_text, prepend="Collected", multi=True)
+                    collected_moons.append(moon_matches)
+                    eel.add_collected_moon(moon_matches)
+                    check_story_at = new_time + 10
+                    continue
 
-            multi_check_im = image.crop(MULTI_BORDERS)
-            if check_story_multi(multi_check_im, expected="MULTI"):
-                if VERBOSE:
-                    print("Got a multi moon!", end=" ")  # Don't bother with OCR since moon border makes it unreliable
-                multi_text = image.rotate(-3.5).crop(STORY_TEXT_BORDERS)
-                multi_text = image_to_bw(multi_text, white=240)
-                moon_matches = match_moon_text(multi_text, prepend="Collected", multi=True)
-                collected_moons.append(moon_matches)
-                eel.add_collected_moon(moon_matches)
-                check_story_at = new_time + 10
-                continue
+            check_story_at = new_time + STORY_MOON_TIMER
 
-        check_story_at = new_time + STORY_MOON_TIMER
-
-    # Talkatoo text recognition, every frame
-    talkatoo_text, poss_text = talkatoo_preprocess_better(image.crop(language_settings["Talkatoo_Bounds"]), current_kingdom)
-    if poss_text:
-        text_potential += 1
-        if text_potential * frame_time > 0.19 and text_potential >= 2 and frame_time <= 0.3:  # Not waiting on a match
+        # Talkatoo text recognition, every frame
+        talkatoo_text, poss_text = talkatoo_preprocess_better(image.crop(language_settings["Talkatoo_Bounds"]), current_kingdom)
+        if poss_text:
+            text_potential += 1
+            if text_potential * frame_time > 0.19 and text_potential >= 2 and frame_time <= 0.3:  # Not waiting on a match
+                text_potential = 0
+                if is_text_naive(talkatoo_text, language_settings["Text_Height"], language_settings["Text_Lower"], language_settings["Text_Upper"], VERBOSE):  # Use text classifier to hopefully avoid unnecessary OCR passes
+                    moon_matches = match_moon_text(talkatoo_text, prepend="Unlocked")
+                    if moon_matches:  # Found at least one match
+                        if not mentioned_moons or moon_matches != mentioned_moons[-1]:  # Allow nonconsecutive duplicates
+                            mentioned_moons.append(moon_matches)
+                            eel.add_mentioned_moon(moon_matches)
+        else:
             text_potential = 0
-            if is_text_naive(talkatoo_text, language_settings["Text_Height"], language_settings["Text_Lower"], language_settings["Text_Upper"], VERBOSE):  # Use text classifier to hopefully avoid unnecessary OCR passes
-                moon_matches = match_moon_text(talkatoo_text, prepend="Unlocked")
-                if moon_matches:  # Found at least one match
-                    if not mentioned_moons or moon_matches != mentioned_moons[-1]:  # Allow nonconsecutive duplicates
-                        mentioned_moons.append(moon_matches)
-                        eel.add_mentioned_moon(moon_matches)
+
+
+if __name__ == "__main__":
+    ########################################################################################################################
+    # Define variables used for computation
+    ########################################################################################################################
+    moons_by_kingdom, hint_arts = generate_moon_dict()
+    kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
+                    "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
+    current_kingdom = "Cap"  # Start in first kingdom (Does not matter what it's initialized to)
+    mentioned_moons = []  # list of moons mentioned by Talkatoo
+    collected_moons = []  # list of auto-recognized collected moons
+
+    # Load kingdom recognizer
+    kindom_classifier = torch.jit.load("KingdomModel.zip")  # Pretrained kingdom recognizer, output 0-13 inclusive
+    transform = transforms.PILToTensor()  # Needed to transform image
+
+    # Language setup
+    settings = read_file_to_json(SETTINGS_PATH)
+    if settings:
+        translate_from = settings["inputLanguage"]
+        translate_to = settings["outputLanguage"]
+        video_index = get_index_for(settings["videoDevice"]["device_name"])
+        is_postgame = settings["includePostGame"]
+        include_extra_kingdoms = settings["includeWithoutTalkatoo"]
     else:
-        text_potential = 0
+        translate_from = DEFAULT_GAME_LANGUAGE
+        translate_to = DEFAULT_GUI_LANGUAGE
+        video_index = DEFAULT_VIDEO_INDEX
+        is_postgame = True
+        include_extra_kingdoms = True
+    language_settings = LANGUAGES[translate_from]
+    reader = easyocr.Reader([language_settings["Language"]], verbose=False)
+    score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese",
+                                                      "korean"] else score_alphabet
+
+    # Set up capture card
+    stream = cv2.VideoCapture(video_index)  # Set up capture card
+    frame = None
+    borders = reset_capture_borders()[0]  # Find borders to crop every iteration
+
+    if VERBOSE:
+        print("Setup complete! You may now approach the bird.\n")
+
+
+    # creating thread
+    audio_stream = threading.Thread(target=play_audio)
+    video_stream = threading.Thread(target=show_video, args=(stream,))
+    rec_loop = threading.Thread(target=mainloop, args=())
+
+    video_stream.start()
+    audio_stream.start()
+    rec_loop.start()
+
+    # wait until thread 1 is completely executed
+    video_stream.join()
+    # wait until thread 2 is completely executed
+    rec_loop.join()
