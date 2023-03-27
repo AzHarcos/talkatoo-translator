@@ -1,5 +1,6 @@
 html {
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .image-container {
@@ -131,6 +132,12 @@ li {
 
 .v-card-text {
   font-size: 15px;
+}
+
+.v-card-subtitle {
+  font-size: 15px;
+  color: white;
+  opacity: 0.8;
 }
 
 .v-card .v-card {

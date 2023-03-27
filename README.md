@@ -13,10 +13,12 @@ The goal of this project was to create a tool for recognizing and translating th
     - Otherwise, you'll need to manually add Python to your PATH (https://realpython.com/add-python-to-path/) and install pip (https://pip.pypa.io/en/stable/installation/).
 
 4. Open your terminal. If you're on Mac or Linux, it's an app called "Terminal", if you're on Windows then use the Command Prompt. (If you're not sure how to find it, use the search bar).
-5. Run the command ```python --version``` by typing it out and pressing the Enter key. On Mac and Linux you might need to use ```python3 --version``` instead. If it gives an error, Python was not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/. If it tells you that the version is 3.10.10, then it has been set up correctly. If it's another 3.X version, then your default version of Python is not 3.10.10, but your program will likely still work.
+5. Run the command ```python --version``` by typing it out and pressing the Enter key. On Mac and Linux you might need to use ```python3 --version``` instead. If it gives an error('python' is not recognized as an internal or external command, operable program or batch file), Python was likely not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/. If it tells you that the version is 3.10.10, then it has been set up correctly. If it's another 3.X version, then your default version of Python is not 3.10.10, but your program will likely still work. If you still get an error, you can look here to try to fix the issue: https://stackoverflow.com/questions/24186823/python-not-recognized-in-windows-cmd-even-after-adding-to-path. But, if you don't want to bother, you can do the following. 
+    - Search for "Python", and find the file path to an app called "Python 3.10 (64 bit)" or similar. Note that Windows might take you to the Shortcut filepath-if this is the case, then right-click on the Python app and go to its file location. You know if you're in the right spot if you see folders such as DLLs, Tools, Lib, Scripts.
+    - Copy whatever this path is on your machine (i.e. ```C:/Python310/python.exe```) and use it instead of ```python``` for all of these commands. For example, ```C:/Python310/python.exe --version```.
 6. Install the necessary dependencies (external Python code used within our project).
    - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo-translator/talkatoo-translator-1.0.0-testing```.
-   - Run ```pip install -r requirements.txt``` to install the necessary packages
+   - Run ```pip install -r requirements.txt``` to install the necessary packages (if this doesn't work, use the Python path from step 5 troubleshooting and use ```C:/Python311/python.exe -m pip install -r requirements.txt``` instead).
    - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
    - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, ```pip install pillow==9.4.0```.
 
@@ -24,7 +26,7 @@ The goal of this project was to create a tool for recognizing and translating th
 To run the program:
 - If you prefer to use your command line/terminal:
     - Run ```cd talkatoo_path``` in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is ```cd C:/Users/biakko/Downloads/talkatoo-translator/talkatoo-translator-1.0.0-testing```.
-    - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac.
+    - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac. As in earlier steps, you can also insert the path to your Python executable instead, such as ```C:/Python311/python.exe Talkatoo.py```.
     - The program should now be running (it may take several seconds to boot up).
 - IDLE:
     - IDLE is a free Python interpreter that comes with Python (unless you chose to exclude it in the custom installation). You can just open Talkatoo.py within the IDLE application and select "Run" on the top menu, then "Run Module".
@@ -54,13 +56,10 @@ If you encounter errors, you do not have the packages properly installed. You ca
 # Troubleshooting
 - My capture card isn't showing up!
     - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, there are a few options. For all of these, try to ensure your resolution is at least 1280x720.
-        - The first will only be helpful for those with Elgato cards and fairly high end PCs, called Elgato StreamLink. You can find out about it here: https://help.elgato.com/hc/en-us/articles/360028241631. For this you will also need NDI Webcam(Windows) or NDI Virtual Input(Mac), which can be installed with the NDI Tools package. This sends the capture card's video feed to a virtual camera that can be used as an input device in our program. You can download it here: https://ndi.tv/tools/#download-tools.
-        - For lower-end PCs and capture cards, the best current option is the OBS Virtual Camera. To use it, you'll want this plugin: https://github.com/Avasam/obs-virtual-cam/releases. You can follow the instructions on the main page to install it: https://github.com/Avasam/obs-virtual-cam.
-            - To run the Virtual Camera plugin instead of the integrated one, you want to start it from the "Tools" menu at the top of the OBS window.
-            - You can now open the OBS Virtual Camera in the Talkatoo app, and use your OBS canvas as the input device. For this, make sure that the game takes up the full screen, and that you are not blocking the areas marked on the below image, as these are used for various parts of the model.
-            - Unfortunately, the resolution of the OBS Virtual Camera output tends to be very low, and the program will likely suffer for it.
-        - We are currently looking into better solutions to this issue. Please let us know if you find a solution that works well for you.
-      
+        - The first solution is through our Video Stream player. This comes with the app, and you just need to enable it within the settings menu. It will play full-size video and audio from your capture card, which can be used as a Window Share in OBS. Please feel free to report any synchronization issues should they arise.
+        - The second solution is also included as of the second version of our app, using Window Sharing. This only will work on Windows. With this, you can take your OBS canvas, pull out a Full Screen Projector, and then use that as input for our program. We recommend creating the projector from the capture card source, but if you have reason to use your whole canvas, then just be sure not to cover any of the marked areas in the below image.
+        - The third and final option will only be helpful for those with Elgato cards and fairly high end PCs, called Elgato StreamLink. You can find out about it here: https://help.elgato.com/hc/en-us/articles/360028241631. For this you will also need NDI Webcam(Windows) or NDI Virtual Input(Mac), which can be installed with the NDI Tools package. This sends the capture card's video feed to a virtual camera that can be used as an input device in our program. You can download it here: https://ndi.tv/tools/#download-tools.
+        - OBS Virtual Camera may seem appealing but it has not been able to produce a high enough resolution for us in testing and should not be expected to work well.
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
 
 

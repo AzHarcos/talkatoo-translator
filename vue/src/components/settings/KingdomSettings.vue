@@ -158,6 +158,6 @@
 
 <style>
   .slider-width {
-    max-width: 220px;
+    max-width: 200px;
   }
 </style>

@@ -140,6 +140,8 @@
       openResetConfirmationDialog();
     }
   });
+
+  window.addEventListener('beforeunload', () => globalProperties.$eel.shutdown());
 </script>
 
 <template>
@@ -160,6 +162,7 @@
         </v-tab>
       </v-tabs>
       <v-icon
+        v-if="!state.showSettings"
         @click="openResetConfirmationDialog"
         icon="mdi-history"
         size="30"
@@ -188,7 +191,7 @@
         </div>
       </v-container>
     </v-main>
-    <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="2000">
+    <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="4000">
       {{ state.snackbar.text }}
       <template v-slot:actions>
         <v-icon
