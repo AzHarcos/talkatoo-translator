@@ -516,7 +516,11 @@ def show_video():
         else:
             ret, frame = stream.read()
         if ret and output_video:
-            cv2.imshow('Video Stream', frame)
+            try:
+                cv2.imshow('Video Stream', frame)
+            except cv2.error:
+                pass  # in some rare cases, switching causes an error
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             output_video = False
     cv2.destroyAllWindows()
