@@ -130,6 +130,16 @@ def is_video_playing():
 def is_audio_playing():
     return output_audio
 
+# Allow the gui to see possible audio devices
+@eel.expose
+def get_audio_devices():
+    available_devices = []
+    for i in range(0, p.get_host_api_info_by_index(0).get('deviceCount')):
+        if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+            available_devices.append({"index": i,
+                                      "device_name": p.get_device_info_by_host_api_device_index(0, i).get('name')})
+    return available_devices
+
 # Allow the gui to see possible capture cards and names
 @eel.expose
 def get_video_devices():
@@ -502,19 +512,19 @@ def reset_capture_borders():
 
 
 def play_audio():
-    global output_audio
+    global output_audio, p
     chunk_size = 1024
     width = 2
     channels = 2
     sample_rate = 44100
 
-    p = pyaudio.PyAudio()
     audio_input = p.open(format=p.get_format_from_width(width),
                     channels=channels,
                     rate=sample_rate,
                     input=True,
                     output=True,
-                    frames_per_buffer=chunk_size)
+                    frames_per_buffer=chunk_size,
+                    input_device_index=4)
 
     while running:
         if output_audio:
@@ -705,6 +715,7 @@ if __name__ == "__main__":
                                                       "korean"] else score_alphabet
 
     # Set up video source
+    p = pyaudio.PyAudio()
     stream = cv2.VideoCapture(video_index)  # Set up capture card
     window_stream = None
     set_window_capture(window_capture_name, True)  # Set up window capture
