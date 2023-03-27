@@ -140,6 +140,8 @@
       openResetConfirmationDialog();
     }
   });
+
+  window.addEventListener('beforeunload', () => globalProperties.$eel.shutdown());
 </script>
 
 <template>
