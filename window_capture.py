@@ -1,18 +1,23 @@
-import numpy as np
-import win32gui, win32ui, win32con # pip install pywin32
 import ctypes
+import numpy as np
+from PIL import ImageGrab
+import win32gui, win32ui, win32con # pip install pywin32
 
 user32 = ctypes.windll.user32
+
+
 def list_open_windows():
     open_windows = []
+
     def winEnumHandler(hwnd, _):
         if win32gui.IsWindowVisible(hwnd):
             open_windows.append({"hwnd": hwnd, "name": win32gui.GetWindowText(hwnd)})
 
     win32gui.EnumWindows(winEnumHandler, None)
     return open_windows
-class WindowCapture:
 
+
+class WindowCapture:
     # properties
     width = 0
     height = 0
@@ -30,22 +35,13 @@ class WindowCapture:
             self.hwnd = hwnd
 
         # get the window size
-        window_rect = win32gui.GetWindowRect(self.hwnd)
-        [left, top, right, bottom] = window_rect
-        self.width = right - left
-        self.height = bottom - top
-
-        # account for the window border and titlebar and cut them off
-        border_pixels = 8
-        titlebar_pixels = 31
-        self.cropped_x = border_pixels
-        self.cropped_y = titlebar_pixels
-        self.width = self.width - (self.cropped_x * 2)
-        self.height = self.height - self.cropped_y - self.cropped_x
-
-        # set the cropped coordinates offset so we can translate screenshot images into actual screen positions
-        self.offset_x = left + self.cropped_x
-        self.offset_y = top + self.cropped_y
+        self.width, self.height = ImageGrab.grab().size  # screen size
+        self.cropped_x = 3
+        self.cropped_y = 3
+        self.width -= 4
+        self.height -= 1
+        self.offset_x = 0
+        self.offset_y = 0
 
     def get_screenshot(self):
         try:
