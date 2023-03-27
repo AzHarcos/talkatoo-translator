@@ -28,26 +28,30 @@
     }, 100);
   }
 
-  globalProperties.$eel
-    .get_open_windows()()
-    .then((response) => {
-      if (!response || response.length === 0) {
-        return;
-      }
+  function loadOpenWindows() {
+    globalProperties.$eel
+      .get_open_windows()()
+      .then((response) => {
+        if (!response || response.length === 0) {
+          return;
+        }
 
-      openWindowNames.value = response.filter((window) => window.name).map((window) => window.name);
+        openWindowNames.value = response
+          .filter((window) => window.name)
+          .map((window) => window.name);
 
-      if (!settings.windowCaptureName) return;
+        if (!settings.windowCaptureName) return;
 
-      const currentWindowCapture = response.find(
-        (window) => window.name === settings.windowCaptureName
-      );
+        const currentWindowCapture = response.find(
+          (window) => window.name === settings.windowCaptureName
+        );
 
-      if (currentWindowCapture) {
-        selectedWindowCapture.value = currentWindowCapture.name;
-      }
-    })
-    .catch(() => state.showError('Error getting list of open windows.'));
+        if (currentWindowCapture) {
+          selectedWindowCapture.value = currentWindowCapture.name;
+        }
+      })
+      .catch(() => state.showError('Error getting list of open windows.'));
+  }
 
   globalProperties.$eel
     .get_video_devices()()
@@ -197,6 +201,8 @@
         });
     },
   });
+
+  loadOpenWindows();
 </script>
 
 <template>
@@ -207,7 +213,7 @@
       Virtual Camera is NOT recommended due to compatibility and image quality issues.
       <p v-if="openWindowNames.length > 0">
         Note: If your capture card can't be used by two programs simultaneously, you can use a
-        window capture for the image recognition instead.
+        window capture of the OBS Fullscreen Projector for the image recognition instead.
       </p>
     </v-card-subtitle>
     <v-card-text class="mt-4">
@@ -216,6 +222,7 @@
           <v-autocomplete
             v-if="settings.useWindowCapture"
             v-model="selectedWindowCapture"
+            @click="loadOpenWindows"
             @update:model-value="setWindowCapture"
             label="Window Capture"
             :items="openWindowNames"

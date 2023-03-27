@@ -95,7 +95,7 @@
         </v-btn>
         <v-switch
           v-model="autoPlayOutputStreams"
-          label="Start automatically"
+          label="Play on startup"
           hide-details
           color="primary"></v-switch>
       </div>
