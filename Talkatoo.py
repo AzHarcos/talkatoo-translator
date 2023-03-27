@@ -437,11 +437,10 @@ def set_window_capture(window_name, force_update=False):
                 if VERBOSE:
                     print("[STATUS] -> Started window capture for {}".format(window_name))
                 return True
-        else:
-            if VERBOSE:
-                print("[STATUS] -> Could not start window capture for {}, make sure the window is not minimized.".format(window_name))
-            window_stream = WindowCapture(None) if current_stream is None else current_stream
-            return False
+        if VERBOSE:
+            print("[STATUS] -> Could not start window capture for {}, make sure the window is not minimized.".format(window_name))
+        window_stream = WindowCapture(None) if current_stream is None else current_stream
+        return False
     else:
         print("[STATUS] -> Window capture is only supported on Windows OS.")
     return False
