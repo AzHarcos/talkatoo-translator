@@ -4,7 +4,6 @@
   import { useState } from '@/stores/state';
   import { useSettings } from '@/stores/settings';
   import useCurrentInstance from '@/hooks/useCurrentInstance';
-  import { scrollToBottom } from '@/composables';
   import { DEBUG_IMAGE_PATH } from '../../consts/filePaths';
 
   const { globalProperties } = useCurrentInstance();
@@ -18,6 +17,16 @@
   const selectedDevice = ref(undefined);
   const showImage = ref(false);
   const debugImageUrl = ref('');
+
+  function scrollToTitle() {
+    setTimeout(() => {
+      const scrollContainer = document.querySelector('.scroll-container');
+      const title = document.getElementById('card');
+      if (scrollContainer && title) {
+        scrollContainer.scrollTop = title.offsetTop - 16;
+      }
+    }, 100);
+  }
 
   globalProperties.$eel
     .get_open_windows()()
@@ -76,7 +85,7 @@
 
   function setWindowCapture(windowName) {
     showImage.value = true;
-    setTimeout(scrollToBottom, 100);
+    scrollToTitle();
     debugImageUrl.value = '';
 
     globalProperties.$eel
@@ -104,7 +113,7 @@
   function setVideoDevice(device, keepImageHidden) {
     if (!keepImageHidden) {
       showImage.value = true;
-      setTimeout(scrollToBottom, 100);
+      scrollToTitle();
       debugImageUrl.value = '';
     }
 
@@ -132,7 +141,7 @@
 
   function resetBorders() {
     showImage.value = true;
-    setTimeout(scrollToBottom, 100);
+    scrollToTitle();
     debugImageUrl.value = '';
 
     globalProperties.$eel
@@ -163,7 +172,7 @@
     },
     set(value) {
       showImage.value = true;
-      setTimeout(scrollToBottom, 100);
+      scrollToTitle();
       debugImageUrl.value = '';
 
       globalProperties.$eel
@@ -191,7 +200,7 @@
 </script>
 
 <template>
-  <v-card flat>
+  <v-card flat id="card">
     <v-card-title> Video Input </v-card-title>
     <v-card-subtitle>
       Select your capture card as the input video device and test if it's setup properly. Using OBS

@@ -81,10 +81,3 @@ export function scrollToTop() {
     scrollContainer.scrollTop = 0;
   }
 }
-
-export function scrollToBottom() {
-  const scrollContainer = document.querySelector('.scroll-container');
-  if (scrollContainer) {
-    scrollContainer.scrollTop = scrollContainer.scrollHeight;
-  }
-}
