@@ -717,10 +717,9 @@ if __name__ == "__main__":
 
     video_stream = threading.Thread(target=show_video)
     audio_stream = threading.Thread(target=play_audio)
-    rec_loop = threading.Thread(target=mainloop)
     running = True  # Ends everything
 
     # creating thread
     video_stream.start()
     audio_stream.start()
-    rec_loop.start()
+    mainloop()
