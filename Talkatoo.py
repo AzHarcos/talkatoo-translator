@@ -138,7 +138,6 @@ def reset_borders(window_hwnd=None):
     global window_stream
 
     if window_hwnd is not None:
-        del window_stream
         window_stream = WindowCapture(window_hwnd)
 
     new_borders, img_arr = reset_capture_borders()
@@ -172,7 +171,7 @@ def start_output_video(audio=False):
         video_stream.start()
         if audio:
             audio_stream.start()
-    elif not audio_is_running and audio:
+    elif not output_audio and audio:
         audio_stream.start()
 
 # Allow GUI to start/stop video
@@ -384,19 +383,19 @@ def set_video_index(new_index):
 
 
 # reset window capture
-def set_window_capture(window_name, initial_call=False):
+def set_window_capture(window_name, force_update=False):
     global this_OS, use_window_capture, window_capture_name, window_stream
 
-    if not initial_call and window_capture_name == window_name:
+    if not force_update and window_capture_name == window_name:
         return True
 
     if this_OS == "Windows":
         if window_name is None:
-            del window_stream
             window_capture_name = None
             window_stream = WindowCapture(None)
             return True
 
+        current_stream = window_stream
         windows = list_open_windows()
         windows = [window for window in windows if window_name == window["name"]]
         if windows:
@@ -407,27 +406,34 @@ def set_window_capture(window_name, initial_call=False):
                 if VERBOSE:
                     print("[STATUS] -> Started window capture for {}".format(window_name))
                 return True
-            else:
-                if VERBOSE:
-                    print("[STATUS] -> Could not start window capture for {}, make sure the window is not minimized.".format(window_name))
-                return False
         else:
-            print("[STATUS] -> Window capture is only supported on Windows OS.")
+            if VERBOSE:
+                print("[STATUS] -> Could not start window capture for {}, make sure the window is not minimized.".format(window_name))
+            window_stream = WindowCapture(None) if current_stream is None else current_stream
+            return False
+    else:
+        print("[STATUS] -> Window capture is only supported on Windows OS.")
     return False
 
 # switch between video device and window capture
 def set_use_window_capture(_use_window_capture):
     global this_OS, use_window_capture, window_capture_name, window_stream
 
+    if this_OS != "Windows" and _use_window_capture:
+        print("[STATUS] -> Window capture is only supported on Windows OS.")
+        return False
+
     if use_window_capture == _use_window_capture:
         return True
 
-    use_window_capture = _use_window_capture and this_OS == "Windows"
+    use_window_capture = _use_window_capture
+    if use_window_capture:
+        print("[STATUS] -> Switched to window capture.")
+        return set_window_capture(window_capture_name, True)
+    else:
+        print("[STATUS] -> Switched to video device.")
+        return reset_borders()
 
-    if VERBOSE:
-        print("[STATUS] -> Switched to {}.".format("window capture" if use_window_capture else "video device"))
-
-    return reset_borders()
 
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):

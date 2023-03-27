@@ -188,7 +188,7 @@
         </div>
       </v-container>
     </v-main>
-    <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="2000">
+    <v-snackbar v-model="state.snackbar.visible" :color="state.snackbar.color" timeout="4000">
       {{ state.snackbar.text }}
       <template v-slot:actions>
         <v-icon
