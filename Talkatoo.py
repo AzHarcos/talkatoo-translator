@@ -310,7 +310,7 @@ def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
         to_check = story_moons_to_check(multi=True)
         max_corr, ans, possible = check_matches_story_multi(ocr_text, score_thresh, to_check)
     else:
-        to_check = normal_moons_to_check()
+        to_check = normal_moons_to_check(prepend == "Unlocked")
         max_corr, ans, possible = check_matches(ocr_text, score_thresh, to_check)
 
     if max_corr >= score_thresh:  # If any reasonable matches, guarantee match if story moon
@@ -327,11 +327,14 @@ def match_moon_text(moon_img, prepend="Unlocked", story=False, multi=False):
 
 
 # Get normal moons
-def normal_moons_to_check():
+def normal_moons_to_check(is_talkatoo):
     # Note that MAX dicts are 1-indexed as SMO moons are 1-indexed
     if is_postgame:
         if current_kingdom == "Mushroom":
-            to_check = moons_by_kingdom["Mushroom"][:32] + moons_by_kingdom["Mushroom"][38:]
+            if is_talkatoo:
+                to_check = moons_by_kingdom["Mushroom"][:32] + moons_by_kingdom["Mushroom"][38:43]
+            else:
+                to_check = moons_by_kingdom["Mushroom"][:32] + moons_by_kingdom["Mushroom"][38:]
         else:
             to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
         to_check.extend(moons_by_kingdom["Cloud"])
@@ -714,10 +717,9 @@ if __name__ == "__main__":
 
     video_stream = threading.Thread(target=show_video)
     audio_stream = threading.Thread(target=play_audio)
-    rec_loop = threading.Thread(target=mainloop)
     running = True  # Ends everything
 
     # creating thread
     video_stream.start()
     audio_stream.start()
-    rec_loop.start()
+    mainloop()
