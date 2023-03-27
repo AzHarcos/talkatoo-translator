@@ -133,6 +133,12 @@ li {
   font-size: 15px;
 }
 
+.v-card-subtitle {
+  font-size: 15px;
+  color: white;
+  opacity: 0.8;
+}
+
 .v-card .v-card {
   background-color: transparent;
 }

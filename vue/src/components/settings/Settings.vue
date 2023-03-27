@@ -1,7 +1,8 @@
 <script setup>
-  import ImageRecognitionSettings from './ImageRecognitionSettings.vue';
-  import KingdomsPicker from './KingdomSettings.vue';
   import LanguageSettings from './LanguageSettings.vue';
+  import KingdomSettings from './KingdomSettings.vue';
+  import VideoInputSettings from './VideoInputSettings.vue';
+  import VideoOutputSettings from './VideoOutputSettings.vue';
 
   import { useState } from '@/stores/state';
 
@@ -19,13 +20,14 @@
       <v-icon @click="closeSettings" size="1em" class="close-icon clickable">mdi-close</v-icon>
     </v-card-title>
     <v-card-subtitle>
-      Set your preferences regarding languages, displayed kingdoms and image recognition. Settings
-      will be saved automatically.
+      Set your preferences regarding languages, displayed kingdoms and video input / output.
+      Settings will be saved automatically.
     </v-card-subtitle>
     <v-card-text>
       <LanguageSettings class="border mb-4" />
-      <KingdomsPicker class="border mb-4" />
-      <ImageRecognitionSettings class="border" />
+      <KingdomSettings class="border mb-4" />
+      <VideoInputSettings class="border mb-4" />
+      <VideoOutputSettings class="border" />
     </v-card-text>
     <v-card-actions class="pa-4 pt-0">
       <v-btn @click="closeSettings" class="ml-auto clickable" variant="outlined"> Close </v-btn>

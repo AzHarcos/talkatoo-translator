@@ -160,6 +160,7 @@
         </v-tab>
       </v-tabs>
       <v-icon
+        v-if="!state.showSettings"
         @click="openResetConfirmationDialog"
         icon="mdi-history"
         size="30"

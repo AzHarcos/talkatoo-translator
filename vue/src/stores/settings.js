@@ -70,7 +70,7 @@ export const useSettings = defineStore('settings', {
       this.setUseWindowCapture(settings.useWindowCapture);
       this.setWindowCaptureName(settings.windowCaptureName);
       this.setVideoDevice(settings.videoDevice);
-      this.setPlayVideoOutput(settings.setPlayVideoOutput);
+      this.setPlayVideoOutput(settings.playVideoOutput);
       this.setPlayAudioOutput(settings.playAudioOutput);
     },
   },

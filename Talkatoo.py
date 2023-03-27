@@ -120,6 +120,11 @@ def get_open_windows():
 def get_settings():
     return settings
 
+# Allow the gui to check if the video stream is playing
+@eel.expose
+def is_video_playing():
+    return output_video and output_video_started
+
 # Allow the gui to see possible capture cards and names
 @eel.expose
 def get_video_devices():
@@ -161,30 +166,33 @@ def reset_run(skip_reset_confirmation):
         return write_settings_to_file(updated_settings)
     return True
 
-# Allow GUI to start/stop video
+# Allow GUI to start video
 @eel.expose
-def start_output_video(audio=False):
-    global video_stream, audio_stream, output_video, output_audio
+def start_output_video():
+    global output_video, output_video_started, output_audio_started
     output_video = True
-    output_audio = audio
-    if not output_video:
+    if not output_video_started:
+        output_video_started = True
         video_stream.start()
-        if audio:
+        if output_audio and not output_audio_started:
+            output_audio_started = True
             audio_stream.start()
-    elif not output_audio and audio:
-        audio_stream.start()
+    print("[STATUS] -> started video output")
+    return True
 
-# Allow GUI to start/stop video
+# Allow GUI to stop video
 @eel.expose
 def stop_output_video():
     global output_audio, output_video
     output_video = False
     output_audio = False
+    print("[STATUS] -> stopped video output")
+    return True
 
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, output_video
 
     if updated_settings["windowCaptureName"] is not None:
         if not set_window_capture(updated_settings["windowCaptureName"]):
@@ -196,6 +204,9 @@ def write_settings_to_file(updated_settings):
     if not set_use_window_capture(updated_settings["useWindowCapture"]):
         return False
 
+    set_output_audio(updated_settings["playAudioOutput"])
+
+    output_video = updated_settings["playVideoOutput"]
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
     set_translate_from(updated_settings["inputLanguage"])
@@ -434,6 +445,13 @@ def set_use_window_capture(_use_window_capture):
         print("[STATUS] -> Switched to video device.")
         return reset_borders()
 
+# set whether to include audio in the video stream
+def set_output_audio(use_audio):
+    global output_audio, output_audio_started
+    output_audio = use_audio
+    if output_audio and not output_audio_started:
+        output_audio_started = True
+        audio_stream.start()
 
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
@@ -676,9 +694,13 @@ if __name__ == "__main__":
     rec_loop = threading.Thread(target=mainloop)
 
     # creating thread
+    output_video_started = False
+    output_audio_started = False
     if output_video:
+        output_video_started = True
         video_stream.start()
         if output_audio:
+            output_audio_started = True
             audio_stream.start()
     rec_loop.start()
 

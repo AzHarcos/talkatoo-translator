@@ -192,17 +192,18 @@
 
 <template>
   <v-card flat>
-    <v-card-title> Image recognition </v-card-title>
+    <v-card-title> Video Input </v-card-title>
     <v-card-subtitle>
-      Select your capture card as the input video device and test if it's setup properly.
-      <span v-if="openWindowNames.length > 0"
-        >Alternatively you can use a window capture for the image recognition instead.</span
-      >
+      Select your capture card as the input video device and test if it's setup properly. Using OBS
+      Virtual Camera is NOT recommended due to compatibility and image quality issues.
+      <p v-if="openWindowNames.length > 0">
+        Note: If your capture card can't be used by two programs simultaneously, you can use a
+        window capture for the image recognition instead.
+      </p>
     </v-card-subtitle>
-
     <v-card-text class="mt-4">
       <v-row align="center">
-        <v-col cols="12" sm="6">
+        <v-col cols="12" md="6">
           <v-autocomplete
             v-if="settings.useWindowCapture"
             v-model="selectedWindowCapture"
@@ -223,7 +224,7 @@
             return-object
             class="clickable"></v-autocomplete>
         </v-col>
-        <v-col cols="6" sm="3">
+        <v-col cols="6" md="3">
           <div class="d-flex">
             <v-btn @click="resetBorders" class="clickable mr-6">Show preview image</v-btn>
             <v-btn @click="useWindowCapture = !useWindowCapture">
@@ -241,10 +242,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<style scoped>
-  .fixed-width {
-    width: 300px;
-    max-width: 300px;
-  }
-</style>
