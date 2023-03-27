@@ -156,6 +156,26 @@ def reset_run(skip_reset_confirmation):
         return write_settings_to_file(updated_settings)
     return True
 
+# Allow GUI to start/stop video
+@eel.expose
+def start_output_video(audio=False):
+    global video_stream, audio_stream, output_video, output_audio
+    output_video = True
+    output_audio = audio
+    if not output_video:
+        video_stream.start()
+        if audio:
+            audio_stream.start()
+    elif not audio_is_running and audio:
+        audio_stream.start()
+
+# Allow GUI to start/stop video
+@eel.expose
+def stop_output_video():
+    global output_audio, output_video
+    output_video = False
+    output_audio = False
+
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
@@ -407,30 +427,29 @@ def play_audio():
     sample_rate = 44100
 
     p = pyaudio.PyAudio()
-    audio_stream = p.open(format=p.get_format_from_width(width),
+    audio_input = p.open(format=p.get_format_from_width(width),
                     channels=channels,
                     rate=sample_rate,
                     input=True,
                     output=True,
                     frames_per_buffer=chunk_size)
 
-    while True:
-        if output_audio:
-            data = audio_stream.read(chunk_size)  # read audio stream
-            audio_stream.write(data, chunk_size)  # play back audio stream
-    audio_stream.stop_stream()
-    audio_stream.close()
+    while output_audio:
+        data = audio_input.read(chunk_size)  # read audio stream
+        audio_input.write(data, chunk_size)  # play back audio stream
+    audio_input.stop_stream()
+    audio_input.close()
     p.terminate()
 
 
 def show_video():
     global frame, stream, window_stream, output_video
-    while True:
+    while output_video:
         if use_window_capture:
             ret, frame = True, window_stream.get_screenshot()
         else:
             ret, frame = stream.read()
-        if ret and output_video:
+        if ret:
             cv2.imshow('Video Stream', frame)
         else:
             continue
@@ -598,15 +617,18 @@ if __name__ == "__main__":
     if VERBOSE:
         print("Setup complete! You may now approach the bird.\n")
 
-    # creating thread
     video_stream = threading.Thread(target=show_video)
     audio_stream = threading.Thread(target=play_audio)
     rec_loop = threading.Thread(target=mainloop)
 
-    video_stream.start()
-    audio_stream.start()
+    # creating thread
+    if output_video:
+        video_stream.start()
+        if output_audio:
+            audio_stream.start()
     rec_loop.start()
 
+    # Wait for threads to terminate in case we want to do something later
     video_stream.join()
     audio_stream.join()
     rec_loop.join()
