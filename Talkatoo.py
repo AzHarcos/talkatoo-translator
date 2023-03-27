@@ -125,6 +125,11 @@ def get_settings():
 def is_video_playing():
     return output_video
 
+# Allow the gui to check if audio is playing
+@eel.expose
+def is_audio_playing():
+    return output_audio
+
 # Allow the gui to see possible capture cards and names
 @eel.expose
 def get_video_devices():
@@ -184,10 +189,25 @@ def start_output_video():
 # Allow GUI to stop video
 @eel.expose
 def stop_output_video():
-    global output_audio, output_video
+    global output_video
     output_video = False
-    output_audio = False
     print("[STATUS] -> stopped video output")
+    return True
+
+# Allow GUI to start audio
+@eel.expose
+def start_output_audio():
+    global output_audio
+    output_audio = True
+    print("[STATUS] -> started audio output")
+    return True
+
+# Allow GUI to stop audio
+@eel.expose
+def stop_output_audio():
+    global output_audio
+    output_audio = False
+    print("[STATUS] -> stopped audio output")
     return True
 
 # Allow the gui to save the current settings to a file
@@ -203,8 +223,6 @@ def write_settings_to_file(updated_settings):
             return False
     if not set_use_window_capture(updated_settings["useWindowCapture"]):
         return False
-
-    output_audio = updated_settings["playAudioOutput"]
 
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
@@ -510,17 +528,21 @@ def play_audio():
 
 def show_video():
     global frame, stream, window_stream, output_video
+    window_is_open = False
     while running:
         if use_window_capture:
             ret, frame = True, window_stream.get_screenshot()
         else:
             ret, frame = stream.read()
         if ret and output_video:
+            window_is_open = True
             try:
                 cv2.imshow('Video Stream', frame)
             except cv2.error:
                 pass  # in some rare cases, switching causes an error
-
+        elif window_is_open:
+            cv2.destroyWindow("Video Stream")
+            window_is_open = False
         if cv2.waitKey(1) & 0xFF == ord('q'):
             output_video = False
     cv2.destroyAllWindows()
@@ -663,8 +685,8 @@ if __name__ == "__main__":
             video_index = DEFAULT_VIDEO_INDEX
         is_postgame = settings["includePostGame"]
         include_extra_kingdoms = settings["includeWithoutTalkatoo"]
-        output_audio = settings["playAudioOutput"]
-        output_video = settings["playVideoOutput"]
+        output_audio = settings["autoPlayOutputStreams"]
+        output_video = settings["autoPlayOutputStreams"]
     else:
         translate_from = DEFAULT_GAME_LANGUAGE
         translate_to = DEFAULT_GUI_LANGUAGE

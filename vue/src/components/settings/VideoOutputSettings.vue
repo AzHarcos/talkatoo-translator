@@ -10,11 +10,18 @@
   const state = useState();
   const settings = useSettings();
   const playingVideoStream = ref(false);
+  const playingAudio = ref(false);
 
   globalProperties.$eel
     .is_video_playing()()
     .then((response) => {
       playingVideoStream.value = response;
+    });
+
+  globalProperties.$eel
+    .is_audio_playing()()
+    .then((response) => {
+      playingAudio.value = response;
     });
 
   function toggleVideoStream() {
@@ -36,37 +43,32 @@
       });
   }
 
-  const playVideoOutput = computed({
-    get() {
-      return settings.playVideoOutput;
-    },
-    set(value) {
-      globalProperties.$eel
-        .write_settings_to_file({
-          ...settings.$state,
-          playVideoOutput: value,
-        })()
-        .then(() => {
-          settings.setPlayVideoOutput(value);
-        })
-        .catch(() => {
-          state.showError('Error updating settings.');
-        });
-    },
-  });
+  function toggleAudio() {
+    const eelFunction = playingAudio.value
+      ? globalProperties.$eel.stop_output_audio
+      : globalProperties.$eel.start_output_audio;
 
-  const playAudioOutput = computed({
+    eelFunction()()
+      .then(() => {
+        playingAudio.value = !playingAudio.value;
+      })
+      .catch(() => {
+        state.showError(`Error ${playingAudio.value ? 'stopping' : 'starting'} audio.`);
+      });
+  }
+
+  const autoPlayOutputStreams = computed({
     get() {
-      return settings.playAudioOutput;
+      return settings.autoPlayOutputStreams;
     },
     set(value) {
       globalProperties.$eel
         .write_settings_to_file({
           ...settings.$state,
-          playAudioOutput: value,
+          autoPlayOutputStreams: value,
         })()
         .then(() => {
-          settings.setPlayAudioOutput(value);
+          settings.setAutoPlayOutputStreams(value);
         })
         .catch(() => {
           state.showError('Error updating settings.');
@@ -83,25 +85,19 @@
       seperate window. It can be used to check the frame rate or to create a window capture in OBS
       if the other solutions do not work for you.
     </v-card-subtitle>
-    <v-card-text class="mt-4">
-      <div class="d-flex flex-column flex-md-row align-md-center">
+    <v-card-text>
+      <div class="d-flex flex-wrap align-center">
         <v-btn @click="toggleVideoStream">
           {{ playingVideoStream ? 'Stop video output' : 'Start video output' }}
         </v-btn>
-        <template v-if="playingVideoStream || playVideoOutput">
-          <v-switch
-            v-model="playVideoOutput"
-            label="Start automatically"
-            hide-details
-            class="slider-width mt-3 ml-md-8 mt-md-0"
-            color="primary"></v-switch>
-          <v-switch
-            v-model="playAudioOutput"
-            label="Include audio"
-            hide-details
-            class="slider-width ml-md-2"
-            color="primary"></v-switch>
-        </template>
+        <v-btn @click="toggleAudio" class="mx-6">
+          {{ playingAudio ? 'Mute audio' : 'Play audio' }}
+        </v-btn>
+        <v-switch
+          v-model="autoPlayOutputStreams"
+          label="Start automatically"
+          hide-details
+          color="primary"></v-switch>
       </div>
     </v-card-text>
   </v-card>

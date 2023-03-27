@@ -14,8 +14,7 @@ export const useSettings = defineStore('settings', {
       useWindowCapture: false,
       windowCaptureName: undefined,
       videoDevice: undefined,
-      playVideoOutput: false,
-      playAudioOutput: false,
+      autoPlayOutputStreams: false,
     };
   },
   actions: {
@@ -52,11 +51,8 @@ export const useSettings = defineStore('settings', {
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
-    setPlayVideoOutput(playVideoOutput) {
-      this.playVideoOutput = playVideoOutput;
-    },
-    setPlayAudioOutput(playAudioOutput) {
-      this.playAudioOutput = playAudioOutput;
+    setAutoPlayOutputStreams(autoPlayOutputStreams) {
+      this.autoPlayOutputStreams = autoPlayOutputStreams;
     },
     setSettings(settings) {
       this.setInputLanguage(settings.inputLanguage);
@@ -70,8 +66,7 @@ export const useSettings = defineStore('settings', {
       this.setUseWindowCapture(settings.useWindowCapture);
       this.setWindowCaptureName(settings.windowCaptureName);
       this.setVideoDevice(settings.videoDevice);
-      this.setPlayVideoOutput(settings.playVideoOutput);
-      this.setPlayAudioOutput(settings.playAudioOutput);
+      this.setAutoPlayOutputStreams(settings.autoPlayOutputStreams);
     },
   },
 });
