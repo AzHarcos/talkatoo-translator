@@ -17,6 +17,7 @@ export const useState = defineStore('state', {
         visible: false,
         text: '',
         color: 'black',
+        timeout: 7000,
       },
     };
   },

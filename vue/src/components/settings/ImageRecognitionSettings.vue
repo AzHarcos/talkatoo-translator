@@ -49,7 +49,11 @@
 
       videoDevices.value = response;
 
-      if (!settings.videoDevice) return;
+      if (!settings.videoDevice) {
+        selectedDevice.value = response[0];
+        setVideoDevice(response[0], true);
+        return;
+      }
 
       const currentDevice = response.find(
         (device) => device.device_name === settings.videoDevice.device_name
@@ -86,21 +90,23 @@
           debugImageUrl.value = DEBUG_IMAGE_PATH;
         } else {
           selectedWindowCapture.value = undefined;
-          state.showError('Error starting window capture.');
+          state.showError('Error starting window capture, make sure the window is not minimized.');
           document.activeElement.blur();
         }
       })
       .catch(() => {
         selectedWindowCapture.value = undefined;
-        state.showError('Error starting window capture.');
+        state.showError('Error starting window capture, make sure the window is not minimized.');
         document.activeElement.blur();
       });
   }
 
-  function setVideoDevice(device) {
-    showImage.value = true;
-    setTimeout(scrollToBottom, 100);
-    debugImageUrl.value = '';
+  function setVideoDevice(device, keepImageHidden) {
+    if (!keepImageHidden) {
+      showImage.value = true;
+      setTimeout(scrollToBottom, 100);
+      debugImageUrl.value = '';
+    }
 
     globalProperties.$eel
       .write_settings_to_file({
@@ -135,11 +141,19 @@
         if (response) {
           debugImageUrl.value = DEBUG_IMAGE_PATH;
         } else {
-          state.showError('Error resetting borders.');
+          state.showError(
+            `Error creating preview image${
+              settings.useWindowCapture ? ', make sure the window is not minimized' : ''
+            }.`
+          );
         }
       })
       .catch(() => {
-        state.showError('Error resetting borders.');
+        state.showError(
+          `Error creating preview image${
+            settings.useWindowCapture ? ', make sure the window is not minimized' : ''
+          }.`
+        );
       });
   }
 
@@ -148,13 +162,26 @@
       return settings.useWindowCapture;
     },
     set(value) {
+      showImage.value = true;
+      setTimeout(scrollToBottom, 100);
+      debugImageUrl.value = '';
+
       globalProperties.$eel
         .write_settings_to_file({
           ...settings.$state,
           useWindowCapture: value,
         })()
-        .then(() => {
+        .then((success) => {
           settings.setUseWindowCapture(value);
+          if (success) {
+            debugImageUrl.value = DEBUG_IMAGE_PATH;
+          } else {
+            state.showError(
+              `Error creating preview image ${
+                settings.useWindowCapture ? ', make sure the window is not minimized' : ''
+              }.`
+            );
+          }
         })
         .catch(() => {
           state.showError('Error updating settings.');

@@ -14,6 +14,8 @@ export const useSettings = defineStore('settings', {
       useWindowCapture: false,
       windowCaptureName: undefined,
       videoDevice: undefined,
+      playVideoOutput: false,
+      playAudioOutput: false,
     };
   },
   actions: {
@@ -38,6 +40,9 @@ export const useSettings = defineStore('settings', {
     setIsHardcore(isHardcore) {
       this.isHardcore = isHardcore;
     },
+    setSkipResetConfirmation(skipResetConfirmation) {
+      this.skipResetConfirmation = skipResetConfirmation;
+    },
     setUseWindowCapture(useWindowCapture) {
       this.useWindowCapture = useWindowCapture;
     },
@@ -47,8 +52,11 @@ export const useSettings = defineStore('settings', {
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
-    setSkipResetConfirmation(skipResetConfirmation) {
-      this.skipResetConfirmation = skipResetConfirmation;
+    setPlayVideoOutput(playVideoOutput) {
+      this.playVideoOutput = playVideoOutput;
+    },
+    setPlayAudioOutput(playAudioOutput) {
+      this.playAudioOutput = playAudioOutput;
     },
     setSettings(settings) {
       this.setInputLanguage(settings.inputLanguage);
@@ -58,10 +66,12 @@ export const useSettings = defineStore('settings', {
       this.setWoodedFirst(settings.woodedFirst);
       this.setSeasideFirst(settings.seasideFirst);
       this.setIsHardcore(settings.isHardcore);
+      this.setSkipResetConfirmation(settings.skipResetConfirmation);
       this.setUseWindowCapture(settings.useWindowCapture);
       this.setWindowCaptureName(settings.windowCaptureName);
       this.setVideoDevice(settings.videoDevice);
-      this.setSkipResetConfirmation(settings.skipResetConfirmation);
+      this.setPlayVideoOutput(settings.setPlayVideoOutput);
+      this.setPlayAudioOutput(settings.playAudioOutput);
     },
   },
 });

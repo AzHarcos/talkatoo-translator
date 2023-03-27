@@ -67,7 +67,7 @@ LANGUAGES = {
                          "Moon_Bounds": DEFAULT_MOON_BOUNDS, "Talkatoo_Bounds": DEFAULT_TALKATOO_BOUNDS_2}
              }
 
-DEFAULT_GAME_LANGUAGE = "chinese_simplified"
+DEFAULT_GAME_LANGUAGE = "chinese_traditional"
 DEFAULT_GUI_LANGUAGE = "english"
 DEFAULT_VIDEO_INDEX = 0
 FULLSCREEN = True  # Fullscreen on Windows
@@ -134,7 +134,13 @@ def get_video_devices():
 
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
-def reset_borders():
+def reset_borders(window_hwnd=None):
+    global window_stream
+
+    if window_hwnd is not None:
+        del window_stream
+        window_stream = WindowCapture(window_hwnd)
+
     new_borders, img_arr = reset_capture_borders()
     if not new_borders:
         return None
@@ -181,14 +187,16 @@ def stop_output_video():
 def write_settings_to_file(updated_settings):
     global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture
 
-    if updated_settings["useWindowCapture"]:
+    if updated_settings["windowCaptureName"] is not None:
         if not set_window_capture(updated_settings["windowCaptureName"]):
             return False
-    elif updated_settings["videoDevice"]:
+    elif updated_settings["videoDevice"] is not None:
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
 
-    use_window_capture = updated_settings["useWindowCapture"]
+    if not set_use_window_capture(updated_settings["useWindowCapture"]):
+        return False
+
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
     set_translate_from(updated_settings["inputLanguage"])
@@ -376,17 +384,50 @@ def set_video_index(new_index):
 
 
 # reset window capture
-def set_window_capture(window_name):
-    global this_OS, use_window_capture, window_stream
+def set_window_capture(window_name, initial_call=False):
+    global this_OS, use_window_capture, window_capture_name, window_stream
+
+    if not initial_call and window_capture_name == window_name:
+        return True
+
     if this_OS == "Windows":
+        if window_name is None:
+            del window_stream
+            window_capture_name = None
+            window_stream = WindowCapture(None)
+            return True
+
         windows = list_open_windows()
         windows = [window for window in windows if window_name == window["name"]]
         if windows:
             target_window = windows[0]
-            window_stream = WindowCapture(target_window["hwnd"])
-            return True
-    return None
+            window_capture_name = target_window["name"]
+            reset_success = reset_borders(target_window["hwnd"])
+            if reset_success:
+                if VERBOSE:
+                    print("[STATUS] -> Started window capture for {}".format(window_name))
+                return True
+            else:
+                if VERBOSE:
+                    print("[STATUS] -> Could not start window capture for {}, make sure the window is not minimized.".format(window_name))
+                return False
+        else:
+            print("[STATUS] -> Window capture is only supported on Windows OS.")
+    return False
 
+# switch between video device and window capture
+def set_use_window_capture(_use_window_capture):
+    global this_OS, use_window_capture, window_capture_name, window_stream
+
+    if use_window_capture == _use_window_capture:
+        return True
+
+    use_window_capture = _use_window_capture and this_OS == "Windows"
+
+    if VERBOSE:
+        print("[STATUS] -> Switched to {}.".format("window capture" if use_window_capture else "video device"))
+
+    return reset_borders()
 
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
@@ -403,17 +444,21 @@ def update_kingdom(img_arr):
 def reset_capture_borders():
     global borders
     if use_window_capture:
-        grabbed, next_frame = True, window_stream.get_screenshot()
-        img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
-        borders = (0, 0, img_arr.shape[1], img_arr.shape[0])
+        next_frame = window_stream.get_screenshot()
+        grabbed = next_frame is not None
     else:
         grabbed, next_frame = stream.read()
-        img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
-        borders = determine_borders(img_arr)
 
     if not grabbed:
         print("[STATUS] -> Could not reset image borders")
         return None, None
+
+    img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
+    if use_window_capture:
+        borders = (0, 0, img_arr.shape[1], img_arr.shape[0])
+    else:
+        borders = determine_borders(img_arr)
+
     if VERBOSE:
         print("[STATUS] -> Reset image borders")
     return borders, img_arr
@@ -585,31 +630,34 @@ if __name__ == "__main__":
     if settings:
         translate_from = settings["inputLanguage"]
         translate_to = settings["outputLanguage"]
+        use_window_capture = settings["useWindowCapture"]
         window_capture_name = settings["windowCaptureName"]
         if settings["videoDevice"]:
             video_index = get_index_for(settings["videoDevice"]["device_name"])
         else:
-            video_index = None
+            video_index = DEFAULT_VIDEO_INDEX
         is_postgame = settings["includePostGame"]
         include_extra_kingdoms = settings["includeWithoutTalkatoo"]
-        output_audio = True
-        output_video = True
+        output_audio = settings["playAudioOutput"]
+        output_video = settings["playVideoOutput"]
     else:
         translate_from = DEFAULT_GAME_LANGUAGE
         translate_to = DEFAULT_GUI_LANGUAGE
+        use_window_capture = False
         window_capture_name = None
         video_index = DEFAULT_VIDEO_INDEX
-        is_postgame = True
-        include_extra_kingdoms = True
-        output_audio = True
-        output_video = True
+        is_postgame = False
+        include_extra_kingdoms = False
+        output_audio = False
+        output_video = False
     language_settings = LANGUAGES[translate_from]
     reader = easyocr.Reader([language_settings["Language"]], verbose=False)
     score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese",
                                                       "korean"] else score_alphabet
 
     # Set up video source
-    use_window_capture = set_window_capture(window_capture_name) and settings["useWindowCapture"]
+    window_stream = None
+    set_window_capture(window_capture_name, True) # Set up window capture
     stream = cv2.VideoCapture(video_index)  # Set up capture card
     frame = None
     borders = reset_capture_borders()[0]  # Find borders to crop every iteration
