@@ -123,7 +123,7 @@ def get_settings():
 # Allow the gui to check if the video stream is playing
 @eel.expose
 def is_video_playing():
-    return output_video and output_video_started
+    return output_video
 
 # Allow the gui to see possible capture cards and names
 @eel.expose
@@ -166,17 +166,18 @@ def reset_run(skip_reset_confirmation):
         return write_settings_to_file(updated_settings)
     return True
 
+# Allow eel to ruin everything
+@eel.expose
+def shutdown():
+    global running
+    print("Shutdown initiated")
+    running = False
+
 # Allow GUI to start video
 @eel.expose
 def start_output_video():
-    global output_video, output_video_started, output_audio_started
+    global output_video
     output_video = True
-    if not output_video_started:
-        output_video_started = True
-        video_stream.start()
-        if output_audio and not output_audio_started:
-            output_audio_started = True
-            audio_stream.start()
     print("[STATUS] -> started video output")
     return True
 
@@ -192,21 +193,19 @@ def stop_output_video():
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, output_video
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, output_video, output_audio
 
-    if updated_settings["windowCaptureName"] is not None:
+    if updated_settings["useWindowCapture"]:
         if not set_window_capture(updated_settings["windowCaptureName"]):
             return False
     elif updated_settings["videoDevice"] is not None:
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
-
     if not set_use_window_capture(updated_settings["useWindowCapture"]):
         return False
 
-    set_output_audio(updated_settings["playAudioOutput"])
+    output_audio = updated_settings["playAudioOutput"]
 
-    output_video = updated_settings["playVideoOutput"]
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
     set_translate_from(updated_settings["inputLanguage"])
@@ -426,6 +425,7 @@ def set_window_capture(window_name, force_update=False):
         print("[STATUS] -> Window capture is only supported on Windows OS.")
     return False
 
+
 # switch between video device and window capture
 def set_use_window_capture(_use_window_capture):
     global this_OS, use_window_capture, window_capture_name, window_stream
@@ -445,13 +445,6 @@ def set_use_window_capture(_use_window_capture):
         print("[STATUS] -> Switched to video device.")
         return reset_borders()
 
-# set whether to include audio in the video stream
-def set_output_audio(use_audio):
-    global output_audio, output_audio_started
-    output_audio = use_audio
-    if output_audio and not output_audio_started:
-        output_audio_started = True
-        audio_stream.start()
 
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
@@ -503,27 +496,31 @@ def play_audio():
                     output=True,
                     frames_per_buffer=chunk_size)
 
-    while output_audio:
-        data = audio_input.read(chunk_size)  # read audio stream
-        audio_input.write(data, chunk_size)  # play back audio stream
+    while running:
+        if output_audio:
+            data = audio_input.read(chunk_size)  # read audio stream
+            audio_input.write(data, chunk_size)  # play back audio stream
+        else:
+            time.sleep(1)
     audio_input.stop_stream()
     audio_input.close()
     p.terminate()
+    print("Audio finished!")
 
 
 def show_video():
     global frame, stream, window_stream, output_video
-    while output_video:
+    while running:
         if use_window_capture:
             ret, frame = True, window_stream.get_screenshot()
         else:
             ret, frame = stream.read()
-        if ret:
+        if ret and output_video:
             cv2.imshow('Video Stream', frame)
-        else:
-            continue
-        if cv2.waitKey(1) & 0xFF == 256:  # never
-            break
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            output_video = False
+    cv2.destroyAllWindows()
+    print("Finished video!")
 
 
 def mainloop():
@@ -544,7 +541,7 @@ def mainloop():
     ########################################################################################################################
     # Begin main loop, where all of the detection happens
     ########################################################################################################################
-    while True:
+    while running:
         new_time = time.time()
         frame_time = new_time - old_time
         old_time = new_time
@@ -680,9 +677,9 @@ if __name__ == "__main__":
                                                       "korean"] else score_alphabet
 
     # Set up video source
-    window_stream = None
-    set_window_capture(window_capture_name, True) # Set up window capture
     stream = cv2.VideoCapture(video_index)  # Set up capture card
+    window_stream = None
+    set_window_capture(window_capture_name, True)  # Set up window capture
     frame = None
     borders = reset_capture_borders()[0]  # Find borders to crop every iteration
 
@@ -692,19 +689,9 @@ if __name__ == "__main__":
     video_stream = threading.Thread(target=show_video)
     audio_stream = threading.Thread(target=play_audio)
     rec_loop = threading.Thread(target=mainloop)
+    running = True  # Ends everything
 
     # creating thread
-    output_video_started = False
-    output_audio_started = False
-    if output_video:
-        output_video_started = True
-        video_stream.start()
-        if output_audio:
-            output_audio_started = True
-            audio_stream.start()
+    video_stream.start()
+    audio_stream.start()
     rec_loop.start()
-
-    # Wait for threads to terminate in case we want to do something later
-    video_stream.join()
-    audio_stream.join()
-    rec_loop.join()
