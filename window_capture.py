@@ -2,6 +2,7 @@ import ctypes
 import numpy as np
 from PIL import ImageGrab
 import win32gui, win32ui, win32con # pip install pywin32
+from pywintypes import error
 
 user32 = ctypes.windll.user32
 
@@ -81,6 +82,6 @@ class WindowCapture:
             img = np.ascontiguousarray(img)
 
             return img
-        except win32ui.error:
+        except win32ui.error | error:
             print("[STATUS] -> Could not read window capture image")
             return None
