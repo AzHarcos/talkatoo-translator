@@ -9,8 +9,46 @@
 
   const state = useState();
   const settings = useSettings();
+  const audioDevices = ref([]);
+  const selectedAudioDevice = ref(undefined);
   const playingVideoStream = ref(false);
   const playingAudio = ref(false);
+
+  function loadAudioDevices() {
+    globalProperties.$eel
+      .get_audio_devices()()
+      .then((response) => {
+        if (!response || response.length === 0) {
+          return;
+        }
+
+        audioDevices.value = response;
+
+        if (!settings.audioDevice) {
+          selectedAudioDevice.value = response[0];
+          setAudioDevice(response[0]);
+          return;
+        }
+
+        const currentDevice = response.find(
+          (device) => device.device_name === settings.audioDevice.device_name
+        );
+
+        if (!currentDevice) return;
+
+        if (currentDevice.index === settings.audioDevice.index) {
+          selectedAudioDevice.value = currentDevice;
+          return;
+        }
+
+        settings.setAudioDevice({
+          device_name: currentDevice.device_name,
+          index: currentDevice.index,
+        });
+        selectedAudioDevice.value = settings.audioDevice;
+      })
+      .catch(() => state.showError('Error getting list of audio devices.'));
+  }
 
   globalProperties.$eel
     .is_video_playing()()
@@ -23,6 +61,28 @@
     .then((response) => {
       playingAudio.value = response;
     });
+
+  function setAudioDevice(device) {
+    globalProperties.$eel
+      .write_settings_to_file({
+        ...settings.$state,
+        audioDevice: device,
+      })()
+      .then((success) => {
+        if (success) {
+          settings.setAudioDevice(device);
+        } else {
+          selectedAudioDevice.value = undefined;
+          state.showError('Error setting audio device.');
+          document.activeElement.blur();
+        }
+      })
+      .catch(() => {
+        selectedAudioDevice.value = undefined;
+        state.showError('Error setting audio device.');
+        document.activeElement.blur();
+      });
+  }
 
   function toggleVideoStream() {
     const eelFunction = playingVideoStream.value
@@ -75,6 +135,8 @@
         });
     },
   });
+
+  loadAudioDevices();
 </script>
 
 <template>
@@ -86,19 +148,34 @@
       if the other solutions do not work for you.
     </v-card-subtitle>
     <v-card-text>
-      <div class="d-flex flex-wrap align-center">
-        <v-btn @click="toggleVideoStream">
-          {{ playingVideoStream ? 'Stop video output' : 'Start video output' }}
-        </v-btn>
-        <v-btn @click="toggleAudio" class="mx-6">
-          {{ playingAudio ? 'Mute audio' : 'Play audio' }}
-        </v-btn>
-        <v-switch
-          v-model="autoPlayOutputStreams"
-          label="Play on startup"
-          hide-details
-          color="primary"></v-switch>
-      </div>
+      <v-row align="center">
+        <v-col cols="12" md="6">
+          <v-autocomplete
+            v-model="selectedAudioDevice"
+            @click="loadAudioDevices"
+            @update:model-value="setAudioDevice"
+            label="Audio Device"
+            :items="audioDevices"
+            item-value="index"
+            item-title="device_name"
+            hide-details
+            return-object
+            class="clickable"></v-autocomplete>
+        </v-col>
+        <div class="d-flex flex-wrap align-center">
+          <v-btn @click="toggleVideoStream" class="ml-6">
+            {{ playingVideoStream ? 'Stop video output' : 'Start video output' }}
+          </v-btn>
+          <v-btn @click="toggleAudio" class="mx-6">
+            {{ playingAudio ? 'Mute audio' : 'Play audio' }}
+          </v-btn>
+          <v-switch
+            v-model="autoPlayOutputStreams"
+            label="Play on startup"
+            hide-details
+            color="primary"></v-switch>
+        </div>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

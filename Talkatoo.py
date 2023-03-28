@@ -218,6 +218,9 @@ def write_settings_to_file(updated_settings):
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
 
+    #if updated_settings["audioDevice"] is not None:
+        #TODO: set audio device?
+
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
     set_translate_from(updated_settings["inputLanguage"])

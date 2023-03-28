@@ -12,6 +12,7 @@ export const useSettings = defineStore('settings', {
       isHardcore: false,
       skipResetConfirmation: false,
       videoDevice: undefined,
+      audioDevice: undefined,
       autoPlayOutputStreams: false,
     };
   },
@@ -43,6 +44,9 @@ export const useSettings = defineStore('settings', {
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
+    setAudioDevice(audioDevice) {
+      this.audioDevice = audioDevice;
+    },
     setAutoPlayOutputStreams(autoPlayOutputStreams) {
       this.autoPlayOutputStreams = autoPlayOutputStreams;
     },
@@ -56,6 +60,7 @@ export const useSettings = defineStore('settings', {
       this.setIsHardcore(settings.isHardcore);
       this.setSkipResetConfirmation(settings.skipResetConfirmation);
       this.setVideoDevice(settings.videoDevice);
+      this.setAudioDevice(settings.audioDevice);
       this.setAutoPlayOutputStreams(settings.autoPlayOutputStreams);
     },
   },
