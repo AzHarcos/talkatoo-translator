@@ -23,26 +23,26 @@ class WindowCapture:
     width = 0
     height = 0
     hwnd = None
-    cropped_x = 0
-    cropped_y = 0
-    offset_x = 0
-    offset_y = 0
+    crop_left = 0
+    crop_top = 0
+    crop_right = 0
+    crop_bottom = 0
 
     # constructor
-    def __init__(self, hwnd):
+    def __init__(self, hwnd, crop_values=None):
         if hwnd is None:
             self.hwnd = win32gui.GetDesktopWindow()
         else:
             self.hwnd = hwnd
 
         # get the window size
-        self.width, self.height = ImageGrab.grab().size  # screen size
-        self.cropped_x = 3
-        self.cropped_y = 3
-        self.width -= 4
-        self.height -= 1
-        self.offset_x = 0
-        self.offset_y = 0
+        left, top, right, bottom = win32gui.GetWindowRect(self.hwnd)
+        self.width = right - left
+        self.height = bottom - top
+
+        # get the crop values
+        if crop_values is not None:
+            self.crop_left, self.crop_top, self.crop_right, self.crop_bottom = crop_values
 
     def get_screenshot(self):
         try:
@@ -53,7 +53,7 @@ class WindowCapture:
             data_bitmap = win32ui.CreateBitmap()
             data_bitmap.CreateCompatibleBitmap(dc_object, self.width, self.height)
             compatible_dc.SelectObject(data_bitmap)
-            compatible_dc.BitBlt((0, 0), (self.width, self.height), dc_object, (self.cropped_x, self.cropped_y), win32con.SRCCOPY)
+            compatible_dc.BitBlt((0, 0), (self.width, self.height), dc_object, (0, 0), win32con.SRCCOPY)
 
             # allow recording hardware accelerated windows
             print_window_flag = 0x00000002
@@ -81,7 +81,10 @@ class WindowCapture:
             # https://github.com/opencv/opencv/issues/14866#issuecomment-580207109
             img = np.ascontiguousarray(img)
 
+            # crop image
+            img = img[self.crop_top:self.height-self.crop_bottom, self.crop_left:self.width-self.crop_right]
+
             return img
-        except win32ui.error | error:
+        except (win32ui.error, error):
             print("[STATUS] -> Could not read window capture image")
             return None

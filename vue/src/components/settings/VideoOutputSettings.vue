@@ -87,10 +87,10 @@
     </v-card-subtitle>
     <v-card-text>
       <div class="d-flex flex-wrap align-center">
-        <v-btn @click="toggleVideoStream">
+        <v-btn @click="toggleVideoStream" class="clickable">
           {{ playingVideoStream ? 'Stop video output' : 'Start video output' }}
         </v-btn>
-        <v-btn @click="toggleAudio" class="mx-6">
+        <v-btn @click="toggleAudio" class="mx-6 clickable">
           {{ playingAudio ? 'Mute audio' : 'Play audio' }}
         </v-btn>
         <v-switch

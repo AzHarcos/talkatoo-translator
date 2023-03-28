@@ -158,7 +158,7 @@ def reset_borders(window_hwnd=None):
     global window_stream
 
     if window_hwnd is not None:
-        window_stream = WindowCapture(window_hwnd)
+        window_stream = WindowCapture(window_hwnd, window_capture_cropping)
 
     new_borders, img_arr = reset_capture_borders()
     if not new_borders:
@@ -223,7 +223,7 @@ def stop_output_audio():
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, output_video, output_audio
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, window_capture_cropping, output_video, output_audio
 
     if updated_settings["useWindowCapture"]:
         if not set_window_capture(updated_settings["windowCaptureName"]):
@@ -232,6 +232,8 @@ def write_settings_to_file(updated_settings):
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
     if not set_use_window_capture(updated_settings["useWindowCapture"]):
+        return False
+    if not set_window_capture_cropping(updated_settings["windowCaptureCropping"]):
         return False
 
     is_postgame = updated_settings["includePostGame"]
@@ -458,7 +460,7 @@ def set_window_capture(window_name, force_update=False):
 
 # switch between video device and window capture
 def set_use_window_capture(_use_window_capture):
-    global this_OS, use_window_capture, window_capture_name, window_stream
+    global this_OS, use_window_capture, window_capture_name
 
     if this_OS != "Windows" and _use_window_capture:
         print("[STATUS] -> Window capture is only supported on Windows OS.")
@@ -474,6 +476,20 @@ def set_use_window_capture(_use_window_capture):
     else:
         print("[STATUS] -> Switched to video device.")
         return reset_borders()
+
+# set the cropping values for the window capture
+def set_window_capture_cropping(updated_cropping):
+    global window_capture_cropping
+
+    current_cropping = window_capture_cropping
+    window_capture_cropping = updated_cropping
+
+    success = set_window_capture(window_capture_name, True)
+
+    if not success:
+        window_capture_cropping = current_cropping
+
+    return success
 
 
 # Check kingdom via recognition and update it if needed
@@ -492,7 +508,7 @@ def reset_capture_borders():
     global borders
     if use_window_capture:
         next_frame = window_stream.get_screenshot()
-        grabbed = next_frame is not None
+        grabbed = next_frame is not None and next_frame.size > 0
     else:
         grabbed, next_frame = stream.read()
 
@@ -585,7 +601,7 @@ def mainloop():
         old_time = new_time
         eel.sleep(0.001)  # sleep of ~0.001 is the minimum allowed, still works
 
-        if frame is None:
+        if frame is None or frame.size == 0:
             continue
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         # Resizing image needed for distortion correction. NEAREST is ~8x faster than default but riskier so still testing
@@ -691,6 +707,7 @@ if __name__ == "__main__":
         translate_to = settings["outputLanguage"]
         use_window_capture = settings["useWindowCapture"]
         window_capture_name = settings["windowCaptureName"]
+        window_capture_cropping = settings["windowCaptureCropping"]
         if settings["videoDevice"]:
             video_index = get_index_for(settings["videoDevice"]["device_name"])
         else:
@@ -704,6 +721,7 @@ if __name__ == "__main__":
         translate_to = DEFAULT_GUI_LANGUAGE
         use_window_capture = False
         window_capture_name = None
+        window_capture_cropping = [0, 0, 0, 0]
         video_index = DEFAULT_VIDEO_INDEX
         is_postgame = False
         include_extra_kingdoms = False

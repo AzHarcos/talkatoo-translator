@@ -45,6 +45,10 @@ const vuetify = createVuetify({
       variant: 'outlined',
       color: 'primary',
     },
+    VTextField: {
+      variant: 'outlined',
+      color: 'primary',
+    },
   },
 });
 
