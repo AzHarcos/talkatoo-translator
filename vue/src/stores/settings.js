@@ -11,8 +11,6 @@ export const useSettings = defineStore('settings', {
       seasideFirst: false,
       isHardcore: false,
       skipResetConfirmation: false,
-      useWindowCapture: false,
-      windowCaptureName: undefined,
       videoDevice: undefined,
       autoPlayOutputStreams: false,
     };
@@ -42,12 +40,6 @@ export const useSettings = defineStore('settings', {
     setSkipResetConfirmation(skipResetConfirmation) {
       this.skipResetConfirmation = skipResetConfirmation;
     },
-    setUseWindowCapture(useWindowCapture) {
-      this.useWindowCapture = useWindowCapture;
-    },
-    setWindowCaptureName(windowCaptureName) {
-      this.windowCaptureName = windowCaptureName;
-    },
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
@@ -63,8 +55,6 @@ export const useSettings = defineStore('settings', {
       this.setSeasideFirst(settings.seasideFirst);
       this.setIsHardcore(settings.isHardcore);
       this.setSkipResetConfirmation(settings.skipResetConfirmation);
-      this.setUseWindowCapture(settings.useWindowCapture);
-      this.setWindowCaptureName(settings.windowCaptureName);
       this.setVideoDevice(settings.videoDevice);
       this.setAutoPlayOutputStreams(settings.autoPlayOutputStreams);
     },

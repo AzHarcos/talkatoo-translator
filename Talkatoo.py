@@ -21,7 +21,6 @@ import time
 import torch  # pip install torch
 import torchvision.transforms as transforms
 from util_functions import *
-from window_capture import *
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -110,11 +109,6 @@ MAX_MAINGAME = {"Cap": 0, "Cascade": 25, "Sand": 69, "Lake": 33, "Wooded": 54, "
 def get_moons_by_kingdom():
     return moons_by_kingdom
 
-# Allow the gui to request the list of currently open windows
-@eel.expose
-def get_open_windows():
-    return list_open_windows()
-
 # Allow the gui to see settings to read from the file
 @eel.expose
 def get_settings():
@@ -154,12 +148,7 @@ def get_video_devices():
 
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
-def reset_borders(window_hwnd=None):
-    global window_stream
-
-    if window_hwnd is not None:
-        window_stream = WindowCapture(window_hwnd)
-
+def reset_borders():
     new_borders, img_arr = reset_capture_borders()
     if not new_borders:
         return None
@@ -223,16 +212,11 @@ def stop_output_audio():
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, output_video, output_audio
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, output_video, output_audio
 
-    if updated_settings["useWindowCapture"]:
-        if not set_window_capture(updated_settings["windowCaptureName"]):
-            return False
-    elif updated_settings["videoDevice"] is not None:
+    if updated_settings["videoDevice"] is not None:
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
-    if not set_use_window_capture(updated_settings["useWindowCapture"]):
-        return False
 
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
@@ -423,59 +407,6 @@ def set_video_index(new_index):
         return False
 
 
-# reset window capture
-def set_window_capture(window_name, force_update=False):
-    global this_OS, use_window_capture, window_capture_name, window_stream
-
-    if not force_update and window_capture_name == window_name:
-        return True
-
-    if this_OS == "Windows":
-        if window_name is None:
-            window_capture_name = None
-            window_stream = WindowCapture(None)
-            return True
-
-        current_stream = window_stream
-        windows = list_open_windows()
-        windows = [window for window in windows if window_name == window["name"]]
-        if windows:
-            target_window = windows[0]
-            window_capture_name = target_window["name"]
-            reset_success = reset_borders(target_window["hwnd"])
-            if reset_success:
-                if VERBOSE:
-                    print("[STATUS] -> Started window capture for {}".format(window_name))
-                return True
-        if VERBOSE:
-            print("[STATUS] -> Could not start window capture for {}, make sure the window is not minimized.".format(window_name))
-        window_stream = WindowCapture(None) if current_stream is None else current_stream
-        return False
-    else:
-        print("[STATUS] -> Window capture is only supported on Windows OS.")
-    return False
-
-
-# switch between video device and window capture
-def set_use_window_capture(_use_window_capture):
-    global this_OS, use_window_capture, window_capture_name, window_stream
-
-    if this_OS != "Windows" and _use_window_capture:
-        print("[STATUS] -> Window capture is only supported on Windows OS.")
-        return False
-
-    if use_window_capture == _use_window_capture:
-        return True
-
-    use_window_capture = _use_window_capture
-    if use_window_capture:
-        print("[STATUS] -> Switched to window capture.")
-        return set_window_capture(window_capture_name, True)
-    else:
-        print("[STATUS] -> Switched to video device.")
-        return reset_borders()
-
-
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
     img = Image.fromarray(img_arr)
@@ -490,21 +421,14 @@ def update_kingdom(img_arr):
 # Reset capture card borders
 def reset_capture_borders():
     global borders
-    if use_window_capture:
-        next_frame = window_stream.get_screenshot()
-        grabbed = next_frame is not None
-    else:
-        grabbed, next_frame = stream.read()
+    grabbed, next_frame = stream.read()
 
     if not grabbed:
         print("[STATUS] -> Could not reset image borders")
         return None, None
 
     img_arr = cv2.cvtColor(next_frame, cv2.COLOR_BGR2RGB)
-    if use_window_capture:
-        borders = (0, 0, img_arr.shape[1], img_arr.shape[0])
-    else:
-        borders = determine_borders(img_arr)
+    borders = determine_borders(img_arr)
 
     if VERBOSE:
         print("[STATUS] -> Reset image borders")
@@ -539,13 +463,10 @@ def play_audio():
 
 
 def show_video():
-    global frame, stream, window_stream, output_video
+    global frame, stream, output_video
     window_is_open = False
     while running:
-        if use_window_capture:
-            ret, frame = True, window_stream.get_screenshot()
-        else:
-            ret, frame = stream.read()
+        ret, frame = stream.read()
         if ret and output_video:
             window_is_open = True
             try:
@@ -689,8 +610,6 @@ if __name__ == "__main__":
     if settings:
         translate_from = settings["inputLanguage"]
         translate_to = settings["outputLanguage"]
-        use_window_capture = settings["useWindowCapture"]
-        window_capture_name = settings["windowCaptureName"]
         if settings["videoDevice"]:
             video_index = get_index_for(settings["videoDevice"]["device_name"])
         else:
@@ -702,8 +621,6 @@ if __name__ == "__main__":
     else:
         translate_from = DEFAULT_GAME_LANGUAGE
         translate_to = DEFAULT_GUI_LANGUAGE
-        use_window_capture = False
-        window_capture_name = None
         video_index = DEFAULT_VIDEO_INDEX
         is_postgame = False
         include_extra_kingdoms = False
@@ -717,8 +634,6 @@ if __name__ == "__main__":
     # Set up video source
     p = pyaudio.PyAudio()
     stream = cv2.VideoCapture(video_index)  # Set up capture card
-    window_stream = None
-    set_window_capture(window_capture_name, True)  # Set up window capture
     frame = None
     borders = reset_capture_borders()[0]  # Find borders to crop every iteration
 
