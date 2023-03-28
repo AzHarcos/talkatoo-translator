@@ -147,7 +147,7 @@
       seperate window. It can be used to check the frame rate or to create a window capture in OBS
       if the other solutions do not work for you.
     </v-card-subtitle>
-    <v-card-text>
+    <v-card-text class="mt-4">
       <v-row align="center">
         <v-col cols="12" md="6">
           <v-autocomplete
@@ -163,10 +163,10 @@
             class="clickable"></v-autocomplete>
         </v-col>
         <div class="d-flex flex-wrap align-center">
-          <v-btn @click="toggleVideoStream" class="ml-6">
+          <v-btn @click="toggleVideoStream" class="ml-4 clickable">
             {{ playingVideoStream ? 'Stop video output' : 'Start video output' }}
           </v-btn>
-          <v-btn @click="toggleAudio" class="mx-6">
+          <v-btn @click="toggleAudio" class="mx-6 clickable">
             {{ playingAudio ? 'Mute audio' : 'Play audio' }}
           </v-btn>
           <v-switch

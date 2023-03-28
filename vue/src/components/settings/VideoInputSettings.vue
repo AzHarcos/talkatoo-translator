@@ -136,11 +136,7 @@
             return-object
             class="clickable"></v-autocomplete>
         </v-col>
-        <v-col cols="6" md="3">
-          <div class="d-flex">
-            <v-btn @click="resetBorders" class="clickable mr-6">Show preview image</v-btn>
-          </div>
-        </v-col>
+        <v-btn @click="resetBorders" class="clickable ml-4">Show preview image</v-btn>
       </v-row>
       <v-img v-if="showImage" :src="debugImageUrl" aspect-ratio="1.7778" class="border mt-4">
         <template v-slot:placeholder>
