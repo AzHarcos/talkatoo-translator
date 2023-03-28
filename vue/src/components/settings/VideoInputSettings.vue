@@ -26,39 +26,41 @@
     }, 100);
   }
 
-  globalProperties.$eel
-    .get_video_devices()()
-    .then((response) => {
-      if (!response || response.length === 0) {
-        return;
-      }
+  function loadVideoDevices() {
+    globalProperties.$eel
+      .get_video_devices()()
+      .then((response) => {
+        if (!response || response.length === 0) {
+          return;
+        }
 
-      videoDevices.value = response;
+        videoDevices.value = response;
 
-      if (!settings.videoDevice) {
-        selectedDevice.value = response[0];
-        setVideoDevice(response[0], true);
-        return;
-      }
+        if (!settings.videoDevice) {
+          selectedDevice.value = response[0];
+          setVideoDevice(response[0], true);
+          return;
+        }
 
-      const currentDevice = response.find(
-        (device) => device.device_name === settings.videoDevice.device_name
-      );
+        const currentDevice = response.find(
+          (device) => device.device_name === settings.videoDevice.device_name
+        );
 
-      if (!currentDevice) return;
+        if (!currentDevice) return;
 
-      if (currentDevice.index === settings.videoDevice.index) {
-        selectedDevice.value = currentDevice;
-        return;
-      }
+        if (currentDevice.index === settings.videoDevice.index) {
+          selectedDevice.value = currentDevice;
+          return;
+        }
 
-      settings.setVideoDevice({
-        device_name: currentDevice.device_name,
-        index: currentDevice.index,
-      });
-      selectedDevice.value = settings.videoDevice;
-    })
-    .catch(() => state.showError('Error getting video devices.'));
+        settings.setVideoDevice({
+          device_name: currentDevice.device_name,
+          index: currentDevice.index,
+        });
+        selectedDevice.value = settings.videoDevice;
+      })
+      .catch(() => state.showError('Error getting video devices.'));
+  }
 
   function setVideoDevice(device, keepImageHidden) {
     if (!keepImageHidden) {
@@ -107,6 +109,8 @@
         state.showError(`Error creating preview image.`);
       });
   }
+
+  loadVideoDevices();
 </script>
 
 <template>
@@ -122,6 +126,7 @@
         <v-col cols="12" md="6">
           <v-autocomplete
             v-model="selectedDevice"
+            @click="loadVideoDevices"
             @update:model-value="setVideoDevice"
             label="Video Device"
             :items="videoDevices"
