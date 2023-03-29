@@ -130,7 +130,7 @@ def is_audio_playing():
 def get_audio_devices():
     available_devices = []
     for i in range(0, p.get_host_api_info_by_index(0).get('deviceCount')):
-        if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+        if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) >= 2:
             available_devices.append({"index": i,
                                       "device_name": p.get_device_info_by_host_api_device_index(0, i).get('name')})
     return available_devices
@@ -459,8 +459,6 @@ def play_audio():
         if output_audio:
             data = audio_input.read(chunk_size)  # read audio stream
             audio_input.write(data, chunk_size)  # play back audio stream
-        else:
-            time.sleep(1)
             if curr_audio_index != audio_index:
                 audio_input.stop_stream()
                 audio_input.close()
@@ -472,6 +470,8 @@ def play_audio():
                                      output=True,
                                      frames_per_buffer=chunk_size,
                                      input_device_index=curr_audio_index)
+        else:
+            time.sleep(1)
     audio_input.stop_stream()
     audio_input.close()
     p.terminate()
