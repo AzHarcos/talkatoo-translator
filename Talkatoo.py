@@ -224,7 +224,7 @@ def stop_output_audio():
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, window_capture_cropping, output_video, output_audio
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, window_capture_cropping, output_video, output_audio, audio_index
 
     if updated_settings["useWindowCapture"]:
         if not set_window_capture(updated_settings["windowCaptureName"]):
