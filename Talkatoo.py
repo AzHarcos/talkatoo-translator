@@ -440,7 +440,8 @@ def set_window_capture(window_name, force_update=False):
     if this_OS == "Windows":
         if window_name is None:
             window_capture_name = None
-            window_stream = WindowCapture(None)
+            window_stream = WindowCapture(None, window_capture_cropping)
+            reset_borders()
             return True
 
         current_stream = window_stream
