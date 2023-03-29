@@ -57,39 +57,41 @@
       .catch(() => state.showError('Error getting list of open windows.'));
   }
 
-  globalProperties.$eel
-    .get_video_devices()()
-    .then((response) => {
-      if (!response || response.length === 0) {
-        return;
-      }
+    function loadVideoDevices() {
+    globalProperties.$eel
+      .get_video_devices()()
+      .then((response) => {
+        if (!response || response.length === 0) {
+          return;
+        }
 
-      videoDevices.value = response;
+        videoDevices.value = response;
 
-      if (!settings.videoDevice) {
-        selectedDevice.value = response[0];
-        setVideoDevice(response[0], true);
-        return;
-      }
+        if (!settings.videoDevice) {
+          selectedDevice.value = response[0];
+          setVideoDevice(response[0], true);
+          return;
+        }
 
-      const currentDevice = response.find(
-        (device) => device.device_name === settings.videoDevice.device_name
-      );
+        const currentDevice = response.find(
+          (device) => device.device_name === settings.videoDevice.device_name
+        );
 
-      if (!currentDevice) return;
+        if (!currentDevice) return;
 
-      if (currentDevice.index === settings.videoDevice.index) {
-        selectedDevice.value = currentDevice;
-        return;
-      }
+        if (currentDevice.index === settings.videoDevice.index) {
+          selectedDevice.value = currentDevice;
+          return;
+        }
 
-      settings.setVideoDevice({
-        device_name: currentDevice.device_name,
-        index: currentDevice.index,
-      });
-      selectedDevice.value = settings.videoDevice;
-    })
-    .catch(() => state.showError('Error getting video devices.'));
+        settings.setVideoDevice({
+          device_name: currentDevice.device_name,
+          index: currentDevice.index,
+        });
+        selectedDevice.value = settings.videoDevice;
+      })
+      .catch(() => state.showError('Error getting video devices.'));
+  }
 
   function setWindowCapture(windowName) {
     showImage.value = true;
@@ -242,6 +244,7 @@
     },
   });
 
+  loadVideoDevices();
   loadOpenWindows();
 </script>
 
@@ -281,6 +284,7 @@
           <v-autocomplete
             v-else
             v-model="selectedDevice"
+            @click="loadVideoDevices"
             @update:model-value="setVideoDevice"
             label="Video Device"
             :items="videoDevices"
@@ -308,12 +312,6 @@
             hide-details
             class="number-input clickable"></v-text-field>
         </div>
-        <v-img v-if="showImage" :src="debugImageUrl" aspect-ratio="1.7778" class="border mt-4">
-          <template v-slot:placeholder>
-            <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-            </div> </template
-        ></v-img>
         <div class="d-flex align-center">
           <v-text-field
             v-if="useWindowCapture"
@@ -324,7 +322,12 @@
             density="compact"
             hide-details
             class="number-input clickable mr-4"></v-text-field>
-
+        <v-img v-if="showImage" :src="debugImageUrl" aspect-ratio="1.7778" class="border mt-4">
+          <template v-slot:placeholder>
+            <div class="d-flex align-center justify-center fill-height">
+              <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+            </div> </template
+        ></v-img>
           <v-text-field
             v-if="useWindowCapture"
             v-model="cropRight"

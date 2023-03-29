@@ -231,6 +231,9 @@ def write_settings_to_file(updated_settings):
     elif updated_settings["videoDevice"] is not None:
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
+    # if updated_settings["audioDevice"] is not None:
+    # TODO: set audio device?
+
     if not set_use_window_capture(updated_settings["useWindowCapture"]):
         return False
     if not set_window_capture_cropping(updated_settings["windowCaptureCropping"]):

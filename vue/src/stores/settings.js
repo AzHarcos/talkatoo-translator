@@ -15,6 +15,7 @@ export const useSettings = defineStore('settings', {
       windowCaptureName: undefined,
       windowCaptureCropping: [0, 0, 0, 0],
       videoDevice: undefined,
+      audioDevice: undefined,
       autoPlayOutputStreams: false,
     };
   },
@@ -55,6 +56,9 @@ export const useSettings = defineStore('settings', {
     setVideoDevice(videoDevice) {
       this.videoDevice = videoDevice;
     },
+    setAudioDevice(audioDevice) {
+      this.audioDevice = audioDevice;
+    },
     setAutoPlayOutputStreams(autoPlayOutputStreams) {
       this.autoPlayOutputStreams = autoPlayOutputStreams;
     },
@@ -71,6 +75,7 @@ export const useSettings = defineStore('settings', {
       this.setWindowCaptureName(settings.windowCaptureName);
       this.setWindowCaptureCropping(settings.windowCaptureCropping);
       this.setVideoDevice(settings.videoDevice);
+      this.setAudioDevice(settings.audioDevice);
       this.setAutoPlayOutputStreams(settings.autoPlayOutputStreams);
     },
   },
