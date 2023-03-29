@@ -141,11 +141,12 @@
 
 <template>
   <v-card flat>
-    <v-card-title> Video Output </v-card-title>
+    <v-card-title> Video and Audio Output </v-card-title>
     <v-card-subtitle>
       If you wish, you can display the video feed that's being used for the image recognition in a
-      seperate window. It can be used to check the frame rate or to create a window capture in OBS
-      if the other solutions do not work for you.
+      separate window. This can be used to check the frame rate or to create a window capture in OBS
+      to replace your capture card source as needed. You can also listen to audio by selecting your
+      audio device below and pressing "Play Audio".
     </v-card-subtitle>
     <v-card-text class="mt-4">
       <v-row align="center">
