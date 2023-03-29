@@ -68,6 +68,7 @@ LANGUAGES = {
 
 DEFAULT_GAME_LANGUAGE = "chinese_traditional"
 DEFAULT_GUI_LANGUAGE = "english"
+DEFAULT_AUDIO_INDEX = 0
 DEFAULT_VIDEO_INDEX = 0
 FULLSCREEN = True  # Fullscreen on Windows
 GUI_SIZE = ImageGrab.grab().size if FULLSCREEN else (1280, 720)  # Take screenshot to check screen size
@@ -212,14 +213,14 @@ def stop_output_audio():
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, output_video, output_audio
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, output_video, output_audio, audio_index
 
     if updated_settings["videoDevice"] is not None:
         if not set_video_index(updated_settings["videoDevice"]["index"]):
             return False
 
-    #if updated_settings["audioDevice"] is not None:
-        #TODO: set audio device?
+    if updated_settings["audioDevice"] is not None:
+        audio_index = updated_settings["audioDevice"]["index"]
 
     is_postgame = updated_settings["includePostGame"]
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
@@ -439,11 +440,12 @@ def reset_capture_borders():
 
 
 def play_audio():
-    global output_audio, p
+    global output_audio, p, audio_index
     chunk_size = 1024
     width = 2
     channels = 2
     sample_rate = 44100
+    curr_audio_index = audio_index
 
     audio_input = p.open(format=p.get_format_from_width(width),
                     channels=channels,
@@ -451,7 +453,7 @@ def play_audio():
                     input=True,
                     output=True,
                     frames_per_buffer=chunk_size,
-                    input_device_index=4)
+                    input_device_index=curr_audio_index)
 
     while running:
         if output_audio:
@@ -459,6 +461,17 @@ def play_audio():
             audio_input.write(data, chunk_size)  # play back audio stream
         else:
             time.sleep(1)
+            if curr_audio_index != audio_index:
+                audio_input.stop_stream()
+                audio_input.close()
+                curr_audio_index = audio_index
+                audio_input = p.open(format=p.get_format_from_width(width),
+                                     channels=channels,
+                                     rate=sample_rate,
+                                     input=True,
+                                     output=True,
+                                     frames_per_buffer=chunk_size,
+                                     input_device_index=curr_audio_index)
     audio_input.stop_stream()
     audio_input.close()
     p.terminate()
@@ -617,6 +630,10 @@ if __name__ == "__main__":
             video_index = get_index_for(settings["videoDevice"]["device_name"])
         else:
             video_index = DEFAULT_VIDEO_INDEX
+        if settings["audioDevice"]:
+            audio_index = get_index_for(settings["audioDevice"]["index"])
+        else:
+            audio_index = DEFAULT_AUDIO_INDEX
         is_postgame = settings["includePostGame"]
         include_extra_kingdoms = settings["includeWithoutTalkatoo"]
         output_audio = settings["autoPlayOutputStreams"]
@@ -625,6 +642,7 @@ if __name__ == "__main__":
         translate_from = DEFAULT_GAME_LANGUAGE
         translate_to = DEFAULT_GUI_LANGUAGE
         video_index = DEFAULT_VIDEO_INDEX
+        audio_index = DEFAULT_AUDIO_INDEX
         is_postgame = False
         include_extra_kingdoms = False
         output_audio = False
