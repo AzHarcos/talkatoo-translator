@@ -3,10 +3,9 @@ import numpy as np
 from PIL import ImageGrab
 import win32gui, win32ui, win32con # pip install pywin32
 from pywintypes import error
-from util_functions import *
 
 user32 = ctypes.windll.user32
-
+user32.SetProcessDPIAware()
 
 def list_open_windows():
     open_windows = []
@@ -36,19 +35,16 @@ class WindowCapture:
         else:
             self.hwnd = hwnd
 
-        self.width, self.height = ImageGrab.grab().size
-        self.width -= 1
-        self.height -= 1
+        # get the window size
+        left, top, right, bottom = win32gui.GetWindowRect(self.hwnd)
+        self.width = right - left
+        self.height = bottom - top
 
-        window_img = np.array(self.get_screenshot(cropped=False))
-        self.borders = determine_borders(window_img)
-        self.iheight = self.borders[3] - self.borders[1]
-        self.iwidth = self.borders[2] - self.borders[0]
         # get the crop values
         if crop_values is not None:
             self.crop_left, self.crop_top, self.crop_right, self.crop_bottom = crop_values
 
-    def get_screenshot(self, cropped=True):
+    def get_screenshot(self):
         try:
             # get the window image data
             window_dc = win32gui.GetWindowDC(self.hwnd)
@@ -85,12 +81,10 @@ class WindowCapture:
             # https://github.com/opencv/opencv/issues/14866#issuecomment-580207109
             img = np.ascontiguousarray(img)
 
-            # crop image if needed
-            if cropped:
-                img = img[self.borders[1]+self.crop_top: self.borders[3]-self.crop_bottom,
-                          self.borders[0]+self.crop_left:self.borders[2]-self.crop_right]
-            return img
+            # crop image
+            img = img[self.crop_top:self.height-self.crop_bottom, self.crop_left:self.width-self.crop_right]
 
+            return img
         except (win32ui.error, error):
             print("[STATUS] -> Could not read window capture image")
             return None

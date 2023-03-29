@@ -57,7 +57,7 @@
       .catch(() => state.showError('Error getting list of open windows.'));
   }
 
-    function loadVideoDevices() {
+  function loadVideoDevices() {
     globalProperties.$eel
       .get_video_devices()()
       .then((response) => {
@@ -322,12 +322,12 @@
             density="compact"
             hide-details
             class="number-input clickable mr-4"></v-text-field>
-        <v-img v-if="showImage" :src="debugImageUrl" aspect-ratio="1.7778" class="border mt-4">
-          <template v-slot:placeholder>
-            <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-            </div> </template
-        ></v-img>
+          <v-img :src="debugImageUrl" aspect-ratio="1.7778" class="border mt-4">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
+              </div> </template
+          ></v-img>
           <v-text-field
             v-if="useWindowCapture"
             v-model="cropRight"
