@@ -5,10 +5,10 @@ The goal of this project was to create a tool for recognizing and translating th
 ![image](https://user-images.githubusercontent.com/58895947/226770639-0f0ed7f8-4fac-45f6-9819-86bdd14fc301.png)
 
 # Setup Instructions (no programming required)
-1. Download the talkatoo-translator.zip file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases
+1. Download the talkatoo-translator.zip file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases. For compatibility reasons, when downloading a version beyond 1.0.0, ensure that you download the version of the program corresponding to your OS. Windows users may use any version but can make use of the window capture feature as of 1.0.2; while Mac and Linux users will run into errors trying to use the Windows releases.
 2. Find the downloaded zip file in your file system and unzip it in a location you can find. Here we'll use the example that you unzip to the folder ```C:/Users/biakko/Downloads/talkatoo-translator```, replace your path along the way as needed. Note that I will be using the test release, ```talkatoo-translator-1.0.0-testing```.
 
-3. To run the application, you'll need Python 3 installed. While newer and some older versions will also work, testing was done on version 3.10.10, so this is the recommended version. You can find it here: https://www.python.org/downloads/release/python-31010/. If you're on Windows or Mac, the installer is likely easiest. If you're on Linux, you can use the tarball.
+3. To run the application, you'll need Python 3 installed. While many other versions will also work(Python 3.11 does not), testing was done on version 3.10.10, so this is the recommended version. You can find the correct version here: https://www.python.org/downloads/release/python-31010/. If you're on Windows or Mac, the installer is likely easiest. If you're on Linux, you can use the tarball.
     - If you use the installer, be sure to check the box that says "add python.exe to PATH" on the first screen, and then you can use the default installation. Should you wish to customize your installation, be sure that the "pip" box is checked.
     - Otherwise, you'll need to manually add Python to your PATH (https://realpython.com/add-python-to-path/) and install pip (https://pip.pypa.io/en/stable/installation/).
 
@@ -18,7 +18,7 @@ The goal of this project was to create a tool for recognizing and translating th
     - Copy whatever this path is on your machine (i.e. ```C:/Python310/python.exe```) and use it instead of ```python``` for all of these commands. For example, ```C:/Python310/python.exe --version```.
 6. Install the necessary dependencies (external Python code used within our project).
    - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo-translator/talkatoo-translator-1.0.0-testing```.
-   - Run ```pip install -r requirements.txt``` to install the necessary packages (if this doesn't work, use the Python path from step 5 troubleshooting and use ```C:/Python311/python.exe -m pip install -r requirements.txt``` instead).
+   - Run ```pip install -r requirements.txt``` to install the necessary packages (if this doesn't work, use the Python path from step 5 troubleshooting and replace it in the command ```C:/Python310/python.exe -m pip install -r requirements.txt``` instead).
    - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
    - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, ```pip install pillow==9.4.0```.
 
@@ -56,21 +56,23 @@ If you encounter errors, you do not have the packages properly installed. You ca
 # Troubleshooting
 - My capture card isn't showing up!
     - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, there are a few options. For all of these, try to ensure your resolution is at least 1280x720.
-        - The first solution is through our Video Stream player. This comes with the app, and you just need to enable it within the settings menu. It will play full-size video and audio from your capture card, which can be used as a Window Share in OBS. Please feel free to report any synchronization issues should they arise.
-        - The second solution is also included as of the second version of our app, using Window Sharing. This only will work on Windows. With this, you can take your OBS canvas, pull out a Full Screen Projector, and then use that as input for our program. We recommend creating the projector from the capture card source, but if you have reason to use your whole canvas, then just be sure not to cover any of the marked areas in the below image.
+        - The first solution is through our Video Stream player. This comes with the app as of v1.0.1, and you just need to enable it within the settings menu. It will play full-size video and audio from your capture card, which can be used as a Window Share in OBS. Please feel free to report any synchronization issues should they arise.
+        - The second solution is also included in the Windows version of our app as of v1.0.2, using Window Sharing. With this, you can take your OBS canvas, pull out a Full Screen Projector, and then use that as input for our program. We recommend creating the projector from the capture card source, but if you have reason to use your whole canvas, then just be sure not to cover any of the marked areas in the below image. Be sure to crop out any borders so you have the game covering the full preview image.
         - The third and final option will only be helpful for those with Elgato cards and fairly high end PCs, called Elgato StreamLink. You can find out about it here: https://help.elgato.com/hc/en-us/articles/360028241631. For this you will also need NDI Webcam(Windows) or NDI Virtual Input(Mac), which can be installed with the NDI Tools package. This sends the capture card's video feed to a virtual camera that can be used as an input device in our program. You can download it here: https://ndi.tv/tools/#download-tools.
         - OBS Virtual Camera may seem appealing but it has not been able to produce a high enough resolution for us in testing and should not be expected to work well.
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
 
 
 - Nothing is working!
-    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Also ensure that your input language is set correctly.
-    - A rarer but possible issue is that your capture card has highly distorted colors or dimensions. We do not currently have correction algorithms in place. The best current fix is to try to correct the issues manually in an OBS scene using color filters and cropping, and then use the Virtual Camera plugin to use your OBS canvas as video input to our program.
+    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right.
+    - Also ensure that your input language is set correctly.
+    - A rarer but possible issue is that your capture card has highly distorted colors or dimensions. We do not currently have correction algorithms in place. The best current fix on Windows is to try to correct the issues manually in OBS with filters/cropping and use a Projector and Window Share in our program. There's no great fix for Mac/Linux currently, let us know if you have any ideas.
 
 
 - The program sometimes misses moons from Talkatoo!
     - The likely issue is run speed. This program has typically been somewhere around 30fps on average, and this is what it's designed for. On old or slow or somewhat overloaded machines where framerate drops below ~15, this may prove to be a problem. The best fix is to ensure that Python is running in the foreground with limited background activity.
-    - Other issues might involve capture card color/dimension distortion or resolution issues.
+    - Be sure you're not running in the wrong version of Chinese, as to a non-speaker the two can look quite similar.
+    - Other issues might involve capture card color/dimension distortion or resolution issues. Try to ensure your input resolution is 1280x720 or higher.
     
     
 - The program sometimes recognizes the wrong moon!
