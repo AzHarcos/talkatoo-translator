@@ -57,7 +57,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
 - My capture card isn't showing up!
     - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, there are a few options. For all of these, try to ensure your resolution is at least 1280x720.
         - The first solution is through our Video Stream player. This comes with the app as of v1.0.1, and you just need to enable it within the settings menu. It will play full-size video and audio from your capture card, which can be used as a Window Share in OBS. Please feel free to report any synchronization issues should they arise.
-        - The second solution is also included in the Windows version of our app as of v1.0.2, using Window Sharing. With this, you can take your OBS canvas, pull out a Full Screen Projector, and then use that as input for our program. We recommend creating the projector from the capture card source, but if you have reason to use your whole canvas, then just be sure not to cover any of the marked areas in the below image. Be sure to crop out any borders so you have the game covering the full preview image.
+        - The second solution is also included in the Windows version of our app as of v1.0.2, using Window Sharing. With this, you can take your OBS canvas, pull out a Full Screen Projector, and then use that as input for our program. We recommend creating the projector from the capture card source, but if you have reason to use your whole canvas, then just be sure not to cover any of the marked areas in the below image. Be sure to crop out ALL borders so you have the game covering the full preview image. Currently it must be almost exact.
         - The third and final option will only be helpful for those with Elgato cards and fairly high end PCs, called Elgato StreamLink. You can find out about it here: https://help.elgato.com/hc/en-us/articles/360028241631. For this you will also need NDI Webcam(Windows) or NDI Virtual Input(Mac), which can be installed with the NDI Tools package. This sends the capture card's video feed to a virtual camera that can be used as an input device in our program. You can download it here: https://ndi.tv/tools/#download-tools.
         - OBS Virtual Camera may seem appealing but it has not been able to produce a high enough resolution for us in testing and should not be expected to work well.
 ![Mario](https://user-images.githubusercontent.com/58895947/227270510-0471c263-b695-4e2c-8eef-d1427830ae74.jpg)
@@ -67,6 +67,10 @@ If you encounter errors, you do not have the packages properly installed. You ca
     - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right.
     - Also ensure that your input language is set correctly.
     - A rarer but possible issue is that your capture card has highly distorted colors or dimensions. We do not currently have correction algorithms in place. The best current fix on Windows is to try to correct the issues manually in OBS with filters/cropping and use a Projector and Window Share in our program. There's no great fix for Mac/Linux currently, let us know if you have any ideas.
+
+
+- The program isn't switching kingdoms!
+    - If you're using a window capture, this probably means your cropping is off. You can use our window cropping tool to fix this. If you're using a capture card, this likely means that you have the wrong video source chosen. Once it properly switches kingdoms, you know that you're all set up and the rest should work fairly well.
 
 
 - The program sometimes misses moons from Talkatoo!
