@@ -54,6 +54,15 @@ If you encounter errors, you do not have the packages properly installed. You ca
 ![image](https://user-images.githubusercontent.com/59027253/227715367-f81cd632-0592-4beb-87d9-0bfe32b61bcd.png)
 
 # Troubleshooting
+- My computer errors out when running the program!
+    - ImportErrors:
+        This means that your packages have not been correctly installed. Check step 6 of setup, and if any installations fail, then either look up the problem or contact one of us and we can help you.
+    - KeyErrors:
+        This almost certainly means your settings file is either outdated or corrupted. Simply delete it, as a new one will be generated automatically.
+    - Other errors while running:
+        Make sure you downloaded the right version of the program, and of all of the packages. If you have them all correct, then contact us to resolve the problem. We have very limited testing hardware, and so we have only been able to test on a small range of computers, OSs, and capture cards.
+
+
 - My capture card isn't showing up!
     - Some capture cards aren't allowed to be open in multiple places. If you have one of these and it's open in OBS or another place, then you won't be able to open it here. To solve this, there are a few options. For all of these, try to ensure your resolution is at least 1280x720.
         - The first solution is through our Video Stream player. This comes with the app as of v1.0.1, and you just need to enable it within the settings menu. It will play full-size video and audio from your capture card, which can be used as a Window Share in OBS. Please feel free to report any synchronization issues should they arise.
@@ -64,7 +73,7 @@ If you encounter errors, you do not have the packages properly installed. You ca
 
 
 - Nothing is working!
-    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right.
+    - The most likely case is that you're either looking at the wrong video source, or that your capture card borders are improperly set. This can be fixed in the GUI, where you can set the video source and check sample images to see if it looks right. Important note: the pixel values are currently very particular. For example, many OBS fullscreen projectors will need about three pixels cut off on all sides.
     - Also ensure that your input language is set correctly.
     - A rarer but possible issue is that your capture card has highly distorted colors or dimensions. We do not currently have correction algorithms in place. The best current fix on Windows is to try to correct the issues manually in OBS with filters/cropping and use a Projector and Window Share in our program. There's no great fix for Mac/Linux currently, let us know if you have any ideas.
 
