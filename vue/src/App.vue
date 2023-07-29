@@ -103,11 +103,22 @@
     selectKingdom(currentKingdom);
   }
 
-  function selectKingdom(kingdomName) {
+  function selectKingdom(kingdomName, wasManual) {
     const selectedKingdom = state.displayedKingdoms.find((kingdom) => kingdom.name === kingdomName);
 
     if (selectedKingdom) {
-      state.setSelectedKingdom(selectedKingdom);
+      if (wasManual) {
+        globalProperties.$eel
+          .set_current_kingdom(selectedKingdom.name)()
+          .then(() => {
+            state.setSelectedKingdom(selectedKingdom);
+          })
+          .catch(() =>
+            state.showError(`Error setting kingdom ${selectKingdom.name} for image recognition`)
+          );
+      } else {
+        state.setSelectedKingdom(selectedKingdom);
+      }
     }
   }
 
@@ -151,13 +162,14 @@
       @confirm="resetRun"
       @close="closeResetConfirmationDialog" />
     <v-app-bar flat density="compact">
-      <v-tabs v-model="state.selectedKingdom" grow show-arrows color="primary">
+      <v-tabs :model-value="state.selectedKingdom" grow show-arrows color="primary">
         <v-tab
           v-for="kingdom in state.displayedKingdoms"
           :key="kingdom.name"
           :value="kingdom"
           :disabled="state.showSettings"
-          class="clickable">
+          class="clickable"
+          @click="selectKingdom(kingdom.name, true)">
           {{ kingdom.name }}
         </v-tab>
       </v-tabs>

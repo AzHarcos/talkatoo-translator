@@ -153,6 +153,17 @@ def get_video_devices():
         })
     return available_cameras
 
+# Allow the gui to set the current kingdom
+@eel.expose
+def set_current_kingdom(kingdom_name):
+    global current_kingdom
+
+    if kingdom_name is not None:
+        current_kingdom = kingdom_name
+        if VERBOSE:
+            print("Kingdom changed to: ", kingdom_name)
+
+
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
 def reset_borders(window_hwnd=None):
