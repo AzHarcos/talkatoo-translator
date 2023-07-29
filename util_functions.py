@@ -1,4 +1,7 @@
 import json
+import os
+import sys
+
 import numpy as np  # pip install numpy
 
 
@@ -147,10 +150,20 @@ def is_text_naive(img_arr, text_height, text_lower, text_upper, verbose):
     return False
 
 
-def read_file_to_json(path):
+def resource_path(relative_path):
     try:
-        with open(path, encoding="utf8") as moon_file:
-            json_str = "".join([line.strip() for line in moon_file.readlines()])
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+def read_file_to_json(path):
+    full_path = resource_path(path)
+    try:
+        with open(full_path, encoding="utf8") as file:
+            json_str = "".join([line.strip() for line in file.readlines()])
         return json.loads(json_str)
     except FileNotFoundError:
         return None
