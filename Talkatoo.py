@@ -165,9 +165,8 @@ def reset_borders(window_hwnd=None):
     if not new_borders:
         return None
     # Save image so it can be displayed in the GUI
-    path = resource_path(IMG_PATH)
-    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(path)
-    return path
+    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
+    return IMG_PATH
 
 # Allow the gui to reset the run, in this case clearing the mentioned and collected moons
 @eel.expose
@@ -247,7 +246,7 @@ def write_settings_to_file(updated_settings):
     set_translate_from(updated_settings["inputLanguage"])
     set_translate_to(updated_settings["outputLanguage"])
 
-    with open(resource_path(SETTINGS_PATH), "w+") as settings_file:
+    with open(SETTINGS_PATH, "w+") as settings_file:
         settings_file.write(dumps(updated_settings))
     if VERBOSE:
         print("[STATUS] -> Saved settings to file!")
@@ -257,7 +256,7 @@ def write_settings_to_file(updated_settings):
 # Allow the gui to write the pending moons of the selected kingdom to a file
 @eel.expose
 def log_pending_moons(pending_moons):
-    with open(resource_path(PENDING_MOONS_PATH), "w+") as pending_moons_log_file:
+    with open(PENDING_MOONS_PATH, "w+") as pending_moons_log_file:
         pending_moons_log_file.write(pending_moons)
 
 
@@ -717,7 +716,7 @@ if __name__ == "__main__":
     collected_moons = []  # list of auto-recognized collected moons
 
     # Load kingdom recognizer
-    kindom_classifier = torch.jit.load(resource_path("KingdomModel.zip"))  # Pretrained kingdom recognizer, output 0-13 inclusive
+    kindom_classifier = torch.jit.load(internal_resource_path("KingdomModel.zip"))  # Pretrained kingdom recognizer, output 0-13 inclusive
     transform = transforms.PILToTensor()  # Needed to transform image
 
     # Language setup
