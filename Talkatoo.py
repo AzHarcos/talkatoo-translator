@@ -158,7 +158,7 @@ def get_video_devices():
 def set_current_kingdom(kingdom_name):
     global current_kingdom
 
-    if kingdom_name is not None:
+    if kingdom_name in kingdom_list:
         current_kingdom = kingdom_name
         eel.set_current_kingdom(current_kingdom)
         if VERBOSE:
@@ -614,6 +614,7 @@ def mainloop():
     # Set up Eel
     eel.init('gui')  # Initialize the gui package
     eel.start('index.html', port=8083, size=GUI_SIZE, block=False)  # start the GUI
+    eel.set_current_kingdom(current_kingdom)
 
     # Final setup variables
     change_kingdom = ""  # Confirmation variable for kingdom changes
