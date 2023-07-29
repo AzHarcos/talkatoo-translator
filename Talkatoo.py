@@ -640,7 +640,7 @@ def mainloop():
         image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
 
         # Check kingdom every 3s
-        if not settings.get("manuallySwitchKingdoms", False) and new_time > check_kingdom_at:
+        if not manually_switch_kingdoms and new_time > check_kingdom_at:
             check_kingdom_at = new_time + KINGDOM_TIMER  # Reset timer
             kingdom_check_im = image_to_bw(image.crop(KINGDOM_BORDERS))  # Must be 50x50 to work in model
             new_kingdom = update_kingdom(kingdom_check_im)
@@ -752,6 +752,7 @@ if __name__ == "__main__":
         include_extra_kingdoms = settings["includeWithoutTalkatoo"]
         output_audio = settings["autoPlayOutputStreams"]
         output_video = settings["autoPlayOutputStreams"]
+        manually_switch_kingdoms = settings.get("manuallySwitchKingdoms", False)
     else:
         translate_from = DEFAULT_GAME_LANGUAGE
         translate_to = DEFAULT_GUI_LANGUAGE
@@ -764,6 +765,7 @@ if __name__ == "__main__":
         include_extra_kingdoms = False
         output_audio = False
         output_video = False
+        manually_switch_kingdoms = False
     language_settings = LANGUAGES[translate_from]
     reader = easyocr.Reader([language_settings["Language"]], verbose=False)
     score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese",
