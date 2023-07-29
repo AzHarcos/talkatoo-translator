@@ -11,6 +11,7 @@ export const useSettings = defineStore('settings', {
       seasideFirst: false,
       isHardcore: false,
       skipResetConfirmation: false,
+      manuallySwitchKingdoms: false,
       useWindowCapture: false,
       windowCaptureName: undefined,
       windowCaptureCropping: [0, 0, 0, 0],
@@ -44,6 +45,9 @@ export const useSettings = defineStore('settings', {
     setSkipResetConfirmation(skipResetConfirmation) {
       this.skipResetConfirmation = skipResetConfirmation;
     },
+    setManuallySwitchKingdoms(manuallySwitchKingdoms) {
+      this.manuallySwitchKingdoms = manuallySwitchKingdoms;
+    },
     setUseWindowCapture(useWindowCapture) {
       this.useWindowCapture = useWindowCapture;
     },
@@ -71,6 +75,7 @@ export const useSettings = defineStore('settings', {
       this.setSeasideFirst(settings.seasideFirst);
       this.setIsHardcore(settings.isHardcore);
       this.setSkipResetConfirmation(settings.skipResetConfirmation);
+      this.setManuallySwitchKingdoms(settings.manuallySwitchKingdoms);
       this.setUseWindowCapture(settings.useWindowCapture);
       this.setWindowCaptureName(settings.windowCaptureName);
       this.setWindowCaptureCropping(settings.windowCaptureCropping);

@@ -57,7 +57,10 @@
   <v-card flat>
     <v-card-text>
       <div class="list-container talkatoo-moon-list">
-        <div class="text-center text-h5 mb-2 text-decoration-underline">Talkatoo Moons</div>
+        <div class="text-center text-h5 text-decoration-underline">Talkatoo Moons</div>
+        <div class="text-subtitle-1 mt-4 text-center">
+          Currently looking for moons in {{ state.currentKingdomName }}
+        </div>
         <PendingMoonList
           v-if="state.selectedKingdom.hasTalkatoo"
           :moons="selectedKingdomPendingMoons" />

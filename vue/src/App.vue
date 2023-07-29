@@ -107,7 +107,7 @@
     const selectedKingdom = state.displayedKingdoms.find((kingdom) => kingdom.name === kingdomName);
 
     if (selectedKingdom) {
-      if (wasManual) {
+      if (wasManual && settings.manuallySwitchKingdoms) {
         globalProperties.$eel
           .set_current_kingdom(selectedKingdom.name)()
           .then(() => {

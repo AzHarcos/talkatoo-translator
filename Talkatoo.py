@@ -160,6 +160,7 @@ def set_current_kingdom(kingdom_name):
 
     if kingdom_name is not None:
         current_kingdom = kingdom_name
+        eel.set_current_kingdom(current_kingdom)
         if VERBOSE:
             print("Kingdom changed to: ", kingdom_name)
 
@@ -638,7 +639,7 @@ def mainloop():
         image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
 
         # Check kingdom every 3s
-        if new_time > check_kingdom_at:
+        if not settings.get("manuallySwitchKingdoms", False) and new_time > check_kingdom_at:
             check_kingdom_at = new_time + KINGDOM_TIMER  # Reset timer
             kingdom_check_im = image_to_bw(image.crop(KINGDOM_BORDERS))  # Must be 50x50 to work in model
             new_kingdom = update_kingdom(kingdom_check_im)
