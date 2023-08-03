@@ -12,6 +12,7 @@ export const useSettings = defineStore('settings', {
       isHardcore: false,
       skipResetConfirmation: false,
       manuallySwitchKingdoms: false,
+      automaticallyShowImages: false,
       useWindowCapture: false,
       windowCaptureName: undefined,
       windowCaptureCropping: [0, 0, 0, 0],
@@ -48,6 +49,9 @@ export const useSettings = defineStore('settings', {
     setManuallySwitchKingdoms(manuallySwitchKingdoms) {
       this.manuallySwitchKingdoms = manuallySwitchKingdoms;
     },
+    setAutomaticallyShowImages(automaticallyShowImages) {
+      this.automaticallyShowImages = automaticallyShowImages;
+    },
     setUseWindowCapture(useWindowCapture) {
       this.useWindowCapture = useWindowCapture;
     },
@@ -76,6 +80,7 @@ export const useSettings = defineStore('settings', {
       this.setIsHardcore(settings.isHardcore);
       this.setSkipResetConfirmation(settings.skipResetConfirmation);
       this.setManuallySwitchKingdoms(settings.manuallySwitchKingdoms);
+      this.setAutomaticallyShowImages(settings.automaticallyShowImages);
       this.setUseWindowCapture(settings.useWindowCapture);
       this.setWindowCaptureName(settings.windowCaptureName);
       this.setWindowCaptureCropping(settings.windowCaptureCropping);

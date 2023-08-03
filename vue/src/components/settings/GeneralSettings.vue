@@ -49,6 +49,25 @@
         });
     },
   });
+
+  const automaticallyShowImages = computed({
+    get() {
+      return settings.automaticallyShowImages;
+    },
+    set(value) {
+      globalProperties.$eel
+        .write_settings_to_file({
+          ...settings.$state,
+          automaticallyShowImages: value,
+        })()
+        .then(() => {
+          settings.setAutomaticallyShowImages(value);
+        })
+        .catch(() => {
+          state.showError('Error updating settings.');
+        });
+    },
+  });
 </script>
 
 <template>
@@ -71,6 +90,15 @@
           ><v-switch
             v-model="manuallySwitchKingdoms"
             label="Manually switch kingdoms (automatic transitions disabled)"
+            hide-details
+            color="primary"></v-switch
+        ></v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col cols="12"
+          ><v-switch
+            v-model="automaticallyShowImages"
+            label="Automatically show moon images"
             hide-details
             color="primary"></v-switch
         ></v-col>
