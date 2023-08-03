@@ -1,4 +1,7 @@
 import json
+import os
+import sys
+
 import numpy as np  # pip install numpy
 
 
@@ -79,7 +82,7 @@ def determine_borders(img_arr):
 
 def generate_moon_dict():
     # Read moon translation data
-    moonlist = read_file_to_json("moon-list.json")  # moonlist now a list of dictionaries, one for each moon
+    moonlist = read_file_to_json("moon-list.json", True)  # moonlist now a list of dictionaries, one for each moon
     # Dictionary to store all moons by kingdom
     moons_by_kingdom = {}
     hint_arts = {}
@@ -147,10 +150,20 @@ def is_text_naive(img_arr, text_height, text_lower, text_upper, verbose):
     return False
 
 
-def read_file_to_json(path):
+def internal_resource_path(relative_path):
     try:
-        with open(path, encoding="utf8") as moon_file:
-            json_str = "".join([line.strip() for line in moon_file.readlines()])
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+def read_file_to_json(path, is_internal_resource=False):
+    full_path = internal_resource_path(path) if is_internal_resource else path
+    try:
+        with open(full_path, encoding="utf8") as file:
+            json_str = "".join([line.strip() for line in file.readlines()])
         return json.loads(json_str)
     except FileNotFoundError:
         return None

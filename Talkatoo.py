@@ -177,8 +177,9 @@ def reset_borders(window_hwnd=None):
     if not new_borders:
         return None
     # Save image so it can be displayed in the GUI
-    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
-    return IMG_PATH
+    path = internal_resource_path(IMG_PATH)
+    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(path)
+    return path
 
 # Allow the gui to reset the run, in this case clearing the mentioned and collected moons
 @eel.expose
@@ -729,7 +730,7 @@ if __name__ == "__main__":
     collected_moons = []  # list of auto-recognized collected moons
 
     # Load kingdom recognizer
-    kindom_classifier = torch.jit.load("KingdomModel.zip")  # Pretrained kingdom recognizer, output 0-13 inclusive
+    kindom_classifier = torch.jit.load(internal_resource_path("KingdomModel.zip"))  # Pretrained kingdom recognizer, output 0-13 inclusive
     transform = transforms.PILToTensor()  # Needed to transform image
 
     # Language setup
