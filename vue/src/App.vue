@@ -187,7 +187,7 @@
         </div>
         <div v-else class="main-content-column">
           <TalkatooMoons class="scrollable scroll-container flex-grow min-height" />
-          <MoonList class="scrollable mt-8 flex-shrink min-height" />
+          <MoonList class="scrollable mt-8 flex-shrink" />
         </div>
       </v-container>
     </v-main>

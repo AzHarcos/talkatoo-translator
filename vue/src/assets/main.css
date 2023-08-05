@@ -24,13 +24,11 @@ html {
 
 .flex-grow {
   flex: 1 0 auto;
-  max-height: calc(100% - 232px);
-  min-height: 200px;
+  max-height: calc(100% - 95px);
 }
 
 .flex-shrink {
   flex: 0 1 auto;
-  min-height: 200px;
 }
 
 .min-height {
@@ -128,6 +126,15 @@ li {
 .v-card {
   background-color: rgba(51, 51, 51, 0.9);
   border-radius: 0.5em;
+}
+
+.v-expansion-panel {
+  background-color: rgba(51, 51, 51, 0.9);
+  border-radius: 0.5em;
+}
+
+.v-expansion-panel-title__overlay {
+  background-color: rgba(51, 51, 51, 0);
 }
 
 .v-card-text {

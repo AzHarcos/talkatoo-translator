@@ -35,18 +35,25 @@
 </script>
 
 <template>
-  <v-card flat :class="{ 'moon-list-width': lgAndUp }">
-    <v-card-text class="list-container">
-      <div class="text-center text-h5 mb-4 text-decoration-underline">Moon List</div>
-      <ol :class="{ 'ml-4': !lgAndUp }">
-        <li v-for="moon in moonList" @click="() => addMoonToMentioned(moon)" class="clickable ml-4">
-          <span class="ml-1">
-            {{ moon[settings.outputLanguage] }} - {{ moon[settings.inputLanguage] }}
-          </span>
-        </li>
-      </ol>
-    </v-card-text>
-  </v-card>
+  <v-expansion-panels :class="{ 'moon-list-width': lgAndUp }">
+    <v-expansion-panel elevation="0" class="list-container">
+      <v-expansion-panel-title>
+        <div wix class="text-center text-h5 text-decoration-underline w-100">Moon List</div>
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <ol :class="{ 'ml-4': !lgAndUp }">
+          <li
+            v-for="moon in moonList"
+            @click="() => addMoonToMentioned(moon)"
+            class="clickable ml-4">
+            <span class="ml-1">
+              {{ moon[settings.outputLanguage] }} - {{ moon[settings.inputLanguage] }}
+            </span>
+          </li>
+        </ol>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 
 <style scoped>
