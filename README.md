@@ -2,7 +2,7 @@
 
 The goal of this project was to create a tool for recognizing and translating the moon names mentioned by Talkatoo in Super Mario Odyssey. The completed project allows the user to do runs of Talkatoo% in any language SMO supports, and could be a significant timesave over English, as there is less text to scroll through in some other languages. It may also serve as a project of interest for those users looking to learn the moon names in other languages. Currently, Simplified Chinese and Traditional Chinese are the most optimized, Korean has typically been successful, and all other languages are mostly usable but not fully tested/optimized.
 
-![image](https://user-images.githubusercontent.com/58895947/226770639-0f0ed7f8-4fac-45f6-9819-86bdd14fc301.png)
+![image](https://github.com/AzHarcos/talkatoo-translator/assets/59027253/69b7b88c-20bc-4f9f-843c-dd047518f5da)
 
 # Setup Instructions
 1. Download and extract the talkatoo-translator.zip file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases.
