@@ -367,9 +367,10 @@ def normal_moons_to_check(is_talkatoo):
                 to_check = moons_by_kingdom["Mushroom"][:32] + moons_by_kingdom["Mushroom"][38:]
         else:
             to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
-        to_check.extend(moons_by_kingdom["Cloud"])
-        to_check.extend(moons_by_kingdom["Ruined"])
-        to_check.extend(moons_by_kingdom["Dark"][1:14])  # Exclude multi moon, hint arts already included
+        if not is_talkatoo: # add cloud, ruined and dark moons for moon get text only
+            to_check.extend(moons_by_kingdom["Cloud"])
+            to_check.extend(moons_by_kingdom["Ruined"])
+            to_check.extend(moons_by_kingdom["Dark"][1:14])  # Exclude multi moon, hint arts already included
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
     to_check.extend(hint_arts[current_kingdom])

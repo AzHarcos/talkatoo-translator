@@ -13,7 +13,6 @@
 
   const initiallyShowImage = !props.isCollected && settings.automaticallyShowImages;
   const showImage = ref(initiallyShowImage);
-  const showOverlay = ref(false);
 
   function deleteMoon() {
     state.deleteMoon(props.moon, props.isCollected);
@@ -45,13 +44,7 @@
         v-show="showImage"
         class="ma-4"
         :src="`http://localhost:8083/assets/moons/${moon.kingdom}/${moon.id}.png`"
-        rel="preload"
-        @click="showOverlay = true" />
-      <v-overlay v-model="showOverlay" class="justify-center align-center" width="60%">
-        <v-img
-          :src="`http://localhost:8083/assets/moons/${moon.kingdom}/${moon.id}.png`"
-          cover></v-img>
-      </v-overlay>
+        rel="preload" />
     </template>
   </v-hover>
 </template>

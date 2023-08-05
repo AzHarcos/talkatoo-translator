@@ -48,7 +48,7 @@
       </div>
     </div>
     <ul class="list">
-      <li v-for="moon in moons" class="list-item">
+      <li v-for="moon in moons" class="list-item" :key="moon.id">
         <CollectedMoonEntry v-if="moon.isMentioned" :moon="moon" />
         <UnmentionedMoonEntry v-else :moon="moon" />
       </li>
