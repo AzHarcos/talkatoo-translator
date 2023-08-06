@@ -178,7 +178,23 @@ def reset_borders(window_hwnd=None):
         return None
     # Save image so it can be displayed in the GUI
     path = internal_resource_path(IMG_PATH)
-    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(path)
+
+    # Draw lines around story text
+    preview_img = np.array(Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)))
+    rotated_img = np.array(Image.fromarray(preview_img).rotate(-3.5))
+    mask = np.zeros((STORY_TEXT_BORDERS[3] - STORY_TEXT_BORDERS[1], STORY_TEXT_BORDERS[2] - STORY_TEXT_BORDERS[0]), dtype=bool)
+    mask[0] = mask[:, 0] = mask[-1] = mask[:, -1] = True
+    rotated_img[STORY_TEXT_BORDERS[1]:STORY_TEXT_BORDERS[3], STORY_TEXT_BORDERS[0]:STORY_TEXT_BORDERS[2]][mask] = np.array([0, 255, 0])  # Green
+    rotated_img = np.array(Image.fromarray(rotated_img).rotate(3.5))
+    preview_img[50:-50, 50:-50] = rotated_img[50:-50, 50:-50]
+
+    # Draw lines around purple coin counter, moon text, and talkatoo text
+    colors = [np.array([255, 165, 0]), np.array([255, 0, 0]), np.array([255, 165, 0])]
+    for i, curr_borders in enumerate([KINGDOM_BORDERS, language_settings["Moon_Bounds"], language_settings["Talkatoo_Bounds"]]):
+        mask = np.zeros((curr_borders[3]-curr_borders[1], curr_borders[2]-curr_borders[0]), dtype=bool)
+        mask[0] = mask[:, 0] = mask[-1] = mask[:, -1] = True
+        preview_img[curr_borders[1]:curr_borders[3], curr_borders[0]:curr_borders[2]][mask] = colors[i]
+    Image.fromarray(preview_img).save(path)
     return path
 
 # Allow the gui to reset the run, in this case clearing the mentioned and collected moons
