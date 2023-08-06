@@ -86,11 +86,11 @@ STORY_BORDERS = (210, 240, 260, 368)
 MULTI_BORDERS = (870, 170, 950, 250)
 STORY_TEXT_BORDERS = (300, 550, 950, 610)
 
-KINGDOM_TIMER = 1
+KINGDOM_TIMER = 3
 MOON_TIMER = 0.5
 STORY_MOON_TIMER = 0.5
 
-KINGDOM_CERTAINTY = 0.5  # Classifier certainty to prevent uncertain kingdom switches (must occur 2 times in a row)
+KINGDOM_CERTAINTY = 0.85  # Classifier certainty to prevent uncertain kingdom switches (must occur 2 times in a row)
 POSS_MOON_CERTAINTY = 0.1  # Show moon percentage if it's at least 10% possible
 VERBOSE = True
 
@@ -720,10 +720,13 @@ def mainloop():
 
 
 if __name__ == "__main__":
+    ####################################################################################################################
+    # Define variables used for computation
+    ####################################################################################################################
     this_OS = platform.system()
     moons_by_kingdom, hint_arts = generate_moon_dict()
     kingdom_list = ("Cap", "Cascade", "Sand", "Lake", "Wooded", "Lost", "Metro", "Seaside",
-                    "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom", "No Kingdom Detected")  # to store class values, strict order
+                    "Snow", "Luncheon", "Bowsers", "Moon", "Mushroom")  # to store class values, strict order
     current_kingdom = "Cap"  # Start in first kingdom (Does not matter what it's initialized to)
     mentioned_moons = []  # list of moons mentioned by Talkatoo
     collected_moons = []  # list of auto-recognized collected moons
