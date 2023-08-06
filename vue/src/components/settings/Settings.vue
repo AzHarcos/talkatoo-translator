@@ -5,6 +5,7 @@
   import VideoOutputSettings from './VideoOutputSettings.vue';
 
   import { useState } from '@/stores/state';
+  import GeneralSettings from './GeneralSettings.vue';
 
   const state = useState();
 
@@ -20,10 +21,11 @@
       <v-icon @click="closeSettings" size="1em" class="close-icon clickable">mdi-close</v-icon>
     </v-card-title>
     <v-card-subtitle>
-      Set your preferences regarding languages, displayed kingdoms and video input / output.
-      Settings will be saved automatically.
+      Set your preferences for languages, displayed kingdoms and video input / output. Settings will
+      be saved automatically.
     </v-card-subtitle>
     <v-card-text>
+      <GeneralSettings class="border mb-4" />
       <LanguageSettings class="border mb-4" />
       <KingdomSettings class="border mb-4" />
       <VideoInputSettings class="border mb-4" />

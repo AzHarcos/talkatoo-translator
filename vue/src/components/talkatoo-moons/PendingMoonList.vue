@@ -18,7 +18,7 @@
       <div><span v-html="padStart(moons.length.toString())"></span>/3</div>
     </div>
     <ul class="list">
-      <li v-for="possibleMoons in moons" class="list-item">
+      <li v-for="possibleMoons in moons" class="list-item" :key="possibleMoons[0].id">
         <PendingMoonEntry :possible-moons="possibleMoons" />
       </li>
     </ul>

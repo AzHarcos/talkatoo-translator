@@ -153,6 +153,18 @@ def get_video_devices():
         })
     return available_cameras
 
+# Allow the gui to set the current kingdom
+@eel.expose
+def set_current_kingdom(kingdom_name):
+    global current_kingdom
+
+    if kingdom_name in kingdom_list:
+        current_kingdom = kingdom_name
+        eel.set_current_kingdom(current_kingdom)
+        if VERBOSE:
+            print("Kingdom changed to: ", kingdom_name)
+
+
 # Allow the gui to reset the borders of the capture card feed
 @eel.expose
 def reset_borders(window_hwnd=None):
@@ -165,8 +177,25 @@ def reset_borders(window_hwnd=None):
     if not new_borders:
         return None
     # Save image so it can be displayed in the GUI
-    Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)).save(IMG_PATH)
-    return IMG_PATH
+    path = internal_resource_path(IMG_PATH)
+
+    # Draw lines around story text
+    preview_img = np.array(Image.fromarray(img_arr[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT)))
+    rotated_img = np.array(Image.fromarray(preview_img).rotate(-3.5))
+    mask = np.zeros((STORY_TEXT_BORDERS[3] - STORY_TEXT_BORDERS[1], STORY_TEXT_BORDERS[2] - STORY_TEXT_BORDERS[0]), dtype=bool)
+    mask[0] = mask[:, 0] = mask[-1] = mask[:, -1] = True
+    rotated_img[STORY_TEXT_BORDERS[1]:STORY_TEXT_BORDERS[3], STORY_TEXT_BORDERS[0]:STORY_TEXT_BORDERS[2]][mask] = np.array([0, 255, 0])  # Green
+    rotated_img = np.array(Image.fromarray(rotated_img).rotate(3.5))
+    preview_img[50:-50, 50:-50] = rotated_img[50:-50, 50:-50]
+
+    # Draw lines around purple coin counter, moon text, and talkatoo text
+    colors = [np.array([255, 165, 0]), np.array([255, 0, 0]), np.array([255, 165, 0])]
+    for i, curr_borders in enumerate([KINGDOM_BORDERS, language_settings["Moon_Bounds"], language_settings["Talkatoo_Bounds"]]):
+        mask = np.zeros((curr_borders[3]-curr_borders[1], curr_borders[2]-curr_borders[0]), dtype=bool)
+        mask[0] = mask[:, 0] = mask[-1] = mask[:, -1] = True
+        preview_img[curr_borders[1]:curr_borders[3], curr_borders[0]:curr_borders[2]][mask] = colors[i]
+    Image.fromarray(preview_img).save(path)
+    return path
 
 # Allow the gui to reset the run, in this case clearing the mentioned and collected moons
 @eel.expose
@@ -224,7 +253,7 @@ def stop_output_audio():
 # Allow the gui to save the current settings to a file
 @eel.expose
 def write_settings_to_file(updated_settings):
-    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, use_window_capture, window_capture_cropping, output_video, output_audio, audio_index
+    global settings, is_postgame, translate_from, translate_to, include_extra_kingdoms, manually_switch_kingdoms, use_window_capture, window_capture_cropping, output_video, output_audio, audio_index
 
     if updated_settings["useWindowCapture"]:
         if not set_window_capture(updated_settings["windowCaptureName"]):
@@ -245,6 +274,7 @@ def write_settings_to_file(updated_settings):
     include_extra_kingdoms = updated_settings["includeWithoutTalkatoo"]
     set_translate_from(updated_settings["inputLanguage"])
     set_translate_to(updated_settings["outputLanguage"])
+    manually_switch_kingdoms = updated_settings.get("manuallySwitchKingdoms", False)
 
     with open(SETTINGS_PATH, "w+") as settings_file:
         settings_file.write(dumps(updated_settings))
@@ -354,9 +384,10 @@ def normal_moons_to_check(is_talkatoo):
                 to_check = moons_by_kingdom["Mushroom"][:32] + moons_by_kingdom["Mushroom"][38:]
         else:
             to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]:]
-        to_check.extend(moons_by_kingdom["Cloud"])
-        to_check.extend(moons_by_kingdom["Ruined"])
-        to_check.extend(moons_by_kingdom["Dark"][1:14])  # Exclude multi moon, hint arts already included
+        if not is_talkatoo: # add cloud, ruined and dark moons for moon get text only
+            to_check.extend(moons_by_kingdom["Cloud"])
+            to_check.extend(moons_by_kingdom["Ruined"])
+            to_check.extend(moons_by_kingdom["Dark"][1:14])  # Exclude multi moon, hint arts already included
     else:
         to_check = moons_by_kingdom[current_kingdom][MAX_STORY[current_kingdom]: MAX_MAINGAME[current_kingdom]]
     to_check.extend(hint_arts[current_kingdom])
@@ -602,6 +633,7 @@ def mainloop():
     # Set up Eel
     eel.init('gui')  # Initialize the gui package
     eel.start('index.html', port=8083, size=GUI_SIZE, block=False)  # start the GUI
+    eel.set_current_kingdom(current_kingdom)
 
     # Final setup variables
     change_kingdom = ""  # Confirmation variable for kingdom changes
@@ -627,7 +659,7 @@ def mainloop():
         image = Image.fromarray(image[borders[1]:borders[3], borders[0]:borders[2]]).resize((IM_WIDTH, IM_HEIGHT))
 
         # Check kingdom every 3s
-        if new_time > check_kingdom_at:
+        if not manually_switch_kingdoms and new_time > check_kingdom_at:
             check_kingdom_at = new_time + KINGDOM_TIMER  # Reset timer
             kingdom_check_im = image_to_bw(image.crop(KINGDOM_BORDERS))  # Must be 50x50 to work in model
             new_kingdom = update_kingdom(kingdom_check_im)
@@ -739,6 +771,7 @@ if __name__ == "__main__":
         include_extra_kingdoms = settings["includeWithoutTalkatoo"]
         output_audio = settings["autoPlayOutputStreams"]
         output_video = settings["autoPlayOutputStreams"]
+        manually_switch_kingdoms = settings.get("manuallySwitchKingdoms", False)
     else:
         translate_from = DEFAULT_GAME_LANGUAGE
         translate_to = DEFAULT_GUI_LANGUAGE
@@ -751,6 +784,7 @@ if __name__ == "__main__":
         include_extra_kingdoms = False
         output_audio = False
         output_video = False
+        manually_switch_kingdoms = False
     language_settings = LANGUAGES[translate_from]
     reader = easyocr.Reader([language_settings["Language"]], verbose=False)
     score_func = score_logogram if translate_from in ["chinese_traditional", "chinese_simplified", "japanese",

@@ -50,26 +50,6 @@
     },
   });
 
-  const isHardcore = computed({
-    get() {
-      return settings.isHardcore;
-    },
-    set(value) {
-      globalProperties.$eel
-        .write_settings_to_file({
-          ...settings.$state,
-          isHardcore: value,
-        })()
-        .then(() => {
-          settings.setIsHardcore(value);
-          state.updateKingdoms();
-        })
-        .catch(() => {
-          state.showError('Error updating settings.');
-        });
-    },
-  });
-
   const woodedFirst = computed({
     get() {
       return settings.woodedFirst;
@@ -125,39 +105,25 @@
           v-model="includePostGame"
           label="Include post game"
           hide-details
-          class="slider-width"
           color="primary"></v-switch>
         <v-switch
           v-model="includeWithoutTalkatoo"
-          label="Other kingdoms"
+          label="Include other kingdoms"
           hide-details
-          class="slider-width"
           color="primary"></v-switch>
         <v-switch
           v-model="woodedFirst"
           label="Wooded first"
           hide-details
-          class="slider-width"
           color="primary"></v-switch>
         <v-switch
           v-model="seasideFirst"
           label="Seaside first"
           hide-details
-          class="slider-width"
-          color="primary"></v-switch>
-        <v-switch
-          v-model="isHardcore"
-          label="Hardcore?"
-          hide-details
-          class="slider-width"
           color="primary"></v-switch>
       </div>
     </v-card-text>
   </v-card>
 </template>
 
-<style>
-  .slider-width {
-    max-width: 200px;
-  }
-</style>
+<style></style>
