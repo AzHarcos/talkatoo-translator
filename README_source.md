@@ -4,11 +4,31 @@ The goal of this project was to create a tool for recognizing and translating th
 
 ![image](https://github.com/AzHarcos/talkatoo-translator/assets/59027253/69b7b88c-20bc-4f9f-843c-dd047518f5da)
 
-# Setup Instructions
-1. If you're on Windows, download and extract the talkatoo-translator.zip file of the latest release: https://github.com/AzHarcos/talkatoo-translator/releases.
-2. Find the Talkatoo.exe file in the extracted folder and run it.
-3. In case the exe is not working for you please reach out to AzHarcos on Discord. You might need to download the file talkatoo-translator-source.zip instead and follow the setup instructions in the included Readme.
-4. For compatibility reasons, when downloading a version beyond 1.0.0, you also need to follow step 3. Version 1.0.1 added a window capture feature that is currently only supported on Windows, so Mac and Linux users will unfortunately run into errors trying to use the Windows release.
+# Setup Instructions (no programming required)
+1. To run the application, you'll need Python 3 installed. While many other versions will also work(Python 3.11 does not), testing was done on version 3.10.10, so this is the recommended version. You can find the correct version here: https://www.python.org/downloads/release/python-31010/. If you're on Windows or Mac, the installer is likely easiest. If you're on Linux, you can use the tarball.
+    - If you use the installer, be sure to check the box that says "add python.exe to PATH" on the first screen, and then you can use the default installation. Should you wish to customize your installation, be sure that the "pip" box is checked.
+    - Otherwise, you'll need to manually add Python to your PATH (https://realpython.com/add-python-to-path/) and install pip (https://pip.pypa.io/en/stable/installation/).
+
+2. Open your terminal. If you're on Mac or Linux, it's an app called "Terminal", if you're on Windows then use the Command Prompt. (If you're not sure how to find it, use the search bar).
+3. Run the command ```python --version``` by typing it out and pressing the Enter key. On Mac and Linux you might need to use ```python3 --version``` instead. If it gives an error('python' is not recognized as an internal or external command, operable program or batch file), Python was likely not added to your PATH. Follow instructions here to fix this: https://realpython.com/add-python-to-path/. If it tells you that the version is 3.10.10, then it has been set up correctly. If it's another 3.X version, then your default version of Python is not 3.10.10, but your program will likely still work. If you still get an error, you can look here to try to fix the issue: https://stackoverflow.com/questions/24186823/python-not-recognized-in-windows-cmd-even-after-adding-to-path. But, if you don't want to bother, you can do the following. 
+    - Search for "Python", and find the file path to an app called "Python 3.10 (64 bit)" or similar. Note that Windows might take you to the Shortcut filepath-if this is the case, then right-click on the Python app and go to its file location. You know if you're in the right spot if you see folders such as DLLs, Tools, Lib, Scripts.
+    - Copy whatever this path is on your machine (i.e. ```C:/Python310/python.exe```) and use it instead of ```python``` for all of these commands. For example, ```C:/Python310/python.exe --version```.
+4. Install the necessary dependencies (external Python code used within our project).
+   - Run the command ```cd talkatoo_path``` in the terminal, replacing talkatoo_path with the full file path to your *inner* talkatoo directory (the one that contains the README, Talkatoo.py, and so on). For example, ```cd C:/Users/biakko/Downloads/talkatoo-translator/talkatoo-translator-1.0.0-testing```.
+   - Run ```pip install -r requirements.txt``` to install the necessary packages (if this doesn't work, use the Python path from step 5 troubleshooting and replace it in the command ```C:/Python310/python.exe -m pip install -r requirements.txt``` instead).
+   - If pip is not properly installed, follow the instructions at https://pip.pypa.io/en/stable/installation/ and try again.
+   - If one or more installations don't work, you can try to install the proper versions of the packages individually using ```pip install package_name==version```. An example, ```pip install pillow==9.4.0```.
+
+# Run the program
+To run the program:
+- If you prefer to use your command line/terminal:
+    - Run ```cd talkatoo_path``` in the command line/terminal on your machine, where talkatoo_path is your *inner* talkatoo directory. In this example, the command is ```cd C:/Users/biakko/Downloads/talkatoo-translator/talkatoo-translator-1.0.0-testing```.
+    - Run ```python Talkatoo.py``` on Windows, or ```python3 Talkatoo.py``` on Linux/Mac. As in earlier steps, you can also insert the path to your Python executable instead, such as ```C:/Python311/python.exe Talkatoo.py```.
+    - The program should now be running (it may take several seconds to boot up).
+- IDLE:
+    - IDLE is a free Python interpreter that comes with Python (unless you chose to exclude it in the custom installation). You can just open Talkatoo.py within the IDLE application and select "Run" on the top menu, then "Run Module".
+- Or use an interpreter of your choice (PyCharm, Spyder, Visual Studio Code, Geany, etc.).
+If you encounter errors, you do not have the packages properly installed. You can check installation status and version using ```pip show package_name``` in your command line/terminal(ex. ```pip show easyocr```). If it does not match with the one in requirements.txt, then install the proper version according to step 5 of the Setup Instructions.
 
 # How to use
 - Select your personal preferences in the settings menu
