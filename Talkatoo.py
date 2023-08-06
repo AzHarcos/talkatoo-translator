@@ -12,13 +12,14 @@ import cv2  # pip install opencv-python
 import easyocr  # pip install easyocr
 import eel  # pip install eel
 from json import dumps
-import onnxruntime
 from PIL import Image, ImageGrab  # pip install pillow
 import platform
 import pyaudio
 from pygrabber.dshow_graph import FilterGraph  # pip install pygrabber
 import threading
 import time
+import torch  # pip install torch
+import torchvision.transforms as transforms
 from util_functions import *
 from window_capture import *
 import warnings
@@ -396,7 +397,7 @@ def score_to_pct(poss_moon_dict, force_match=False):
     if not force_match:
         poss_moon_dict["Uncertain"] = language_settings["Score"]
     keys = list(poss_moon_dict.keys())
-    percents = softmax(np.array([float(poss_moon_dict[key]) for key in poss_moon_dict]), axis=0)
+    percents = torch.softmax(torch.tensor([float(poss_moon_dict[key]) for key in poss_moon_dict]), dim=0)
     return {keys[i]: round(float(percents[i])*100, 2) for i in range(len(keys)) if percents[i] > POSS_MOON_CERTAINTY}
 
 
@@ -513,19 +514,13 @@ def set_window_capture_cropping(updated_cropping):
     return success
 
 
-def softmax(x, axis=0):
-    if x.size == 0:
-        return np.array([])
-    ex = np.exp(x - np.max(x, axis=axis, keepdims=True))
-    return ex / np.sum(ex, axis=axis, keepdims=True)
-
-
 # Check kingdom via recognition and update it if needed
 def update_kingdom(img_arr):
-    kc_arr = np.expand_dims(img_arr.transpose((2, 0, 1)), axis=0).astype(np.float32)
-    probs = kindom_classifier.run(None, {kindom_classifier.get_inputs()[0].name: kc_arr})[0].flatten()
-    result = int(np.argmax(probs))
-    if result != 13 and probs[result] > KINGDOM_CERTAINTY:  # 13 is "Other" in my model
+    img = Image.fromarray(img_arr)
+    kc_tensor = transform(img).unsqueeze(dim=0).type(torch.float32)
+    probs = torch.softmax(kindom_classifier(kc_tensor), dim=1)
+    result = int(torch.argmax(probs))
+    if result != 13 and probs[0][result] > KINGDOM_CERTAINTY:  # 13 is "Other" in my model
         return kingdom_list[result]
     return None  # Was not able to determine kingdom
 
@@ -734,7 +729,8 @@ if __name__ == "__main__":
     collected_moons = []  # list of auto-recognized collected moons
 
     # Load kingdom recognizer
-    kindom_classifier = onnxruntime.InferenceSession("KingdomModel.onnx")
+    kindom_classifier = torch.jit.load("KingdomModel.zip")  # Pretrained kingdom recognizer, output 0-13 inclusive
+    transform = transforms.PILToTensor()  # Needed to transform image
 
     # Language setup
     settings = read_file_to_json(SETTINGS_PATH)
