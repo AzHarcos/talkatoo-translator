@@ -286,7 +286,7 @@ def write_settings_to_file(updated_settings):
 # Allow the gui to write the pending moons of the selected kingdom to a file
 @eel.expose
 def log_pending_moons(pending_moons):
-    with open(PENDING_MOONS_PATH, "w+") as pending_moons_log_file:
+    with open(PENDING_MOONS_PATH, "w+", encoding="utf-8") as pending_moons_log_file:
         pending_moons_log_file.write(pending_moons)
 
 
